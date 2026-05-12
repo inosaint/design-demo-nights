@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Design Demo Nights is a Bengaluru event archive for designers sharing experiments, tools, prototypes, and process."
+    >
+    <title>Design Demo Nights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=VT323&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="page" id="top">
+      <header class="nav">
+        <div class="header-copy">
+          <h1>Design Demo Nights</h1>
+          <p>Browse past Design Demo Nights events and the amazing projects shared by our community.</p>
+        </div>
+
+        <button class="brand" type="button" aria-label="Design Demo Nights" title="Tap the screen to power off / on">
+          <span class="brand-logo brand-logo--header" aria-hidden="true" data-power="on">
+            <span class="scene-scale">
+              <div class="scene">
+                <div class="computer-unit">
+                  <div class="face front">
+                    <div class="screen-inset">
+                      <div class="crt">
+                        <div class="crt-glow">
+                          <div class="crt-ui graffiti-container">
+                            <div class="graffiti-text">DESIGN<br>DEMO<br>NIGHTS</div>
+                            <div class="subtitle-text">for designers</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="floppy-slot"></div>
+                    <div class="grill">
+                      <div class="vent"></div><div class="vent"></div><div class="vent"></div><div class="vent"></div>
+                      <div class="vent"></div><div class="vent"></div><div class="vent"></div><div class="vent"></div>
+                    </div>
+                    <div class="sticker sticker-starburst"></div>
+                    <div class="sticker sticker-bengaluru">Bengaluru</div>
+                  </div>
+                  <div class="face back"></div>
+                  <div class="face left"></div>
+                  <div class="face right"></div>
+                  <div class="face top"></div>
+                  <div class="face bottom"></div>
+                  <div class="keyboard-assembly">
+                    <div class="kb-base">
+                      <div class="keys-grid">
+                        <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                        <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                        <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                        <div class="key wide"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                        <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                        <div class="key"></div><div class="key wide"></div>
+                        <div class="key"></div><div class="key"></div><div class="key space"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                      </div>
+                    </div>
+                    <div class="kb-front"></div>
+                    <div class="kb-back"></div>
+                    <div class="kb-left"></div>
+                    <div class="kb-right"></div>
+                    <div class="kb-shadow"></div>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </span>
+        </button>
+      </header>
+
+      <section id="upcoming-event" class="upcoming-event" aria-label="Upcoming event"></section>
+
+      <section class="archive" aria-label="Past events">
+        <div id="archive-list" class="archive-list"></div>
+      </section>
+
+      <footer class="footer">
+        <p>hosted by <a href="https://x.com/kenneth" rel="noopener">kenneth</a></p>
+        <nav class="socials" aria-label="Footer links">
+          <a href="https://luma.com/calendar/cal-Lz8YkYPCTUZPX9t" aria-label="Subscribe on Luma">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+              <path d="M3 9h18"></path>
+              <path d="M8 3v4"></path>
+              <path d="M16 3v4"></path>
+            </svg>
+          </a>
+          <a href="https://www.instagram.com/DesignDemoNights" aria-label="Open Instagram">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </a>
+        </nav>
+      </footer>
+    </main>
+
+    <div class="dialog-backdrop" data-dialog-backdrop hidden>
+      <article
+        class="demo-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+      >
+        <button class="dialog-close" type="button" data-dialog-close aria-label="Close demo details">×</button>
+        <div class="dialog-image" data-dialog-image></div>
+        <div class="dialog-content">
+          <p class="kicker" data-dialog-speaker></p>
+          <h2 id="dialog-title" data-dialog-title></h2>
+          <p id="dialog-description" data-dialog-description></p>
+          <div class="dialog-links" data-dialog-links></div>
+        </div>
+      </article>
+    </div>
+
+    <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
