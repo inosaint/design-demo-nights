@@ -3,24 +3,20 @@ const INSTAGRAM_URL = "https://www.instagram.com/DesignDemoNights";
 
 const events = [
   {
-    id: "event-04",
+    id: "4",
     title: "Design Demo Nights 04",
     startsAt: "2026-06-15T18:30:00+05:30",
     location: "Bengaluru",
-    theme: "Designing with agents",
     themeColor: "#b557df",
     applyUrl: LUMA_URL,
     demos: []
   },
   {
-    id: "event-03",
+    id: "3",
     title: "Design Demo Nights 03",
     startsAt: "2026-04-20T18:30:00+05:30",
     location: "Bengaluru",
-    theme: "Systems that talk back",
     themeColor: "#76c7d9",
-    recap:
-      "Edition 03 covered trust, AI-assisted interface design, music tools, Sketch as an LLM-friendly canvas, founder sprints, portfolio archetypes, and a couple of bonus demos.",
     demos: [
       {
         title: "Safe Food Guide",
@@ -29,6 +25,7 @@ const events = [
           { platform: "twitter", url: "https://x.com/santrupti" }
         ],
         demoUrl: "",
+        photo: "santa.jpeg",
         preview: "A look at food decisions, trust, and the product thinking behind Safe Food Guide.",
         details:
           "Santrupti walked through the decisions, habits, and trust gaps that shape how people choose what to eat. The demo unpacked how those observations led to Safe Food Guide, a product direction focused on making food choices feel more informed and less anxious."
@@ -38,6 +35,7 @@ const events = [
         speaker: "Kshitij",
         speakerLinks: [],
         demoUrl: "https://getplayground.app",
+        photo: "kshitij.jpeg",
         preview: "A collaborative canvas for designing interfaces beyond the usual AI chatbox pattern.",
         details:
           "Kshitij demoed getplayground.app, a collaborative way to design interfaces with AI in the loop. The interesting move is that Playground treats AI-assisted design as a shared visual workspace, not just a chatbox that occasionally produces screens."
@@ -47,6 +45,7 @@ const events = [
         speaker: "Rhiddit",
         speakerLinks: [],
         demoUrl: "",
+        photo: "rhiddhit.jpeg",
         preview: "A new music production app with a beautifully skeuomorphic interface shaped with Codex.",
         details:
           "Rhiddit showed an app for people who want to get into music production without being buried under the usual wall of controls. Codex helped produce a polished skeuomorphic interface, giving the tool a tactile, studio-like quality."
@@ -56,6 +55,7 @@ const events = [
         speaker: "Arjun",
         speakerLinks: [],
         demoUrl: "",
+        photo: "arjun.jpeg",
         preview: "A reminder that Sketch's JSON support makes it surprisingly well suited to LLM-generated design.",
         details:
           "Arjun made the case for looking at Sketch again. Because Sketch supports JSON, and LLMs are effective at generating structured JSON, it may be a stronger canvas for AI-generated design than many newer AI-first tools with smaller design toolsets."
@@ -65,6 +65,7 @@ const events = [
         speaker: "Sankalp",
         speakerLinks: [],
         demoUrl: "",
+        photo: "sankalp.jpeg",
         preview: "A look inside a week-long sprint and how distribution shapes the business around the product.",
         details:
           "Sankalp shared how a week-long sprint looks while building Next Door Company. The demo moved between product work and business reality, especially how distribution choices affect what gets built and how the company grows."
@@ -74,6 +75,7 @@ const events = [
         speaker: "Anirudh",
         speakerLinks: [],
         demoUrl: "",
+        photo: "anirudh.jpeg",
         preview: "A visualization project for understanding recurring patterns in design portfolios.",
         details:
           "Anirudh showcased a visualization project built to identify design portfolio archetypes. The work turns a fuzzy question into something more inspectable: what kinds of portfolios exist, how they differ, and where a designer's body of work might fit."
@@ -83,6 +85,7 @@ const events = [
         speaker: "Atishay",
         speakerLinks: [],
         demoUrl: "https://lumina-design.xyz",
+        photo: "atishay.jpeg",
         preview: "A bonus demo of Lumina Design plus an in-progress finance management app.",
         details:
           "A couple of no-shows opened up time for Atishay to show Lumina Design and a finance management app still in progress. The bonus demos gave the room a quick look at both a public design tool and a more practical personal finance workflow."
@@ -90,14 +93,103 @@ const events = [
     ]
   },
   {
-    id: "event-02",
+    id: "2",
     title: "Design Demo Nights 02",
+    startsAt: "2026-04-13T18:30:00+05:30",
+    location: "Bengaluru",
+    themeColor: "#e86635",
+    demos: [
+      {
+        title: "Teaching Designers to Code",
+        speaker: "Rasagy",
+        speakerLinks: [
+              { platform: "twitter", url: "https://x.com/rasagy" },
+              { platform: "instagram", url: "https://instagram.com/rasagy" }
+        ],
+        demoUrl: "https://rasagy.in/imitat10n/",
+        photo: "rasagy.png",
+        preview: "An approach to teaching design students about coding — and why it changes how they think.",
+        details:
+          "Rasagy shared his approach to introducing coding to design students, exploring how programming literacy reshapes the way designers reason about products, systems, and constraints. Less about syntax, more about a new way of seeing."
+      },
+      {
+        title: "Blade: Figma to Code",
+        speaker: "Rama Krushna",
+        speakerLinks: [],
+        demoUrl: "",
+        photo: "ram.png",
+        preview: "How Razorpay's Blade design system evolved from Figma toward code — functionality first, UI later.",
+        details:
+          "Rama Krushna walked through the evolution of Blade, Razorpay's design system, from Figma-centric origins toward a code-first workflow. The guiding principle: ship functionality first, let the UI follow. The broader takeaway was that there are many valid paths to the same outcome — the right one depends on your team and moment."
+      },
+      {
+        title: "LLM Confidence and AI Psychosis",
+        speaker: "Anirudh",
+        speakerLinks: [],
+        demoUrl: "",
+        photo: "anirudh.png",
+        preview: "How LLMs signal false confidence — illustrated by a model that refused to believe iOS 26 exists.",
+        details:
+          "Anirudh explored how language models express certainty even when they're wrong, using the concrete example of an LLM that flatly denied iOS 26 existed. The talk offered grounding techniques for designers working with AI tools — ways to stay anchored to reality when the model pushes back on what you know to be true."
+      },
+      {
+        title: "Marketing App for Mom",
+        speaker: "Khyati",
+        speakerLinks: [],
+        demoUrl: "",
+        photo: "khyati.png",
+        preview: "An app built to help her mom market local products in Kharagpur through Instagram banners and story posters.",
+        details:
+          "Khyati built a tool specifically for her mother's small business in Kharagpur, generating Instagram banners and story-sized posters to market products locally. The demo was a quiet reminder that the most purposeful tools are often designed for one real person, not a user persona."
+      },
+      {
+        title: "Not Everything Smart is an LLM",
+        speaker: "Shreyas",
+        speakerLinks: [
+          { platform: "website", url: "https://cherrypicked.supply" }
+        ],
+        demoUrl: "https://cherrypicked.supply",
+        photo: "shrey.png",
+        preview: "A case for DOM and axtree approaches over LLMs — and the experiments behind cherrypicked.supply.",
+        details:
+          "Shreyas pushed back on the assumption that every intelligent feature needs a language model. Walking through his work on cherrypicked.supply, he showed how the DOM and accessibility tree (axtree) can power smart, structured behaviour at a fraction of the cost and complexity of an LLM — and often more reliably."
+      },
+      {
+        title: "Experimental Personal Site",
+        speaker: "Diya",
+        speakerLinks: [],
+        demoUrl: "",
+        photo: "diya.png",
+        preview: "A personal site redesigned as an experience — with music, customization, and a modular AI-assisted interface.",
+        details:
+          "Diya explored what a personal site could feel like if it was designed as an experience rather than a page. The result was a modular, customizable interface with a music layer, shaped with AI assistance. The demo made the case for treating your own corner of the web as a place to experiment with interaction, not just present work."
+      },
+      {
+        title: "",
+        speaker: "Sakshi",
+        speakerLinks: [],
+        demoUrl: "",
+        photo: "sakshi.png",
+        preview: "",
+        details: ""
+      },
+      {
+        title: "",
+        speaker: "Faris",
+        speakerLinks: [],
+        demoUrl: "",
+        photo: "faris.png",
+        preview: "",
+        details: ""
+      }
+    ]
+  },
+  {
+    id: "1",
+    title: "Design Demo Nights 01",
     startsAt: "2026-04-06T18:30:00+05:30",
     location: "Bengaluru",
-    theme: "Prototype weather",
-    themeColor: "#e86635",
-    recap:
-      "A Friday night in Indiranagar brought 35 designers together, with seven community speakers showing tools, prototypes, agents, games, writing apps, and a few power-cut-resistant demos.",
+    themeColor: "#b557df",
     demos: [
       {
         title: "Skills vs Agents 101",
@@ -106,6 +198,7 @@ const events = [
           { platform: "twitter", url: "https://x.com/kenneth" }
         ],
         demoUrl: "",
+        photo: "kenneth.jpeg",
         preview: "A quick opening primer on skills, agents, and sub-agents for designers entering the space.",
         details:
           "Kenneth opened the meetup with a short intro to Design Demo Nights and a Skills vs Agents 101. What seemed like it might be too basic turned out to be useful context, since only a handful of people in the room had used skills or sub-agents before."
@@ -115,6 +208,7 @@ const events = [
         speaker: "Gyanl",
         speakerLinks: [],
         demoUrl: "",
+        photo: "gyan.jpeg",
         preview: "Small code-made utilities and richer graphic exploration interfaces built for design work.",
         details:
           "Gyanl showed a collection of disposable tools, plus a few that felt less disposable than expected. The demos ranged from small color-tool apps written in code to more complex interfaces for graphic exploration."
@@ -124,6 +218,7 @@ const events = [
         speaker: "Veethika",
         speakerLinks: [],
         demoUrl: "",
+        photo: "veethika.jpeg",
         preview: "Using Claude to make role-based access designs feel real through quick artifact prototypes.",
         details:
           "Veethika shared the complexity of designing for a role-based access product, where permissions, states, and user roles can get hard to reason about quickly. She showed how Claude helps her make fast artifact prototypes that make the design feel concrete enough to test and discuss."
@@ -133,6 +228,7 @@ const events = [
         speaker: "Shuvam",
         speakerLinks: [],
         demoUrl: "",
+        photo: "shuvam.jpeg",
         preview: "A speedrun through agent memory experiments, reusable mini-apps, and a battle chess game.",
         details:
           "Shuvam speed-ran through a set of demos he has been exploring since 2021-22. The set included prototyping memory for agents, using agents to build reusable mini-apps, and a battle chess game."
@@ -142,6 +238,7 @@ const events = [
         speaker: "Harsh",
         speakerLinks: [],
         demoUrl: "",
+        photo: "harsh.jpeg",
         preview: "A Figma agent that acts like a design intern for simple, repetitive design tasks.",
         details:
           "Harsh walked through Solacy, a design-intern-style Figma agent he is building to help with simple tasks. The demo focused on the practical middle ground where agents can reduce repetitive design work without pretending to replace the designer."
@@ -151,6 +248,7 @@ const events = [
         speaker: "Mustafa",
         speakerLinks: [],
         demoUrl: "",
+        photo: "mustafa.jpeg",
         preview: "A writer app shaped by a broader journey into making useful things.",
         details:
           "Mustafa shared a bit of his journey into making things, then showed Unslop, a writer app with ambitions of being the possibly ultimate writing tool. The demo was less about novelty and more about giving writing software a sharper point of view."
@@ -162,6 +260,7 @@ const events = [
           { platform: "website", url: "https://cooperatify.pro" }
         ],
         demoUrl: "https://cooperatify.pro",
+        photo: "atishay.jpeg",
         preview: "A bonus walkthrough of how Atishay uses Claude, with Cooperatify in action.",
         details:
           "With a little time left, Atishay shared how he uses Claude in his own workflow. The highlight was seeing Cooperatify.pro in action, a tool that felt immediately useful for people thinking through collaboration and product work."
@@ -171,6 +270,7 @@ const events = [
         speaker: "Jaljith",
         speakerLinks: [],
         demoUrl: "",
+        photo: "jaljith.jpeg",
         preview: "A childhood-flavored pixel spaceship game followed by an app for exploring Sarvam AI animations.",
         details:
           "Jaljith closed the night by taking the room back to childhood with a pixel spaceship game, then forward again with an app built to explore Sarvam AI animations. It was a fitting end to a night that moved easily between playful prototypes and serious tools."
@@ -332,7 +432,16 @@ function makeDemoCard(demo, event) {
   button.type = "button";
   button.setAttribute("aria-label", `${demo.title} by ${demo.speaker} — open details`);
 
-  const image = makeLogoElement({ variant: "card", accent: event.themeColor });
+  let image;
+  if (demo.photo) {
+    image = document.createElement("img");
+    image.className = "demo-card-photo";
+    image.src = `assets/events/${event.id}/photos/${demo.photo}`;
+    image.alt = demo.speaker;
+    image.loading = "lazy";
+  } else {
+    image = makeLogoElement({ variant: "card", accent: event.themeColor });
+  }
 
   const body = document.createElement("span");
   body.className = "demo-card-body";
@@ -359,32 +468,9 @@ function makeDemoCard(demo, event) {
 const CHEVRON_LEFT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
 const CHEVRON_RIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
-function wrapWithCarouselNav(carousel, count) {
-  const wrap = document.createElement("div");
-  wrap.className = "carousel-wrap";
-
-  const prev = document.createElement("button");
-  prev.type = "button";
-  prev.className = "carousel-nav carousel-nav-prev";
-  prev.setAttribute("aria-label", "Previous demo");
-  prev.innerHTML = CHEVRON_LEFT;
-
-  const next = document.createElement("button");
-  next.type = "button";
-  next.className = "carousel-nav carousel-nav-next";
-  next.setAttribute("aria-label", "Next demo");
-  next.innerHTML = CHEVRON_RIGHT;
-
-  wrap.append(carousel, prev, next);
-  window.setTimeout(() => initCarousel(wrap, count), 0);
-  return wrap;
-}
-
-function initCarousel(wrap, count) {
+function initCarousel(wrap, count, prev, next) {
   const carousel = wrap.querySelector(".demo-carousel");
   const track = wrap.querySelector(".demo-carousel-track");
-  const prev = wrap.querySelector(".carousel-nav-prev");
-  const next = wrap.querySelector(".carousel-nav-next");
   if (!carousel || !track || !prev || !next) return;
 
   if (count < 2 || typeof EmblaCarousel !== "function") {
@@ -406,7 +492,8 @@ function initCarousel(wrap, count) {
     containScroll: false,
     dragFree: false,
     loop: true,
-    skipSnaps: false
+    skipSnaps: false,
+    draggable: true
   });
 
   prev.addEventListener("click", () => embla.scrollPrev());
@@ -424,8 +511,7 @@ function makeArchiveEvent(event) {
       variant: "thumb",
       accent: event.themeColor,
       editionNumber: editionNumber(event)
-    }),
-    Object.assign(document.createElement("span"), { textContent: event.title })
+    })
   );
 
   const cards = document.createElement("div");
@@ -435,13 +521,31 @@ function makeArchiveEvent(event) {
   event.demos.forEach((demo) => track.append(makeDemoCard(demo, event)));
   cards.append(track);
 
+  const prev = document.createElement("button");
+  prev.type = "button";
+  prev.className = "carousel-nav carousel-nav-prev";
+  prev.setAttribute("aria-label", "Previous demo");
+  prev.innerHTML = CHEVRON_LEFT;
+
+  const next = document.createElement("button");
+  next.type = "button";
+  next.className = "carousel-nav carousel-nav-next";
+  next.setAttribute("aria-label", "Next demo");
+  next.innerHTML = CHEVRON_RIGHT;
+
+  date.append(prev, next);
   section.append(date);
+
   if (event.demos.length) {
-    section.append(wrapWithCarouselNav(cards, event.demos.length));
+    const wrap = document.createElement("div");
+    wrap.className = "carousel-wrap";
+    wrap.append(cards);
+    section.append(wrap);
+    window.setTimeout(() => initCarousel(wrap, event.demos.length, prev, next), 0);
   } else {
     const empty = document.createElement("p");
     empty.className = "archive-empty";
-    empty.textContent = event.recap;
+    empty.textContent = "";
     section.append(empty);
   }
   return section;
@@ -469,9 +573,17 @@ const PLATFORM_LABELS = {
 
 function openDialog(demo, event, { skipHistory = false } = {}) {
   lastFocusedElement = document.activeElement;
-  dialogImage.replaceChildren(
-    makeLogoElement({ variant: "hero", accent: event.themeColor })
-  );
+  if (demo.photo) {
+    const img = document.createElement("img");
+    img.className = "dialog-speaker-photo";
+    img.src = `assets/events/${event.id}/photos/${demo.photo}`;
+    img.alt = demo.speaker;
+    dialogImage.replaceChildren(img);
+  } else {
+    dialogImage.replaceChildren(
+      makeLogoElement({ variant: "hero", accent: event.themeColor })
+    );
+  }
   dialogSpeaker.textContent = `${demo.speaker} / ${event.title}`;
   dialogTitle.textContent = demo.title;
   dialogDescription.textContent = demo.details;
@@ -593,6 +705,6 @@ function togglePower() {
 
 brandButton?.addEventListener("click", togglePower);
 
-renderUpcoming();
+// renderUpcoming();
 renderArchive();
 syncFromHash();
