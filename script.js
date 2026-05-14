@@ -22,7 +22,7 @@ const events = [
         title: "Safe Food Guide",
         speaker: "Santrupti",
         speakerLinks: [
-          { platform: "twitter", url: "https://x.com/santrupti" }
+          { platform: "twitter", url: "https://x.com/santacandesign" }
         ],
         demoUrl: "",
         photo: "santa.jpeg",
@@ -181,6 +181,18 @@ const events = [
         photo: "faris.png",
         preview: "",
         details: ""
+      },
+      {
+        title: "Pixels, Prompts & Prototypes ",
+        speaker: "Kenneth",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/kenneth" }
+        ],
+        demoUrl: "",
+        photo: "kenneth.png",
+        preview: "",
+        details:
+          ""
       }
     ]
   },
@@ -705,6 +717,6 @@ function togglePower() {
 
 brandButton?.addEventListener("click", togglePower);
 
-// renderUpcoming();
+renderUpcoming();
 renderArchive();
 syncFromHash();
