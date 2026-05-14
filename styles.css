@@ -213,24 +213,18 @@ img {
 
 /* Thumb variant: small colored chip for archive rows (computer only, no keyboard) */
 .brand-logo--thumb {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: linear-gradient(135deg,
-    color-mix(in srgb, var(--accent) 22%, white) 0%,
-    color-mix(in srgb, var(--accent) 55%, white) 100%);
+  width: 64px;
+  height: 56px;
 }
 
 .brand-logo--thumb .scene-scale {
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.11);
+  transform: translate(-50%, -50%) scale(0.09);
   transform-origin: center center;
 }
 
 .brand-logo--thumb .keyboard-assembly {
-  display: none;
 }
 
 .brand-logo--thumb.brand-logo--edition .graffiti-text {
@@ -253,9 +247,6 @@ img {
   aspect-ratio: 16 / 9;
   border-radius: 0;
   overflow: hidden;
-  background: linear-gradient(135deg,
-    color-mix(in srgb, var(--accent) 20%, white) 0%,
-    color-mix(in srgb, var(--accent) 50%, white) 100%);
 }
 
 .brand-logo--card .scene-scale {
@@ -265,15 +256,11 @@ img {
   transform-origin: center center;
 }
 
-.brand-logo--card .keyboard-assembly {
-  display: none;
-}
-
 /* Upcoming variant: compact event thumbnail */
 .brand-logo--upcoming {
   width: 86px;
   height: 86px;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   background: linear-gradient(135deg,
     color-mix(in srgb, var(--accent) 18%, white) 0%,
@@ -281,14 +268,10 @@ img {
 }
 
 .brand-logo--upcoming .scene-scale {
-  top: 50%;
+  top: 42%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.19);
+  transform: translate(-50%, -50%) scale(0.13);
   transform-origin: center center;
-}
-
-.brand-logo--upcoming .keyboard-assembly {
-  display: none;
 }
 
 .brand-logo .scene {
@@ -847,7 +830,7 @@ img {
 .archive-event {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0px;
 }
 
 .archive-date {
@@ -867,18 +850,16 @@ img {
 
 /* ─── Carousel ────────────────────────────────────────── */
 .carousel-wrap {
-  position: relative;
 }
 
 .demo-carousel {
-  overflow-x: hidden;
-  overflow-y: visible;
-  padding: 4px 0 30px;
+  overflow: hidden;
+  padding: 4px 0 14px;
 }
 
 .demo-carousel-track {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   touch-action: pan-y pinch-zoom;
 }
 
@@ -896,40 +877,38 @@ img {
   background: var(--line);
 }
 
+
+.demo-card:last-child {
+  margin-right: 12px;
+}
+
 .carousel-nav {
-  position: absolute;
-  top: calc(50% - 7px);
   display: grid;
-  width: 36px;
-  height: 36px;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
   padding: 0;
   place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--paper);
-  color: var(--ink);
+  border: none;
+  background: none;
   cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  transform: translateY(-50%);
-  transition: border-color 0.15s, transform 0.1s, background 0.15s;
 }
 
 .carousel-nav:hover,
 .carousel-nav:focus-visible {
-  border-color: var(--ink);
-  background: #fafafa;
+  background: #f4f4f4;
 }
 
 .carousel-nav:active {
-  transform: translateY(-50%) scale(0.94);
+  transform: scale(0.94);
 }
 
 .carousel-nav-prev {
-  left: -10px;
+  margin-left: auto;
 }
 
 .carousel-nav-next {
-  right: -10px;
+  margin-right: 20px;
 }
 
 .carousel-nav svg {
@@ -961,6 +940,13 @@ img {
 
 .demo-card .brand-logo--card {
   border-radius: 0;
+}
+
+.demo-card-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
 }
 
 .demo-card-body {
@@ -1086,6 +1072,14 @@ img {
   min-height: inherit;
   border-radius: 0;
   aspect-ratio: auto;
+}
+
+.dialog-speaker-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  display: block;
 }
 
 .dialog-content {
