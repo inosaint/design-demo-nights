@@ -260,7 +260,7 @@ img {
 .brand-logo--upcoming {
   width: 86px;
   height: 86px;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   background: linear-gradient(135deg,
     color-mix(in srgb, var(--accent) 18%, white) 0%,
@@ -268,14 +268,10 @@ img {
 }
 
 .brand-logo--upcoming .scene-scale {
-  top: 50%;
+  top: 42%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.19);
+  transform: translate(-50%, -50%) scale(0.13);
   transform-origin: center center;
-}
-
-.brand-logo--upcoming .keyboard-assembly {
-  display: none;
 }
 
 .brand-logo .scene {
