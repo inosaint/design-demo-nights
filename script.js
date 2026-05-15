@@ -22,38 +22,52 @@ const events = [
         title: "Safe Food Guide",
         speaker: "Santrupti",
         speakerLinks: [
-          { platform: "twitter", url: "https://x.com/santrupti" }
+          { platform: "twitter", url: "https://x.com/santacandesign" },
+          { platform: "instagram", url: "https://instagram.com/santruptip" },
+          { platform: "website", url: "https://santacandesign.github.io/portfolio2026/index.html" }
         ],
         demoUrl: "",
         photo: "santa.jpeg",
-        preview: "A look at food decisions, trust, and the product thinking behind Safe Food Guide.",
+        preview: "A look at food decisions and trust behind Safe Food Guide.",
         details:
-          "Santrupti walked through the decisions, habits, and trust gaps that shape how people choose what to eat. The demo unpacked how those observations led to Safe Food Guide, a product direction focused on making food choices feel more informed and less anxious."
+          "Santrupti walked through the decisions, habits, and trust gaps that shape how she chooses what to eat. The demo unpacked how those observations led to Safe Food Guide, a product that narrows the choices to eat, to a few trusted places around town."
       },
       {
-        title: "Playground",
+        title: "AI Verse",
         speaker: "Kshitij",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/okkshitij" },
+          { platform: "instagram", url: "https://instagram.com/okkshitij" },
+          { platform: "website", url: "" }
+        ],
         demoUrl: "https://getplayground.app",
         photo: "kshitij.jpeg",
         preview: "A collaborative canvas for designing interfaces beyond the usual AI chatbox pattern.",
         details:
-          "Kshitij demoed getplayground.app, a collaborative way to design interfaces with AI in the loop. The interesting move is that Playground treats AI-assisted design as a shared visual workspace, not just a chatbox that occasionally produces screens."
+          "Kshitij demoed getplayground.app, a collaborative canvas to explore and design interfaces with AI in the loop." 
       },
       {
-        title: "Music Production App",
+        title: "Transient - Music Production App",
         speaker: "Rhiddit",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/RhiddhitPaul" },
+          { platform: "instagram", url: "https://instagram.com/_not_reddit" },
+          { platform: "website", url: "https://www.rhidos.com" }
+        ],
         demoUrl: "",
         photo: "rhiddhit.jpeg",
-        preview: "A new music production app with a beautifully skeuomorphic interface shaped with Codex.",
+        preview: "A music production app with a beautifully skeuomorphic interface shaped with Codex.",
         details:
           "Rhiddit showed an app for people who want to get into music production without being buried under the usual wall of controls. Codex helped produce a polished skeuomorphic interface, giving the tool a tactile, studio-like quality."
       },
       {
         title: "Sketch as an AI Canvas",
         speaker: "Arjun",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/arjunphlox" },
+          { platform: "instagram", url: "https://instagram.com/arjunphlox" },
+          { platform: "website", url: "https://arjunphlox.com" }
+        ],
         demoUrl: "",
         photo: "arjun.jpeg",
         preview: "A reminder that Sketch's JSON support makes it surprisingly well suited to LLM-generated design.",
@@ -63,8 +77,12 @@ const events = [
       {
         title: "A Week at Next Door Company",
         speaker: "Sankalp",
-        speakerLinks: [],
-        demoUrl: "",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/sankalpdomore" },
+          { platform: "instagram", url: "https://instagram.com/sankalpdomore" },
+          { platform: "website", url: "https://sankalpsinha.com/" }
+        ],
+        demoUrl: "https://nextdoor.company",
         photo: "sankalp.jpeg",
         preview: "A look inside a week-long sprint and how distribution shapes the business around the product.",
         details:
@@ -73,7 +91,11 @@ const events = [
       {
         title: "Portfolio Archetypes",
         speaker: "Anirudh",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/anirudhux" },
+          { platform: "instagram", url: "https://instagram.com/anirudhshrinivas" },
+          { platform: "website", url: "" }
+        ],
         demoUrl: "",
         photo: "anirudh.jpeg",
         preview: "A visualization project for understanding recurring patterns in design portfolios.",
@@ -83,12 +105,16 @@ const events = [
       {
         title: "Lumina and Finance App",
         speaker: "Atishay",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/geekyboiiii" },
+          { platform: "instagram", url: "https://instagram.com/_geekyboiiii_" },
+          { platform: "website", url: "https://atishay.site" }
+        ],
         demoUrl: "https://lumina-design.xyz",
         photo: "atishay.jpeg",
-        preview: "A bonus demo of Lumina Design plus an in-progress finance management app.",
+        preview: "A demo of Lumina Design plus an in-progress finance management app.",
         details:
-          "A couple of no-shows opened up time for Atishay to show Lumina Design and a finance management app still in progress. The bonus demos gave the room a quick look at both a public design tool and a more practical personal finance workflow."
+          "Atishay showcased Lumina Design and a finance management app still in progress. Lumina lets you configure a custom design system and export it as per your needs."
       }
     ]
   },
@@ -104,7 +130,8 @@ const events = [
         speaker: "Rasagy",
         speakerLinks: [
               { platform: "twitter", url: "https://x.com/rasagy" },
-              { platform: "instagram", url: "https://instagram.com/rasagy" }
+              { platform: "instagram", url: "https://instagram.com/rasagy" },
+              { platform: "website", url: "https://rasagy.in" }
         ],
         demoUrl: "https://rasagy.in/imitat10n/",
         photo: "rasagy.png",
@@ -115,17 +142,25 @@ const events = [
       {
         title: "Blade: Figma to Code",
         speaker: "Rama Krushna",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/rkdotdesign" },
+          { platform: "instagram", url: "https://instagram.com/rkdotdesign" },
+          { platform: "website", url: "https://www.ramakrushna.xyz/" }
+        ],
         demoUrl: "",
         photo: "ram.png",
-        preview: "How Razorpay's Blade design system evolved from Figma toward code — functionality first, UI later.",
+        preview: "How Razorpay's Blade design system evolved",
         details:
-          "Rama Krushna walked through the evolution of Blade, Razorpay's design system, from Figma-centric origins toward a code-first workflow. The guiding principle: ship functionality first, let the UI follow. The broader takeaway was that there are many valid paths to the same outcome — the right one depends on your team and moment."
+          "Rama Krushna walked through the evolution of Blade, Razorpay's design system, from Figma plugins toward a code-first workflow. The guiding principle: ship functionality first, let the UI follow. The broader takeaway was that there are many valid paths to the same outcome — the right one depends on your team and moment."
       },
       {
         title: "LLM Confidence and AI Psychosis",
         speaker: "Anirudh",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/anirudhux" },
+          { platform: "instagram", url: "https://instagram.com/anirudhshrinivas" },
+          { platform: "website", url: "" }
+        ],
         demoUrl: "",
         photo: "anirudh.png",
         preview: "How LLMs signal false confidence — illustrated by a model that refused to believe iOS 26 exists.",
@@ -133,54 +168,86 @@ const events = [
           "Anirudh explored how language models express certainty even when they're wrong, using the concrete example of an LLM that flatly denied iOS 26 existed. The talk offered grounding techniques for designers working with AI tools — ways to stay anchored to reality when the model pushes back on what you know to be true."
       },
       {
-        title: "Marketing App for Mom",
+        title: "Marketing App for SMBs",
         speaker: "Khyati",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/khyati_shekhar" },
+          { platform: "instagram", url: "https://instagram.com/khyati_shekhar" },
+          { platform: "website", url: "https://khyatis.com" }
+        ],
         demoUrl: "",
         photo: "khyati.png",
         preview: "An app built to help her mom market local products in Kharagpur through Instagram banners and story posters.",
         details:
-          "Khyati built a tool specifically for her mother's small business in Kharagpur, generating Instagram banners and story-sized posters to market products locally. The demo was a quiet reminder that the most purposeful tools are often designed for one real person, not a user persona."
+          "Khyati built a tool specifically for her mother's small business in Kharagpur, generating Instagram banners and story-sized posters to market products locally."
       },
       {
-        title: "Not Everything Smart is an LLM",
+        title: "Not Everything Smart is a LLM",
         speaker: "Shreyas",
         speakerLinks: [
-          { platform: "website", url: "https://cherrypicked.supply" }
+          { platform: "twitter", url: "https://x.com/wutamelonshrey" },
+          { platform: "instagram", url: "https://instagram.com/wutamelonshrey" },
+          { platform: "website", url: "https://shrey.fyi" }
         ],
         demoUrl: "https://cherrypicked.supply",
         photo: "shrey.png",
-        preview: "A case for DOM and axtree approaches over LLMs — and the experiments behind cherrypicked.supply.",
+        preview: "AI experiments behind cherrypicked.supply.",
         details:
-          "Shreyas pushed back on the assumption that every intelligent feature needs a language model. Walking through his work on cherrypicked.supply, he showed how the DOM and accessibility tree (axtree) can power smart, structured behaviour at a fraction of the cost and complexity of an LLM — and often more reliably."
+          "Shreyas who comes from an ML background pushed back on the assumption that every intelligent feature needs a language model. Walking through his work on cherrypicked.supply, he showed how the DOM and accessibility tree (axtree) can power smart, structured behaviour at a fraction of the cost and complexity of an LLM — and often more reliably."
       },
       {
         title: "Experimental Personal Site",
         speaker: "Diya",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/absurdiya_" },
+          { platform: "instagram", url: "https://instagram.com/absurdiya_" },
+          { platform: "website", url: "https://absurdiya.com" }
+        ],
         demoUrl: "",
         photo: "diya.png",
-        preview: "A personal site redesigned as an experience — with music, customization, and a modular AI-assisted interface.",
+        preview: "Diya explored what a personal site could feel like if it was designed as an experience rather than a page.",
         details:
-          "Diya explored what a personal site could feel like if it was designed as an experience rather than a page. The result was a modular, customizable interface with a music layer, shaped with AI assistance. The demo made the case for treating your own corner of the web as a place to experiment with interaction, not just present work."
+          "Diya explored what a personal site could feel like if it was designed as an experience rather than a page. The result was a modular, customizable interface with a music layer, shaped with AI assistance."
       },
       {
-        title: "",
+        title: "Splitfree",
         speaker: "Sakshi",
-        speakerLinks: [],
-        demoUrl: "",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/sakshi_026" },
+          { platform: "instagram", url: "https://instagram.com/sakshi026" },
+          { platform: "website", url: "https://sakshi-gupta.notion.site/Hey-I-m-Sakshi-158cff78f70080f2aba9dba284ba19c3" }
+        ],
+        demoUrl: "https://splitfree-tbc.vercel.app",
         photo: "sakshi.png",
-        preview: "",
-        details: ""
+        preview: "Splitfree lets you track shared expenses, settle debts instantly, stay friends forever.",
+        details: "Splitfree, built as a a free alternative for Splitwise, is designed to make tracking shared expenses and settling debts easier."
       },
       {
-        title: "",
+        title: "Building Blrbloom",
         speaker: "Faris",
-        speakerLinks: [],
-        demoUrl: "",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/pkmfaris" },
+          { platform: "instagram", url: "https://instagram.com/notsofaris" },
+          { platform: "website", url: "" }
+        ],
+        demoUrl: "https://blrbloom.com/",
         photo: "faris.png",
-        preview: "",
-        details: ""
+        preview: "Blrbloom.com lets you track blooming trees around Bangalore.",
+        details: "What started as a way for Faris to learn Claude Code turned into Blrbloom. During the talk, we got to see the behind the scenes of building; the explorations and decisions taken to create the viral product. "
+      },
+      {
+        title: "Pixels, Prompts & Prototypes ",
+        speaker: "Kenneth",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/kenneth" },
+          { platform: "instagram", url: "https://instagram.com/kennethmdesouza" },
+          { platform: "website", url: "https://kenneth.dsouza.im/" }
+        ],
+        demoUrl: "",
+        photo: "kenneth.png",
+        preview: "Showcasing all the tiny games I've been making",
+        details:
+        "Kenneth's AI journey started with making mini games on Spielwerk and has since got him into making single page html games"
       }
     ]
   },
@@ -195,38 +262,52 @@ const events = [
         title: "Skills vs Agents 101",
         speaker: "Kenneth",
         speakerLinks: [
-          { platform: "twitter", url: "https://x.com/kenneth" }
+          { platform: "twitter", url: "https://x.com/kenneth" },
+          { platform: "instagram", url: "https://instagram.com/kennethmdesouza" },
+          { platform: "website", url: "https://kenneth.dsouza.im/" }
         ],
         demoUrl: "",
         photo: "kenneth.jpeg",
         preview: "A quick opening primer on skills, agents, and sub-agents for designers entering the space.",
         details:
-          "Kenneth opened the meetup with a short intro to Design Demo Nights and a Skills vs Agents 101. What seemed like it might be too basic turned out to be useful context, since only a handful of people in the room had used skills or sub-agents before."
+          "Kenneth spoke about his journey making the tiger-parent eval skill and how it helped him understand the differences betweenskills vs agents."
       },
       {
         title: "Disposable Tools for Designers",
-        speaker: "Gyanl",
-        speakerLinks: [],
+        speaker: "Gyan",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/gyanl" },
+          { platform: "instagram", url: "https://instagram.com/gyanl" },
+          { platform: "website", url: "https://gyanl.com/" }
+        ],
         demoUrl: "",
         photo: "gyan.jpeg",
         preview: "Small code-made utilities and richer graphic exploration interfaces built for design work.",
         details:
-          "Gyanl showed a collection of disposable tools, plus a few that felt less disposable than expected. The demos ranged from small color-tool apps written in code to more complex interfaces for graphic exploration."
+          "Gyan showed a collection of disposable tools, plus a few that felt less disposable than expected. The demos ranged from small color-tool apps written in code to more complex interfaces for graphic exploration."
       },
       {
-        title: "Claude Artifacts for RBAC",
+        title: "Prototyping complex role-based access designs",
         speaker: "Veethika",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/veethikaa" },
+          { platform: "instagram", url: "https://instagram.com/veethikaa" },
+          { platform: "website", url: "https://www.linkedin.com/in/veethika/" }
+        ],
         demoUrl: "",
         photo: "veethika.jpeg",
         preview: "Using Claude to make role-based access designs feel real through quick artifact prototypes.",
         details:
-          "Veethika shared the complexity of designing for a role-based access product, where permissions, states, and user roles can get hard to reason about quickly. She showed how Claude helps her make fast artifact prototypes that make the design feel concrete enough to test and discuss."
+          "Veethika shared the complexity of designing for a role-based access product, where permissions, states, and user roles can get hard to reason about quickly and how Claude helps her explore designs faster."
       },
       {
         title: "Agent Memory and Mini Apps",
         speaker: "Shuvam",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/shuvam360" },
+          { platform: "instagram", url: "https://instagram.com/the_distorted_aura" },
+          { platform: "website", url: "https://shuvam.xyz/" }
+        ],
         demoUrl: "",
         photo: "shuvam.jpeg",
         preview: "A speedrun through agent memory experiments, reusable mini-apps, and a battle chess game.",
@@ -236,8 +317,12 @@ const events = [
       {
         title: "Solacy",
         speaker: "Harsh",
-        speakerLinks: [],
-        demoUrl: "",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/harsh_logs" },
+          { platform: "instagram", url: "https://instagram.com/hsrambo.fig" },
+          { platform: "website", url: "https://harsh-work-09.super.site/" }
+        ],
+        demoUrl: "https://www.solacy.design",
         photo: "harsh.jpeg",
         preview: "A Figma agent that acts like a design intern for simple, repetitive design tasks.",
         details:
@@ -246,34 +331,44 @@ const events = [
       {
         title: "Unslop",
         speaker: "Mustafa",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/ghuubear" },
+          { platform: "instagram", url: "https://instagram.com/ghuubear" },
+          { platform: "website", url: "https://snakeoilsalesman.in/" }
+        ],
         demoUrl: "",
         photo: "mustafa.jpeg",
-        preview: "A writer app shaped by a broader journey into making useful things.",
+        preview: "Making Unslop – an AI assisted writer app.",
         details:
-          "Mustafa shared a bit of his journey into making things, then showed Unslop, a writer app with ambitions of being the possibly ultimate writing tool. The demo was less about novelty and more about giving writing software a sharper point of view."
+          "Mustafa shared a bit of his journey into making things, then showed Unslop, a writer app with ambitions of being the possibly ultimate writing tool."
       },
       {
         title: "Cooperatify",
         speaker: "Atishay",
         speakerLinks: [
-          { platform: "website", url: "https://cooperatify.pro" }
+          { platform: "twitter", url: "https://x.com/geekyboiiii" },
+          { platform: "instagram", url: "https://instagram.com/_geekyboiiii_" },
+          { platform: "website", url: "https://atishay.site" }
         ],
         demoUrl: "https://cooperatify.pro",
         photo: "atishay.jpeg",
-        preview: "A bonus walkthrough of how Atishay uses Claude, with Cooperatify in action.",
+        preview: "Cooperatify lets you convert your emotions to professional speak",
         details:
-          "With a little time left, Atishay shared how he uses Claude in his own workflow. The highlight was seeing Cooperatify.pro in action, a tool that felt immediately useful for people thinking through collaboration and product work."
+          "Atishay shared how Cooperatify.pro, a tool that rewrites your words or craft a reply instead of crashing out."
       },
       {
         title: "Pixel Spaceships and Sarvam AI Animations",
         speaker: "Jaljith",
-        speakerLinks: [],
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/jwbabwy" },
+          { platform: "instagram", url: "" },
+          { platform: "website", url: "" }
+        ],
         demoUrl: "",
         photo: "jaljith.jpeg",
-        preview: "A childhood-flavored pixel spaceship game followed by an app for exploring Sarvam AI animations.",
+        preview: "A pixel spaceship game and an app for exploring Sarvam AI animations.",
         details:
-          "Jaljith closed the night by taking the room back to childhood with a pixel spaceship game, then forward again with an app built to explore Sarvam AI animations. It was a fitting end to a night that moved easily between playful prototypes and serious tools."
+          "Jaljith closed the night by taking the room back to childhood with a pixel spaceship game, then forward again with an app built to explore Sarvam AI animations."
       }
     ]
   }
@@ -412,6 +507,9 @@ function renderUpcoming() {
     href: upcoming.applyUrl,
     textContent: "Apply"
   });
+  cta.addEventListener("click", () => {
+    posthog.capture("apply_clicked", { event_id: upcoming.id, event_title: upcoming.title });
+  });
 
   const text = document.createElement("div");
   text.className = "upcoming-card-text";
@@ -461,7 +559,15 @@ function makeDemoCard(demo, event) {
 
   body.append(speaker, title, preview);
   button.append(image, body);
-  button.addEventListener("click", () => openDialog(demo, event));
+  button.addEventListener("click", () => {
+    posthog.capture("demo_card_clicked", {
+      speaker: demo.speaker,
+      demo_title: demo.title,
+      event_id: event.id,
+      event_title: event.title
+    });
+    openDialog(demo, event);
+  });
   return button;
 }
 
@@ -589,12 +695,13 @@ function openDialog(demo, event, { skipHistory = false } = {}) {
   dialogDescription.textContent = demo.details;
   dialogLinks.replaceChildren();
 
-  if (demo.speakerLinks && demo.speakerLinks.length) {
+  const validLinks = demo.speakerLinks.filter(({ url }) => url.trim() !== "");
+  if (validLinks.length) {
     const socials = document.createElement("div");
     socials.className = "speaker-socials";
     socials.setAttribute("role", "group");
     socials.setAttribute("aria-label", `${demo.speaker} on social media`);
-    demo.speakerLinks.forEach(({ platform, url }) => {
+    validLinks.forEach(({ platform, url }) => {
       const a = document.createElement("a");
       a.className = "speaker-social";
       a.href = url;
@@ -605,6 +712,16 @@ function openDialog(demo, event, { skipHistory = false } = {}) {
         `${demo.speaker} on ${PLATFORM_LABELS[platform] || platform}`
       );
       a.innerHTML = SOCIAL_ICONS[platform] || SOCIAL_ICONS.website;
+      a.addEventListener("click", () => {
+        posthog.capture("speaker_link_clicked", {
+          speaker: demo.speaker,
+          platform,
+          url,
+          demo_title: demo.title,
+          event_id: event.id,
+          event_title: event.title
+        });
+      });
       socials.append(a);
     });
     dialogLinks.append(socials);
@@ -617,6 +734,15 @@ function openDialog(demo, event, { skipHistory = false } = {}) {
     cta.target = "_blank";
     cta.rel = "noopener";
     cta.textContent = "View demo";
+    cta.addEventListener("click", () => {
+      posthog.capture("demo_link_clicked", {
+        speaker: demo.speaker,
+        demo_title: demo.title,
+        url: demo.demoUrl,
+        event_id: event.id,
+        event_title: event.title
+      });
+    });
     dialogLinks.append(cta);
   }
 
@@ -692,6 +818,7 @@ function togglePower() {
   if (!crtGlow) return;
 
   const next = state === "on" ? "off" : "on";
+  posthog.capture("monitor_toggled", { action: next === "off" ? "power_off" : "power_on" });
   brandLogo.dataset.power = next === "off" ? "powering-off" : "powering-on";
 
   const finish = () => {
@@ -705,6 +832,6 @@ function togglePower() {
 
 brandButton?.addEventListener("click", togglePower);
 
-// renderUpcoming();
+//renderUpcoming();
 renderArchive();
 syncFromHash();
