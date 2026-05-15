@@ -134,7 +134,7 @@ const events = [
               { platform: "website", url: "https://rasagy.in" }
         ],
         demoUrl: "https://rasagy.in/imitat10n/",
-        photo: "rasagy.png",
+        photo: "rasagy.jpg",
         preview: "An approach to teaching design students about coding — and why it changes how they think.",
         details:
           "Rasagy shared his approach to introducing coding to design students, exploring how programming literacy reshapes the way designers reason about products, systems, and constraints. Less about syntax, more about a new way of seeing."
@@ -148,7 +148,7 @@ const events = [
           { platform: "website", url: "https://www.ramakrushna.xyz/" }
         ],
         demoUrl: "",
-        photo: "ram.png",
+        photo: "ram.jpg",
         preview: "How Razorpay's Blade design system evolved",
         details:
           "Rama Krushna walked through the evolution of Blade, Razorpay's design system, from Figma plugins toward a code-first workflow. The guiding principle: ship functionality first, let the UI follow. The broader takeaway was that there are many valid paths to the same outcome — the right one depends on your team and moment."
@@ -162,7 +162,7 @@ const events = [
           { platform: "website", url: "" }
         ],
         demoUrl: "",
-        photo: "anirudh.png",
+        photo: "anirudh.jpg",
         preview: "How LLMs signal false confidence — illustrated by a model that refused to believe iOS 26 exists.",
         details:
           "Anirudh explored how language models express certainty even when they're wrong, using the concrete example of an LLM that flatly denied iOS 26 existed. The talk offered grounding techniques for designers working with AI tools — ways to stay anchored to reality when the model pushes back on what you know to be true."
@@ -176,7 +176,7 @@ const events = [
           { platform: "website", url: "https://khyatis.com" }
         ],
         demoUrl: "",
-        photo: "khyati.png",
+        photo: "khyati.jpg",
         preview: "An app built to help her mom market local products in Kharagpur through Instagram banners and story posters.",
         details:
           "Khyati built a tool specifically for her mother's small business in Kharagpur, generating Instagram banners and story-sized posters to market products locally."
@@ -190,7 +190,7 @@ const events = [
           { platform: "website", url: "https://shrey.fyi" }
         ],
         demoUrl: "https://cherrypicked.supply",
-        photo: "shrey.png",
+        photo: "shrey.jpg",
         preview: "AI experiments behind cherrypicked.supply.",
         details:
           "Shreyas who comes from an ML background pushed back on the assumption that every intelligent feature needs a language model. Walking through his work on cherrypicked.supply, he showed how the DOM and accessibility tree (axtree) can power smart, structured behaviour at a fraction of the cost and complexity of an LLM — and often more reliably."
@@ -204,7 +204,7 @@ const events = [
           { platform: "website", url: "https://absurdiya.com" }
         ],
         demoUrl: "",
-        photo: "diya.png",
+        photo: "diya.jpg",
         preview: "Diya explored what a personal site could feel like if it was designed as an experience rather than a page.",
         details:
           "Diya explored what a personal site could feel like if it was designed as an experience rather than a page. The result was a modular, customizable interface with a music layer, shaped with AI assistance."
@@ -218,7 +218,7 @@ const events = [
           { platform: "website", url: "https://sakshi-gupta.notion.site/Hey-I-m-Sakshi-158cff78f70080f2aba9dba284ba19c3" }
         ],
         demoUrl: "https://splitfree-tbc.vercel.app",
-        photo: "sakshi.png",
+        photo: "sakshi.jpg",
         preview: "Splitfree lets you track shared expenses, settle debts instantly, stay friends forever.",
         details: "Splitfree, built as a a free alternative for Splitwise, is designed to make tracking shared expenses and settling debts easier."
       },
@@ -231,7 +231,7 @@ const events = [
           { platform: "website", url: "" }
         ],
         demoUrl: "https://blrbloom.com/",
-        photo: "faris.png",
+        photo: "faris.jpg",
         preview: "Blrbloom.com lets you track blooming trees around Bangalore.",
         details: "What started as a way for Faris to learn Claude Code turned into Blrbloom. During the talk, we got to see the behind the scenes of building; the explorations and decisions taken to create the viral product. "
       },
@@ -244,7 +244,7 @@ const events = [
           { platform: "website", url: "https://kenneth.dsouza.im/" }
         ],
         demoUrl: "",
-        photo: "kenneth.png",
+        photo: "kenneth.jpg",
         preview: "Showcasing all the tiny games I've been making",
         details:
         "Kenneth's AI journey started with making mini games on Spielwerk and has since got him into making single page html games"
