@@ -1,6 +1,15 @@
 const LUMA_URL = "https://luma.com/calendar/cal-Lz8YkYPCTUZPX9t";
 const INSTAGRAM_URL = "https://www.instagram.com/DesignDemoNights";
 
+function track(eventName, properties = {}) {
+  try {
+    window.posthog?.capture?.(eventName, properties);
+  } catch {
+    // Analytics should never interrupt the page experience.
+  }
+}
+window.track = track;
+
 const events = [
   {
     id: "4",
@@ -508,7 +517,7 @@ function renderUpcoming() {
     textContent: "Apply"
   });
   cta.addEventListener("click", () => {
-    posthog.capture("apply_clicked", { event_id: upcoming.id, event_title: upcoming.title });
+    track("apply_clicked", { event_id: upcoming.id, event_title: upcoming.title });
   });
 
   const text = document.createElement("div");
@@ -560,7 +569,7 @@ function makeDemoCard(demo, event) {
   body.append(speaker, title, preview);
   button.append(image, body);
   button.addEventListener("click", () => {
-    posthog.capture("demo_card_clicked", {
+    track("demo_card_clicked", {
       speaker: demo.speaker,
       demo_title: demo.title,
       event_id: event.id,
@@ -713,7 +722,7 @@ function openDialog(demo, event, { skipHistory = false } = {}) {
       );
       a.innerHTML = SOCIAL_ICONS[platform] || SOCIAL_ICONS.website;
       a.addEventListener("click", () => {
-        posthog.capture("speaker_link_clicked", {
+        track("speaker_link_clicked", {
           speaker: demo.speaker,
           platform,
           url,
@@ -735,7 +744,7 @@ function openDialog(demo, event, { skipHistory = false } = {}) {
     cta.rel = "noopener";
     cta.textContent = "View demo";
     cta.addEventListener("click", () => {
-      posthog.capture("demo_link_clicked", {
+      track("demo_link_clicked", {
         speaker: demo.speaker,
         demo_title: demo.title,
         url: demo.demoUrl,
@@ -818,7 +827,7 @@ function togglePower() {
   if (!crtGlow) return;
 
   const next = state === "on" ? "off" : "on";
-  posthog.capture("monitor_toggled", { action: next === "off" ? "power_off" : "power_on" });
+  track("monitor_toggled", { action: next === "off" ? "power_off" : "power_on" });
   brandLogo.dataset.power = next === "off" ? "powering-off" : "powering-on";
 
   const finish = () => {
