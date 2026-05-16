@@ -1198,7 +1198,7 @@ img {
   .demo-dialog {
     display: flex;
     flex-direction: column;
-    height: min(720px, 92vh);
+    max-height: min(720px, 92vh);
   }
 
   .dialog-image {
