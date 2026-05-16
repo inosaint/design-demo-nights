@@ -181,7 +181,7 @@ const events = [
         speaker: "Khyati",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/khyati_shekhar" },
-          { platform: "instagram", url: "https://instagram.com/khyati_shekhar" },
+          { platform: "instagram", url: "https://instagram.com/khyati.shekhar" },
           { platform: "website", url: "https://khyatis.com" }
         ],
         demoUrl: "",
