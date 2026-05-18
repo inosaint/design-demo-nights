@@ -65,9 +65,9 @@ const events = [
         ],
         demoUrl: "",
         photo: "rhiddhit.jpeg",
-        preview: "A music production app with a beautifully skeuomorphic interface shaped with Codex.",
+        preview: "A music production app with a beautifully skeuomorphic interface shaped with Codex and Claude Code.",
         details:
-          "Rhiddit showed an app for people who want to get into music production without being buried under the usual wall of controls. Codex helped produce a polished skeuomorphic interface, giving the tool a tactile, studio-like quality."
+          "Rhiddhit showed an app for people who want to get into analysing music and songs without being buried under the usual wall of controls. A combination of Claude Code and ChatGPT helped produce a polished skeuomorphic interface, giving the tool a tactile, studio-like quality."
       },
       {
         title: "Sketch as an AI Canvas",
