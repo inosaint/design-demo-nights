@@ -818,6 +818,36 @@ window.addEventListener("hashchange", syncFromHash);
 const brandButton = document.querySelector(".brand");
 const brandLogo = brandButton?.querySelector(".brand-logo");
 
+/* ─── CRT buzz sound ─────────────────────────────────────── */
+function playBzzt(type = "on") {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const bufLen = ctx.sampleRate * 0.18;
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = type === "on" ? 1800 : 900;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.16);
+
+    src.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+    src.stop(ctx.currentTime + 0.18);
+    src.onended = () => ctx.close();
+  } catch (_) {}
+}
+
 function togglePower() {
   if (!brandLogo) return;
   const state = brandLogo.dataset.power || "on";
@@ -829,6 +859,7 @@ function togglePower() {
   const next = state === "on" ? "off" : "on";
   track("monitor_toggled", { action: next === "off" ? "power_off" : "power_on" });
   brandLogo.dataset.power = next === "off" ? "powering-off" : "powering-on";
+  playBzzt(next);
 
   const finish = () => {
     crtGlow.removeEventListener("animationend", finish);
@@ -844,3 +875,333 @@ brandButton?.addEventListener("click", togglePower);
 //renderUpcoming();
 renderArchive();
 syncFromHash();
+
+/* ─── Retro OS Easter Egg ────────────────────────────────── */
+
+const ros = {
+  el: document.getElementById("retro-os"),
+  boot: document.getElementById("ros-boot"),
+  desktop: document.getElementById("ros-desktop"),
+  iconGrid: document.getElementById("ros-icon-grid"),
+  windowsEl: document.getElementById("ros-windows"),
+  led: document.getElementById("ros-led"),
+  zTop: 100,
+  clockTimer: null,
+  prevFocus: null,
+};
+
+/* Key sequence: type D-D-N anywhere on the page */
+const ROS_KEYS = ["d", "d", "n"];
+let rosBuf = [];
+let rosBufTimer;
+
+document.addEventListener("keydown", (e) => {
+  if (ros.el && !ros.el.hidden) return;
+  if (e.target.matches("input,textarea,[contenteditable]")) return;
+  const k = e.key.toLowerCase();
+  if (k === ROS_KEYS[rosBuf.length]) {
+    rosBuf.push(k);
+  } else {
+    rosBuf = k === ROS_KEYS[0] ? [k] : [];
+  }
+  clearTimeout(rosBufTimer);
+  rosBufTimer = setTimeout(() => { rosBuf = []; }, 2000);
+  if (rosBuf.length === ROS_KEYS.length) {
+    rosBuf = [];
+    triggerGlitchAndLaunch();
+  }
+});
+
+function triggerGlitchAndLaunch() {
+  if (window.innerWidth <= 768) return;
+  document.documentElement.classList.add("page-glitching");
+  setTimeout(() => {
+    document.documentElement.classList.remove("page-glitching");
+    launchRetroOS();
+  }, 600);
+}
+
+function launchRetroOS() {
+  if (!ros.el) return;
+  ros.prevFocus = document.activeElement;
+  ros.el.hidden = false;
+  ros.boot.hidden = false;
+  ros.desktop.hidden = true;
+  if (ros.led) ros.led.classList.add("is-on");
+  document.body.style.overflow = "hidden";
+  playBzzt("on");
+  document.getElementById("ros-start")?.focus();
+  track("retro_os_opened", {});
+}
+
+function showDesktop() {
+  ros.boot.hidden = true;
+  ros.desktop.hidden = false;
+  renderDesktopIcons();
+  updateClock();
+  track("retro_desktop_shown", {});
+}
+
+function closeRetroOS() {
+  if (!ros.el) return;
+  ros.el.hidden = true;
+  if (ros.led) ros.led.classList.remove("is-on");
+  document.body.style.overflow = "";
+  clearTimeout(ros.clockTimer);
+  playBzzt("off");
+  ros.prevFocus?.focus();
+  track("retro_os_closed", {});
+}
+
+function updateClock() {
+  const el = document.getElementById("ros-clock");
+  if (!el) return;
+  const now = new Date();
+  el.textContent = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+  ros.clockTimer = setTimeout(updateClock, 10000);
+}
+
+/* ─── Desktop icons ─── */
+
+function renderDesktopIcons() {
+  if (!ros.iconGrid) return;
+  ros.iconGrid.innerHTML = "";
+  const past = events.filter((ev) => !isUpcoming(ev) && ev.demos.length > 0).sort(byMostRecent);
+  past.forEach((ev, i) => {
+    const btn = makeDesktopIcon(ev, i);
+    ros.iconGrid.appendChild(btn);
+  });
+}
+
+function makeDesktopIcon(ev, index) {
+  const btn = document.createElement("button");
+  btn.className = "ros-icon";
+  btn.type = "button";
+  btn.style.setProperty("--folder-color", ev.themeColor);
+  btn.style.animationDelay = `${index * 80}ms`;
+  const num = editionNumber(ev);
+  const label = `EDITION\n${String(num).padStart(2, "0")}`;
+  btn.innerHTML = `<span class="ros-icon-img" aria-hidden="true"></span><span class="ros-icon-label">${label.replace("\n", "<br>")}</span>`;
+  btn.setAttribute("aria-label", `Open ${ev.title}`);
+  let clickTimer;
+  btn.addEventListener("click", () => {
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => { /* single click: select visual */ }, 200);
+  });
+  btn.addEventListener("dblclick", () => {
+    clearTimeout(clickTimer);
+    openFolderWindow(ev);
+  });
+  return btn;
+}
+
+/* ─── Window factory ─── */
+
+function makeWindow({ id, title, content }) {
+  const existing = document.getElementById("ros-win-" + id);
+  if (existing) { bringToFront(existing); return; }
+  if (!ros.windowsEl) return;
+
+  const offset = Math.min(ros.windowsEl.children.length * 20, 80);
+  const win = document.createElement("div");
+  win.id = "ros-win-" + id;
+  win.className = "ros-win";
+  win.style.cssText = `left: ${80 + offset}px; top: ${40 + offset}px; z-index: ${++ros.zTop}`;
+
+  const titlebar = document.createElement("div");
+  titlebar.className = "ros-win-titlebar";
+
+  const titleSpan = document.createElement("span");
+  titleSpan.textContent = title;
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "ros-win-close";
+  closeBtn.type = "button";
+  closeBtn.setAttribute("aria-label", "Close window");
+  closeBtn.textContent = "×";
+  closeBtn.addEventListener("click", () => win.remove());
+
+  titlebar.append(titleSpan, closeBtn);
+
+  const body = document.createElement("div");
+  body.className = "ros-win-body";
+  if (typeof content === "string") {
+    body.innerHTML = content;
+  } else {
+    body.appendChild(content);
+  }
+
+  win.append(titlebar, body);
+  win.addEventListener("pointerdown", () => bringToFront(win));
+  initDrag(win);
+  ros.windowsEl.appendChild(win);
+}
+
+function bringToFront(win) {
+  win.style.zIndex = ++ros.zTop;
+}
+
+function initDrag(win) {
+  const bar = win.querySelector(".ros-win-titlebar");
+  bar.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".ros-win-close")) return;
+    const startX = e.clientX - win.offsetLeft;
+    const startY = e.clientY - win.offsetTop;
+
+    const container = ros.windowsEl;
+    const maxX = container.offsetWidth - win.offsetWidth;
+    const maxY = container.offsetHeight - win.offsetHeight;
+
+    const onMove = (ev) => {
+      win.style.left = Math.max(0, Math.min(ev.clientX - startX, maxX)) + "px";
+      win.style.top  = Math.max(0, Math.min(ev.clientY - startY, maxY)) + "px";
+    };
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerup", () =>
+      document.removeEventListener("pointermove", onMove), { once: true });
+  });
+}
+
+/* ─── Folder window ─── */
+
+function openFolderWindow(ev) {
+  const num = editionNumber(ev);
+  const title = `EDITION_${String(num).padStart(2, "0")}`;
+  makeWindow({ id: "folder-" + ev.id, title, content: makeFolderContent(ev) });
+  track("retro_folder_opened", { edition: ev.id });
+}
+
+function makeFolderContent(ev) {
+  const grid = document.createElement("div");
+  grid.className = "ros-file-grid";
+
+  /* README.MD for the edition */
+  const readme = makeFileIcon({ label: "README.MD", type: "doc" });
+  readme.addEventListener("dblclick", () => openReadmeWindow(ev));
+  grid.appendChild(readme);
+
+  /* One file per demo */
+  ev.demos.forEach((demo) => {
+    const name = slugify(demo.title).toUpperCase().replace(/-/g, "_") + ".TXT";
+    const icon = makeFileIcon({ label: name, type: "photo", photo: demo.photo, eventId: ev.id });
+    icon.addEventListener("dblclick", () => openDemoWindow(demo, ev));
+    grid.appendChild(icon);
+  });
+
+  return grid;
+}
+
+function makeFileIcon({ label, type, photo, eventId }) {
+  const btn = document.createElement("button");
+  btn.className = "ros-file";
+  btn.type = "button";
+  btn.setAttribute("aria-label", label);
+
+  const icon = document.createElement("span");
+  icon.className = type === "photo" ? "ros-file-icon ros-file-icon--photo" : "ros-file-icon";
+
+  if (type === "photo" && photo && eventId) {
+    const img = document.createElement("img");
+    img.src = `assets/events/${eventId}/photos/${photo}`;
+    img.alt = "";
+    img.loading = "lazy";
+    icon.appendChild(img);
+  }
+
+  const nameEl = document.createElement("span");
+  nameEl.textContent = label;
+
+  btn.append(icon, nameEl);
+  return btn;
+}
+
+/* ─── Demo window ─── */
+
+function openDemoWindow(demo, ev) {
+  const id = "demo-" + slugify(demo.title);
+  const title = slugify(demo.title).toUpperCase().replace(/-/g, "_") + ".TXT";
+  makeWindow({ id, title, content: makeDemoContent(demo, ev) });
+  track("retro_demo_viewed", { demo: demo.title, edition: ev.id });
+}
+
+function makeDemoContent(demo, ev) {
+  const wrap = document.createElement("div");
+
+  if (demo.photo) {
+    const img = document.createElement("img");
+    img.className = "ros-demo-photo";
+    img.src = `assets/events/${ev.id}/photos/${demo.photo}`;
+    img.alt = demo.speaker;
+    wrap.appendChild(img);
+  }
+
+  const kicker = document.createElement("p");
+  kicker.className = "ros-demo-kicker";
+  kicker.textContent = `${demo.speaker} / ${ev.title}`;
+
+  const titleEl = document.createElement("p");
+  titleEl.className = "ros-demo-title";
+  titleEl.textContent = demo.title;
+
+  const hr = document.createElement("hr");
+  hr.style.cssText = "border:none;border-top:1px solid #3a2060;margin:8px 0 10px";
+
+  const body = document.createElement("p");
+  body.className = "ros-demo-body";
+  body.textContent = demo.details;
+
+  wrap.append(kicker, titleEl, hr, body);
+
+  const validLinks = (demo.speakerLinks || []).filter(({ url }) => url.trim());
+  if (validLinks.length || demo.demoUrl) {
+    const links = document.createElement("div");
+    links.className = "ros-demo-links";
+    validLinks.forEach(({ platform, url }) => {
+      const a = document.createElement("a");
+      a.className = "ros-demo-link";
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = (PLATFORM_LABELS[platform] || platform).toUpperCase();
+      a.addEventListener("click", () => track("retro_link_clicked", { platform, demo: demo.title }));
+      links.appendChild(a);
+    });
+    if (demo.demoUrl) {
+      const cta = document.createElement("a");
+      cta.className = "ros-demo-link ros-demo-link--cta";
+      cta.href = demo.demoUrl;
+      cta.target = "_blank";
+      cta.rel = "noopener";
+      cta.textContent = "VIEW DEMO";
+      cta.addEventListener("click", () => track("retro_demo_link_clicked", { demo: demo.title }));
+      links.appendChild(cta);
+    }
+    wrap.appendChild(links);
+  }
+
+  return wrap;
+}
+
+/* ─── README window ─── */
+
+function openReadmeWindow(ev) {
+  const id = "readme-" + ev.id;
+  const num = editionNumber(ev);
+  const title = `EDITION_${String(num).padStart(2, "0")}_README.MD`;
+  const content = `<div class="ros-readme"><strong>${ev.title}</strong>\n\n` +
+    `Date: ${formatDate(ev.startsAt)}\n` +
+    `Location: ${ev.location}\n` +
+    `Demos: ${ev.demos.length}\n\n` +
+    ev.demos.map((d, i) => `${i + 1}. ${d.title} — ${d.speaker}`).join("\n") +
+    `</div>`;
+  makeWindow({ id, title, content });
+}
+
+/* ─── Event wiring ─── */
+
+document.getElementById("ros-start")?.addEventListener("click", showDesktop);
+document.getElementById("ros-power")?.addEventListener("click", closeRetroOS);
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && ros.el && !ros.el.hidden) closeRetroOS();
+});
