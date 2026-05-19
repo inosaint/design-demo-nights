@@ -170,7 +170,7 @@ const events = [
           { platform: "instagram", url: "https://instagram.com/anirudhshrinivas" },
           { platform: "website", url: "" }
         ],
-        demoUrl: "",
+        demoUrl: "https://pitch.com/v/confidentlai-cff5by",
         photo: "anirudh.jpg",
         preview: "How LLMs signal false confidence — illustrated by a model that refused to believe iOS 26 exists.",
         details:
