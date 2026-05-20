@@ -965,6 +965,18 @@ const ros = {
   prevFocus: null,
 };
 
+/* Single capture-phase wheel listener on the overlay — outside the 3D
+   transform context, so the macOS compositor can't absorb it first. */
+ros.el?.addEventListener("wheel", (e) => {
+  const winEl = e.target.closest?.(".ros-win");
+  if (!winEl) return;
+  const bodyEl = winEl.querySelector(".ros-win-body");
+  if (bodyEl) {
+    bodyEl.scrollTop += e.deltaY;
+    e.preventDefault();
+  }
+}, { passive: false, capture: true });
+
 /* Key sequence: type D-D-N anywhere on the page */
 const ROS_KEYS = ["d", "d", "n"];
 let rosBuf = [];
@@ -1222,12 +1234,6 @@ function makeWindow({ id, title, content, large = false }) {
   contentRow.className = "ros-win-content";
   contentRow.append(body, sbTrack);
 
-  /* Wheel anywhere on the window scrolls the body */
-  win.addEventListener("wheel", (e) => {
-    body.scrollTop += e.deltaY;
-    e.preventDefault();
-    e.stopPropagation();
-  }, { passive: false });
 
   ["nw", "sw", "se"].forEach((dir) => {
     const handle = document.createElement("div");
@@ -1347,7 +1353,12 @@ function initGridKeyNav(grid) {
   grid.addEventListener("keydown", (e) => {
     const all = items();
     const idx = all.indexOf(document.activeElement);
-    if (idx === -1) return;
+    const isArrow = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key);
+
+    if (idx === -1) {
+      if (isArrow) { e.preventDefault(); all[0]?.focus(); }
+      return;
+    }
 
     const cols = Math.round(grid.offsetWidth / all[0].offsetWidth) || 1;
     const map = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols };
