@@ -1400,11 +1400,6 @@ html.page-glitching {
   width: var(--mon-w);
   height: var(--mon-h);
   transform-style: preserve-3d;
-  transform: rotateY(-15deg) rotateX(5deg);
-  transition: transform 0.5s ease-out;
-}
-
-.ros-scene:hover .ros-computer {
   transform: rotateY(-5deg) rotateX(2deg);
 }
 
