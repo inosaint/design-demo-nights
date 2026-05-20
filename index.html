@@ -153,6 +153,106 @@
       </article>
     </div>
 
+    <!-- ─── Retro OS Easter Egg ─── -->
+    <div id="retro-os" class="ros" role="dialog" aria-modal="true"
+         aria-label="Design Demo Nights Archive OS">
+      <div class="ros-scene">
+
+        <!-- 3D monitor unit -->
+        <div class="ros-computer">
+
+          <!-- FRONT FACE -->
+          <div class="ros-face ros-face--front">
+
+            <!-- CRT screen inset -->
+            <div class="ros-screen-inset">
+              <div class="ros-crt" id="ros-crt">
+                <div class="ros-crt-inner">
+
+                  <!-- Boot screen -->
+                  <div class="ros-boot" id="ros-boot">
+                    <div class="ros-boot-inner">
+                      <p class="ros-boot-logo">█▓▒░ DDN OS ░▒▓█</p>
+                      <p class="ros-boot-title">DESIGN DEMO NIGHTS</p>
+                      <p class="ros-boot-sub">Version 1.0 ● Bengaluru</p>
+                      <p class="ros-start" id="ros-start">▶ PRESS ANY KEY TO BEGIN</p>
+                    </div>
+                  </div>
+
+                  <!-- Desktop (shown after boot) -->
+                  <div class="ros-desktop" id="ros-desktop" hidden>
+                    <div class="ros-icon-grid" id="ros-icon-grid"></div>
+                    <div class="ros-windows" id="ros-windows"></div>
+                    <div class="ros-taskbar">
+                      <span class="ros-taskbar-brand">DDN OS</span>
+                      <div class="ros-taskbar-apps" id="ros-taskbar-apps"></div>
+                      <span class="ros-taskbar-clock" id="ros-clock"></span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Physical controls: floppy left, power button far right -->
+            <div class="ros-front-controls">
+              <div class="ros-floppy"></div>
+              <button class="ros-power-btn" id="ros-power" type="button" aria-label="Power off">⏻</button>
+            </div>
+
+            <!-- Rainbow apple badge -->
+            <div class="ros-badge"></div>
+
+            <!-- Stickers -->
+            <div class="ros-sticker ros-sticker--star"></div>
+            <div class="ros-sticker ros-sticker--city">Bengaluru</div>
+
+            <!-- Ventilation grill -->
+            <div class="ros-grill">
+              <div class="ros-vent"></div><div class="ros-vent"></div>
+              <div class="ros-vent"></div><div class="ros-vent"></div>
+              <div class="ros-vent"></div><div class="ros-vent"></div>
+              <div class="ros-vent"></div><div class="ros-vent"></div>
+            </div>
+
+          </div><!-- /front -->
+
+          <div class="ros-face ros-face--back"></div>
+          <div class="ros-face ros-face--left"></div>
+          <div class="ros-face ros-face--right"></div>
+          <div class="ros-face ros-face--top"></div>
+          <div class="ros-face ros-face--bottom"></div>
+
+          <!-- 3D angled keyboard -->
+          <div class="ros-keyboard">
+            <div class="ros-kb-base">
+              <div class="ros-keys-grid">
+                <!-- Row 1: 12 regular keys -->
+                <div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div>
+                <div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div>
+                <div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div>
+                <!-- Row 2: wide(2) + 8 regular + wide(2) = 12 cols -->
+                <div class="ros-key ros-key--wide"></div>
+                <div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div>
+                <div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div>
+                <div class="ros-key ros-key--wide"></div>
+                <!-- Row 3: 1 + 1 + spacebar(6) + 1 + 1 + 1 = 12 cols -->
+                <div class="ros-key"></div><div class="ros-key"></div>
+                <div class="ros-key ros-key--space"></div>
+                <div class="ros-key"></div><div class="ros-key"></div><div class="ros-key"></div>
+              </div>
+            </div>
+            <div class="ros-kb-front"></div>
+            <div class="ros-kb-back"></div>
+            <div class="ros-kb-left"></div>
+            <div class="ros-kb-right"></div>
+            <div class="ros-kb-shadow"></div>
+          </div>
+
+        </div><!-- /ros-computer -->
+      </div><!-- /ros-scene -->
+    </div>
+
     <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
     <script src="script.js"></script>
   </body>
