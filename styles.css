@@ -1943,9 +1943,9 @@ html.page-glitching {
   position: absolute;
   min-width: 200px;
   max-width: 92%;
-  max-height: 80%;
-  display: flex;
-  flex-direction: column;
+  max-height: 90%;
+  display: grid;
+  grid-template-rows: auto 1fr;
   background: #10102a;
   border: 2px solid #6a40c0;
   box-shadow: 3px 3px 0 #2a1060, inset 1px 1px 0 rgba(144,96,240,0.3);
@@ -2006,14 +2006,13 @@ html.page-glitching {
 
 .ros-win-body {
   overflow-y: scroll;
-  flex: 1;
   min-height: 0;
   padding: 8px;
   font-family: var(--crt-mono);
   font-size: 11px;
   color: #c8b8f0;
   scrollbar-width: thin;
-  scrollbar-color: #6a40c0 #10102a;
+  scrollbar-color: #8860e0 #1e1040;
 }
 
 .ros-win-body::-webkit-scrollbar {
@@ -2021,11 +2020,11 @@ html.page-glitching {
 }
 
 .ros-win-body::-webkit-scrollbar-track {
-  background: #10102a;
+  background: #1e1040;
 }
 
 .ros-win-body::-webkit-scrollbar-thumb {
-  background: #6a40c0;
+  background: #8860e0;
   border-radius: 2px;
 }
 
