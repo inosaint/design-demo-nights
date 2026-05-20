@@ -2007,6 +2007,7 @@ html.page-glitching {
 .ros-win-body {
   overflow-y: scroll;
   overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   min-height: 0;
   padding: 8px;
   font-family: var(--crt-mono);
@@ -2016,21 +2017,27 @@ html.page-glitching {
   scrollbar-color: #8860e0 #1e1040;
 }
 
-.ros-win-body::-webkit-scrollbar {
+/* Force consistent purple scrollbar on ALL scrollable elements inside the overlay */
+.ros *::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
-.ros-win-body::-webkit-scrollbar-track {
+.ros *::-webkit-scrollbar-track {
   background: #1e1040;
 }
 
-.ros-win-body::-webkit-scrollbar-thumb {
+.ros *::-webkit-scrollbar-thumb {
   background: #8860e0;
   border-radius: 2px;
 }
 
-.ros-win-body::-webkit-scrollbar-thumb:hover {
+.ros *::-webkit-scrollbar-thumb:hover {
   background: #b557df;
+}
+
+.ros *::-webkit-scrollbar-corner {
+  background: #1e1040;
 }
 
 /* Corner resize handles */
