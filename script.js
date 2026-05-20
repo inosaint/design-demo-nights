@@ -1028,31 +1028,55 @@ function makeDesktopIcon(ev, index) {
 
 /* ─── Window factory ─── */
 
-function makeWindow({ id, title, content }) {
+function makeWindow({ id, title, content, large = false }) {
   const existing = document.getElementById("ros-win-" + id);
   if (existing) { bringToFront(existing); return; }
   if (!ros.windowsEl) return;
 
-  const offset = Math.min(ros.windowsEl.children.length * 20, 80);
+  const offset = Math.min(ros.windowsEl.children.length * 20, 60);
   const win = document.createElement("div");
   win.id = "ros-win-" + id;
   win.className = "ros-win";
-  win.style.cssText = `left: ${80 + offset}px; top: ${40 + offset}px; z-index: ${++ros.zTop}`;
+  if (large) {
+    win.style.cssText = `width: 70%; height: 68%; left: calc(15% + ${offset}px); top: calc(6% + ${offset}px); z-index: ${++ros.zTop}`;
+  } else {
+    win.style.cssText = `left: ${60 + offset}px; top: ${30 + offset}px; z-index: ${++ros.zTop}`;
+  }
 
   const titlebar = document.createElement("div");
   titlebar.className = "ros-win-titlebar";
 
+  /* Traffic-light buttons */
+  const btnGroup = document.createElement("div");
+  btnGroup.className = "ros-win-btns";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "ros-win-btn ros-win-btn--close";
+  closeBtn.type = "button";
+  closeBtn.setAttribute("aria-label", "Close");
+  closeBtn.addEventListener("click", () => win.remove());
+
+  const minBtn = document.createElement("button");
+  minBtn.className = "ros-win-btn ros-win-btn--min";
+  minBtn.type = "button";
+  minBtn.setAttribute("aria-label", "Minimize");
+  minBtn.addEventListener("click", () => win.classList.toggle("is-minimized"));
+
+  const maxBtn = document.createElement("button");
+  maxBtn.className = "ros-win-btn ros-win-btn--max";
+  maxBtn.type = "button";
+  maxBtn.setAttribute("aria-label", "Maximize");
+  maxBtn.addEventListener("click", () => {
+    win.classList.toggle("is-maximized");
+    win.classList.remove("is-minimized");
+  });
+
+  btnGroup.append(closeBtn, minBtn, maxBtn);
+
   const titleSpan = document.createElement("span");
   titleSpan.textContent = title;
 
-  const closeBtn = document.createElement("button");
-  closeBtn.className = "ros-win-close";
-  closeBtn.type = "button";
-  closeBtn.setAttribute("aria-label", "Close window");
-  closeBtn.textContent = "×";
-  closeBtn.addEventListener("click", () => win.remove());
-
-  titlebar.append(titleSpan, closeBtn);
+  titlebar.append(btnGroup, titleSpan);
 
   const body = document.createElement("div");
   body.className = "ros-win-body";
@@ -1075,7 +1099,8 @@ function bringToFront(win) {
 function initDrag(win) {
   const bar = win.querySelector(".ros-win-titlebar");
   bar.addEventListener("pointerdown", (e) => {
-    if (e.target.closest(".ros-win-close")) return;
+    if (e.target.closest(".ros-win-btns")) return;
+    if (win.classList.contains("is-maximized")) return;
     const startX = e.clientX - win.offsetLeft;
     const startY = e.clientY - win.offsetTop;
 
@@ -1098,7 +1123,7 @@ function initDrag(win) {
 function openFolderWindow(ev) {
   const num = editionNumber(ev);
   const title = `EDITION_${String(num).padStart(2, "0")}`;
-  makeWindow({ id: "folder-" + ev.id, title, content: makeFolderContent(ev) });
+  makeWindow({ id: "folder-" + ev.id, title, content: makeFolderContent(ev), large: true });
   track("retro_folder_opened", { edition: ev.id });
 }
 
