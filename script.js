@@ -1073,7 +1073,11 @@ function renderDesktopIcons() {
     const btn = makeDesktopIcon(ev, i);
     ros.iconGrid.appendChild(btn);
   });
-  initGridKeyNav(ros.iconGrid);
+  /* Use the desktop element as the keydown target so any arrow key
+     pressed while focus is anywhere on the desktop triggers nav */
+  initGridKeyNav(ros.iconGrid, ros.desktop);
+  /* Auto-focus first icon so arrow keys work immediately */
+  requestAnimationFrame(() => ros.iconGrid.querySelector(".ros-icon")?.focus());
 }
 
 function makeDesktopIcon(ev, index) {
@@ -1350,10 +1354,10 @@ function makeFolderContent(ev) {
   return grid;
 }
 
-function initGridKeyNav(grid) {
+function initGridKeyNav(grid, listenerEl = grid) {
   const items = () => [...grid.querySelectorAll(".ros-file, .ros-icon")];
 
-  grid.addEventListener("keydown", (e) => {
+  listenerEl.addEventListener("keydown", (e) => {
     const all = items();
     const idx = all.indexOf(document.activeElement);
     const isArrow = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key);
@@ -1377,11 +1381,11 @@ function initGridKeyNav(grid) {
     all[next].scrollIntoView({ block: "nearest" });
   });
 
-  /* Focus first icon when the grid first receives focus from outside */
-  grid.addEventListener("focusin", (e) => {
-    if (e.target === grid) items()[0]?.focus();
+  /* Focus first icon when the listener element receives focus from outside */
+  listenerEl.addEventListener("focusin", (e) => {
+    if (e.target === listenerEl) items()[0]?.focus();
   });
-  grid.setAttribute("tabindex", "0");
+  listenerEl.setAttribute("tabindex", "0");
 }
 
 function makeFileIcon({ label, type, photo, eventId }) {
