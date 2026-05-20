@@ -2009,12 +2009,30 @@ html.page-glitching {
 .ros-win-body {
   overflow-y: auto;
   flex: 1;
+  min-height: 0;
   padding: 8px;
   font-family: var(--crt-mono);
   font-size: 11px;
   color: #c8b8f0;
   scrollbar-width: thin;
-  scrollbar-color: #4a2880 #10102a;
+  scrollbar-color: #6a40c0 #10102a;
+}
+
+.ros-win-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ros-win-body::-webkit-scrollbar-track {
+  background: #10102a;
+}
+
+.ros-win-body::-webkit-scrollbar-thumb {
+  background: #6a40c0;
+  border-radius: 2px;
+}
+
+.ros-win-body::-webkit-scrollbar-thumb:hover {
+  background: #b557df;
 }
 
 /* ─── Folder window contents ─── */
