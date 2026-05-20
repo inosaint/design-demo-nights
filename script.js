@@ -818,50 +818,97 @@ window.addEventListener("hashchange", syncFromHash);
 const brandButton = document.querySelector(".brand");
 const brandLogo = brandButton?.querySelector(".brand-logo");
 
-/* ─── CRT buzz sound ─────────────────────────────────────── */
+/* ─── CRT power sound ────────────────────────────────────── */
 function playBzzt(type = "on") {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const t = ctx.currentTime;
-    const dur = 0.22;
 
-    const osc1 = ctx.createOscillator();
-    osc1.type = "sawtooth";
-    osc1.frequency.value = type === "on" ? 120 : 60;
+    if (type === "off") {
+      /* TV turn-off: initial click → descending whine (flyback transformer
+         winding down) → low thump (capacitor discharge) */
 
-    const osc2 = ctx.createOscillator();
-    osc2.type = "square";
-    osc2.frequency.value = type === "on" ? 240 : 90;
+      // 1. Sharp click at the moment of power cut
+      const clickLen = Math.floor(ctx.sampleRate * 0.018);
+      const clickBuf = ctx.createBuffer(1, clickLen, ctx.sampleRate);
+      const cd = clickBuf.getChannelData(0);
+      for (let i = 0; i < clickLen; i++) cd[i] = (Math.random() * 2 - 1) * (1 - i / clickLen);
+      const click = ctx.createBufferSource();
+      click.buffer = clickBuf;
+      const clickG = ctx.createGain();
+      clickG.gain.setValueAtTime(0.9, t);
+      click.connect(clickG); clickG.connect(ctx.destination);
+      click.start(t);
 
-    const bufLen = Math.floor(ctx.sampleRate * dur);
-    const noiseBuf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
-    const data = noiseBuf.getChannelData(0);
-    for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
-    const noiseSrc = ctx.createBufferSource();
-    noiseSrc.buffer = noiseBuf;
+      // 2. Descending sine sweep — 2 kHz → 30 Hz over 650 ms
+      const whine = ctx.createOscillator();
+      whine.type = "sine";
+      whine.frequency.setValueAtTime(2000, t + 0.018);
+      whine.frequency.exponentialRampToValueAtTime(30, t + 0.65);
+      const whineG = ctx.createGain();
+      // Multi-amplitude: quick rise to peak, slight sustain, then tail off
+      whineG.gain.setValueAtTime(0, t + 0.018);
+      whineG.gain.linearRampToValueAtTime(0.55, t + 0.07);
+      whineG.gain.linearRampToValueAtTime(0.38, t + 0.22);
+      whineG.gain.exponentialRampToValueAtTime(0.001, t + 0.68);
+      whine.connect(whineG); whineG.connect(ctx.destination);
+      whine.start(t + 0.018); whine.stop(t + 0.68);
 
-    const bpf = ctx.createBiquadFilter();
-    bpf.type = "bandpass";
-    bpf.frequency.value = type === "on" ? 200 : 100;
-    bpf.Q.value = 3;
+      // 3. Second harmonic layer — adds richness to the sweep
+      const whine2 = ctx.createOscillator();
+      whine2.type = "sawtooth";
+      whine2.frequency.setValueAtTime(3800, t + 0.018);
+      whine2.frequency.exponentialRampToValueAtTime(55, t + 0.42);
+      const whine2G = ctx.createGain();
+      whine2G.gain.setValueAtTime(0, t + 0.018);
+      whine2G.gain.linearRampToValueAtTime(0.18, t + 0.055);
+      whine2G.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+      whine2.connect(whine2G); whine2G.connect(ctx.destination);
+      whine2.start(t + 0.018); whine2.stop(t + 0.42);
 
-    const g1 = ctx.createGain();
-    g1.gain.setValueAtTime(0, t);
-    g1.gain.linearRampToValueAtTime(0.25, t + 0.008);
-    g1.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      // 4. Low-frequency thump — capacitor discharge
+      const thump = ctx.createOscillator();
+      thump.type = "sine";
+      thump.frequency.setValueAtTime(85, t + 0.28);
+      thump.frequency.exponentialRampToValueAtTime(18, t + 0.72);
+      const thumpG = ctx.createGain();
+      thumpG.gain.setValueAtTime(0, t + 0.28);
+      thumpG.gain.linearRampToValueAtTime(0.75, t + 0.33);
+      thumpG.gain.exponentialRampToValueAtTime(0.001, t + 0.72);
+      thump.connect(thumpG); thumpG.connect(ctx.destination);
+      thump.start(t + 0.28); thump.stop(t + 0.72);
 
-    const g2 = ctx.createGain();
-    g2.gain.setValueAtTime(0, t);
-    g2.gain.linearRampToValueAtTime(0.15, t + 0.008);
-    g2.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      whine.onended = () => ctx.close();
 
-    osc1.connect(g1); osc2.connect(g1); g1.connect(ctx.destination);
-    noiseSrc.connect(bpf); bpf.connect(g2); g2.connect(ctx.destination);
+    } else {
+      /* TV turn-on: low thump → ascending electrical hum building up */
+      const dur = 0.32;
 
-    osc1.start(t); osc1.stop(t + dur);
-    osc2.start(t); osc2.stop(t + dur);
-    noiseSrc.start(t); noiseSrc.stop(t + dur);
-    osc1.onended = () => ctx.close();
+      // Initial thump as power surges in
+      const pop = ctx.createOscillator();
+      pop.type = "sine";
+      pop.frequency.setValueAtTime(140, t);
+      pop.frequency.exponentialRampToValueAtTime(35, t + 0.18);
+      const popG = ctx.createGain();
+      popG.gain.setValueAtTime(0.65, t);
+      popG.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+      pop.connect(popG); popG.connect(ctx.destination);
+      pop.start(t); pop.stop(t + 0.18);
+
+      // Ascending sawtooth sweep — circuits energising
+      const rise = ctx.createOscillator();
+      rise.type = "sawtooth";
+      rise.frequency.setValueAtTime(55, t + 0.02);
+      rise.frequency.exponentialRampToValueAtTime(900, t + dur);
+      const riseG = ctx.createGain();
+      riseG.gain.setValueAtTime(0, t + 0.02);
+      riseG.gain.linearRampToValueAtTime(0.28, t + 0.06);
+      riseG.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      rise.connect(riseG); riseG.connect(ctx.destination);
+      rise.start(t + 0.02); rise.stop(t + dur);
+
+      rise.onended = () => ctx.close();
+    }
   } catch (_) {}
 }
 
