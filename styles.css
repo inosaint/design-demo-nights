@@ -2079,10 +2079,16 @@ html.page-glitching {
   word-break: break-all;
 }
 
-.ros-file:hover,
-.ros-file:focus-visible {
+.ros-file:hover {
   background: rgba(181, 87, 223, 0.2);
   outline: 1px dashed #9060d0;
+}
+
+.ros-file:focus-visible,
+.ros-file:focus {
+  background: rgba(136, 96, 224, 0.35);
+  outline: 2px solid #8860e0;
+  outline-offset: 1px;
 }
 
 .ros-file-icon {

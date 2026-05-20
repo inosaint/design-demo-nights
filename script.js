@@ -1287,7 +1287,37 @@ function makeFolderContent(ev) {
     grid.appendChild(icon);
   });
 
+  initGridKeyNav(grid);
   return grid;
+}
+
+function initGridKeyNav(grid) {
+  const items = () => [...grid.querySelectorAll(".ros-file")];
+
+  grid.addEventListener("keydown", (e) => {
+    const all = items();
+    const idx = all.indexOf(document.activeElement);
+    if (idx === -1) return;
+
+    const cols = Math.round(grid.offsetWidth / all[0].offsetWidth) || 1;
+    const map = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols };
+    const delta = map[e.key];
+    if (delta === undefined) {
+      if (e.key === "Enter") all[idx].dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+      return;
+    }
+
+    e.preventDefault();
+    const next = Math.max(0, Math.min(idx + delta, all.length - 1));
+    all[next].focus();
+    all[next].scrollIntoView({ block: "nearest" });
+  });
+
+  /* Focus first icon when the grid first receives focus from outside */
+  grid.addEventListener("focusin", (e) => {
+    if (e.target === grid) items()[0]?.focus();
+  });
+  grid.setAttribute("tabindex", "0");
 }
 
 function makeFileIcon({ label, type, photo, eventId }) {
