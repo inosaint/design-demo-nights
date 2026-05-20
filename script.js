@@ -1073,6 +1073,7 @@ function renderDesktopIcons() {
     const btn = makeDesktopIcon(ev, i);
     ros.iconGrid.appendChild(btn);
   });
+  initGridKeyNav(ros.iconGrid);
 }
 
 function makeDesktopIcon(ev, index) {
@@ -1108,6 +1109,7 @@ function makeWindow({ id, title, content, large = false }) {
         ?.querySelector(`[data-win-id="${existing.id}"]`)?.remove();
     }
     bringToFront(existing);
+    requestAnimationFrame(() => existing.querySelector(".ros-file-grid")?.focus());
     return;
   }
   if (!ros.windowsEl) return;
@@ -1246,6 +1248,7 @@ function makeWindow({ id, title, content, large = false }) {
   initDrag(win);
   initResize(win);
   ros.windowsEl.appendChild(win);
+  requestAnimationFrame(() => win.querySelector(".ros-file-grid")?.focus());
 }
 
 function bringToFront(win) {
@@ -1348,7 +1351,7 @@ function makeFolderContent(ev) {
 }
 
 function initGridKeyNav(grid) {
-  const items = () => [...grid.querySelectorAll(".ros-file")];
+  const items = () => [...grid.querySelectorAll(".ros-file, .ros-icon")];
 
   grid.addEventListener("keydown", (e) => {
     const all = items();
