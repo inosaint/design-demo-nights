@@ -942,6 +942,17 @@ syncFromHash();
 
 /* ─── Retro OS Easter Egg ────────────────────────────────── */
 
+/* Wrap each character of the boot logo in a span for wave animation */
+(function () {
+  const logo = document.querySelector(".ros-boot-logo");
+  if (!logo) return;
+  logo.innerHTML = [...logo.textContent].map((ch, i) =>
+    ch === " "
+      ? " "
+      : `<span style="animation-delay:${(i * 0.09).toFixed(2)}s">${ch}</span>`
+  ).join("");
+})();
+
 const ros = {
   el: document.getElementById("retro-os"),
   boot: document.getElementById("ros-boot"),
@@ -1044,7 +1055,8 @@ function updateClock() {
 function renderDesktopIcons() {
   if (!ros.iconGrid) return;
   ros.iconGrid.innerHTML = "";
-  const past = events.filter((ev) => !isUpcoming(ev) && ev.demos.length > 0).sort(byMostRecent);
+  const past = events.filter((ev) => !isUpcoming(ev) && ev.demos.length > 0)
+    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
   past.forEach((ev, i) => {
     const btn = makeDesktopIcon(ev, i);
     ros.iconGrid.appendChild(btn);

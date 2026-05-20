@@ -1788,6 +1788,11 @@ html.page-glitching {
   padding: 12px;
 }
 
+@keyframes ros-wave {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
 .ros-boot-logo {
   font-family: var(--crt-mono);
   font-size: clamp(14px, 2.2vw, 22px);
@@ -1795,6 +1800,11 @@ html.page-glitching {
   text-shadow: 0 0 14px #b557df, 0 0 28px #7a22b0;
   letter-spacing: 2px;
   margin: 0;
+}
+
+.ros-boot-logo span {
+  display: inline-block;
+  animation: ros-wave 2.2s ease-in-out infinite;
 }
 
 .ros-boot-title {
