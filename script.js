@@ -1173,7 +1173,57 @@ function makeWindow({ id, title, content, large = false }) {
     body.appendChild(content);
   }
 
-  body.addEventListener("wheel", (e) => {
+  /* Custom scrollbar — bypasses macOS overlay scrollbar auto-hide */
+  const sbTrack = document.createElement("div");
+  sbTrack.className = "ros-win-sb";
+  const sbThumb = document.createElement("div");
+  sbThumb.className = "ros-win-sb-thumb";
+  sbTrack.appendChild(sbThumb);
+
+  function syncThumb() {
+    const ratio = body.scrollHeight > body.clientHeight
+      ? body.clientHeight / body.scrollHeight : 1;
+    const thumbH = Math.max(24, ratio * sbTrack.clientHeight);
+    const maxTop = sbTrack.clientHeight - thumbH;
+    const top = body.scrollHeight > body.clientHeight
+      ? (body.scrollTop / (body.scrollHeight - body.clientHeight)) * maxTop : 0;
+    sbThumb.style.height = thumbH + "px";
+    sbThumb.style.top    = top + "px";
+  }
+  body.addEventListener("scroll", syncThumb);
+  new ResizeObserver(syncThumb).observe(body);
+  requestAnimationFrame(syncThumb);
+
+  /* Thumb drag */
+  sbThumb.addEventListener("pointerdown", (e) => {
+    e.stopPropagation();
+    sbThumb.setPointerCapture(e.pointerId);
+    const startY   = e.clientY;
+    const startTop = body.scrollTop;
+    const onMove   = (ev) => {
+      const trackRange = sbTrack.clientHeight - sbThumb.clientHeight;
+      const scrollRange = body.scrollHeight - body.clientHeight;
+      body.scrollTop = startTop + ((ev.clientY - startY) / trackRange) * scrollRange;
+    };
+    sbThumb.addEventListener("pointermove", onMove);
+    sbThumb.addEventListener("pointerup", () =>
+      sbThumb.removeEventListener("pointermove", onMove), { once: true });
+  });
+
+  /* Click on track = jump */
+  sbTrack.addEventListener("click", (e) => {
+    if (e.target === sbThumb) return;
+    const rect = sbTrack.getBoundingClientRect();
+    const frac = (e.clientY - rect.top) / sbTrack.clientHeight;
+    body.scrollTop = frac * (body.scrollHeight - body.clientHeight);
+  });
+
+  const contentRow = document.createElement("div");
+  contentRow.className = "ros-win-content";
+  contentRow.append(body, sbTrack);
+
+  /* Wheel anywhere on the window scrolls the body */
+  win.addEventListener("wheel", (e) => {
     body.scrollTop += e.deltaY;
     e.preventDefault();
     e.stopPropagation();
@@ -1185,7 +1235,7 @@ function makeWindow({ id, title, content, large = false }) {
     win.appendChild(handle);
   });
 
-  win.append(titlebar, body);
+  win.append(titlebar, contentRow);
   win.addEventListener("pointerdown", () => bringToFront(win));
   initDrag(win);
   initResize(win);

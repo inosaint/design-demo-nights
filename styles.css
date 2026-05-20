@@ -2004,41 +2004,45 @@ html.page-glitching {
   max-height: 100%;
 }
 
+/* Content row: body + custom scrollbar side by side */
+.ros-win-content {
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .ros-win-body {
+  flex: 1;
   overflow-y: scroll;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
   min-height: 0;
   padding: 8px;
   font-family: var(--crt-mono);
   font-size: 11px;
   color: #c8b8f0;
-  scrollbar-width: thin;
-  scrollbar-color: #8860e0 #1e1040;
+  /* Hide native scrollbar — we draw our own */
+  scrollbar-width: none;
 }
+.ros-win-body::-webkit-scrollbar { display: none; }
 
-/* Force consistent purple scrollbar on ALL scrollable elements inside the overlay */
-.ros *::-webkit-scrollbar {
+/* Custom permanent scrollbar */
+.ros-win-sb {
   width: 8px;
-  height: 8px;
-}
-
-.ros *::-webkit-scrollbar-track {
   background: #1e1040;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
 }
-
-.ros *::-webkit-scrollbar-thumb {
+.ros-win-sb-thumb {
+  position: absolute;
+  left: 1px;
+  right: 1px;
   background: #8860e0;
   border-radius: 2px;
+  min-height: 24px;
+  transition: background 0.1s;
 }
-
-.ros *::-webkit-scrollbar-thumb:hover {
-  background: #b557df;
-}
-
-.ros *::-webkit-scrollbar-corner {
-  background: #1e1040;
-}
+.ros-win-sb-thumb:hover { background: #b557df; }
 
 /* Corner resize handles */
 .ros-win-resize {
