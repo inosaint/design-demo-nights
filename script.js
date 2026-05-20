@@ -1049,8 +1049,11 @@ function closeRetroOS() {
   const crt = document.getElementById("ros-crt");
   if (crt) {
     crt.setAttribute("data-state", "powering-off");
+    let finished = false;
     let fallback;
     const finish = () => {
+      if (finished) return;
+      finished = true;
       clearTimeout(fallback);
       if (ros.windowsEl) ros.windowsEl.innerHTML = "";
       const taskbarApps = document.getElementById("ros-taskbar-apps");
