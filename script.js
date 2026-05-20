@@ -901,7 +901,7 @@ const ros = {
   desktop: document.getElementById("ros-desktop"),
   iconGrid: document.getElementById("ros-icon-grid"),
   windowsEl: document.getElementById("ros-windows"),
-  led: document.getElementById("ros-led"),
+  led: null,
   zTop: 100,
   clockTimer: null,
   prevFocus: null,
