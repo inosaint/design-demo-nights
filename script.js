@@ -1089,7 +1089,15 @@ function makeDesktopIcon(ev, index) {
 
 function makeWindow({ id, title, content, large = false }) {
   const existing = document.getElementById("ros-win-" + id);
-  if (existing) { bringToFront(existing); return; }
+  if (existing) {
+    if (existing.style.display === "none") {
+      existing.style.display = "";
+      document.getElementById("ros-taskbar-apps")
+        ?.querySelector(`[data-win-id="${existing.id}"]`)?.remove();
+    }
+    bringToFront(existing);
+    return;
+  }
   if (!ros.windowsEl) return;
 
   const offset = Math.min(ros.windowsEl.children.length * 20, 60);
@@ -1165,9 +1173,16 @@ function makeWindow({ id, title, content, large = false }) {
     body.appendChild(content);
   }
 
+  ["nw", "ne", "sw", "se"].forEach((dir) => {
+    const handle = document.createElement("div");
+    handle.className = `ros-win-resize ros-win-resize--${dir}`;
+    win.appendChild(handle);
+  });
+
   win.append(titlebar, body);
   win.addEventListener("pointerdown", () => bringToFront(win));
   initDrag(win);
+  initResize(win);
   ros.windowsEl.appendChild(win);
 }
 
@@ -1180,20 +1195,63 @@ function initDrag(win) {
   bar.addEventListener("pointerdown", (e) => {
     if (e.target.closest(".ros-win-btns")) return;
     if (win.classList.contains("is-maximized")) return;
-    const startX = e.clientX - win.offsetLeft;
-    const startY = e.clientY - win.offsetTop;
-
     const container = ros.windowsEl;
-    const maxX = container.offsetWidth - win.offsetWidth;
-    const maxY = container.offsetHeight - win.offsetHeight;
+    const containerRect = container.getBoundingClientRect();
+    const startX = e.clientX - containerRect.left - win.offsetLeft;
+    const startY = e.clientY - containerRect.top - win.offsetTop;
+
+    bar.setPointerCapture(e.pointerId);
 
     const onMove = (ev) => {
-      win.style.left = Math.max(0, Math.min(ev.clientX - startX, maxX)) + "px";
-      win.style.top  = Math.max(0, Math.min(ev.clientY - startY, maxY)) + "px";
+      const maxX = container.offsetWidth - win.offsetWidth;
+      const maxY = container.offsetHeight - win.offsetHeight;
+      win.style.left = Math.max(0, Math.min(ev.clientX - containerRect.left - startX, maxX)) + "px";
+      win.style.top  = Math.max(0, Math.min(ev.clientY - containerRect.top - startY, maxY)) + "px";
     };
-    document.addEventListener("pointermove", onMove);
-    document.addEventListener("pointerup", () =>
-      document.removeEventListener("pointermove", onMove), { once: true });
+    bar.addEventListener("pointermove", onMove);
+    bar.addEventListener("pointerup", () =>
+      bar.removeEventListener("pointermove", onMove), { once: true });
+  });
+}
+
+function initResize(win) {
+  const container = ros.windowsEl;
+  const dirs = ["nw", "ne", "sw", "se"];
+  dirs.forEach((dir) => {
+    const handle = win.querySelector(`.ros-win-resize--${dir}`);
+    if (!handle) return;
+    handle.addEventListener("pointerdown", (e) => {
+      e.stopPropagation();
+      if (win.classList.contains("is-maximized")) return;
+      handle.setPointerCapture(e.pointerId);
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const startLeft = win.offsetLeft;
+      const startTop = win.offsetTop;
+      const startW = win.offsetWidth;
+      const startH = win.offsetHeight;
+
+      const onMove = (ev) => {
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+        let newLeft = startLeft, newTop = startTop;
+        let newW = startW, newH = startH;
+
+        if (dir.includes("e")) newW = Math.max(200, startW + dx);
+        if (dir.includes("s")) newH = Math.max(80, startH + dy);
+        if (dir.includes("w")) { newW = Math.max(200, startW - dx); newLeft = startLeft + (startW - newW); }
+        if (dir.includes("n")) { newH = Math.max(80, startH - dy); newTop = startTop + (startH - newH); }
+
+        win.style.left = Math.max(0, newLeft) + "px";
+        win.style.top  = Math.max(0, newTop) + "px";
+        win.style.width  = newW + "px";
+        win.style.height = newH + "px";
+        win.style.maxHeight = "none";
+      };
+      handle.addEventListener("pointermove", onMove);
+      handle.addEventListener("pointerup", () =>
+        handle.removeEventListener("pointermove", onMove), { once: true });
+    });
   });
 }
 

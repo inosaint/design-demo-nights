@@ -2005,7 +2005,7 @@ html.page-glitching {
 }
 
 .ros-win-body {
-  overflow-y: auto;
+  overflow-y: scroll;
   flex: 1;
   min-height: 0;
   padding: 8px;
@@ -2032,6 +2032,18 @@ html.page-glitching {
 .ros-win-body::-webkit-scrollbar-thumb:hover {
   background: #b557df;
 }
+
+/* Corner resize handles */
+.ros-win-resize {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  z-index: 100;
+}
+.ros-win-resize--nw { top: -2px;    left: -2px;  cursor: nw-resize; }
+.ros-win-resize--ne { top: -2px;    right: -2px; cursor: ne-resize; }
+.ros-win-resize--sw { bottom: -2px; left: -2px;  cursor: sw-resize; }
+.ros-win-resize--se { bottom: -2px; right: -2px; cursor: se-resize; }
 
 /* ─── Folder window contents ─── */
 
