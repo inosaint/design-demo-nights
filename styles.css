@@ -2006,6 +2006,7 @@ html.page-glitching {
 
 .ros-win-body {
   overflow-y: scroll;
+  overscroll-behavior: contain;
   min-height: 0;
   padding: 8px;
   font-family: var(--crt-mono);

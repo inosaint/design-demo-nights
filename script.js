@@ -1173,6 +1173,12 @@ function makeWindow({ id, title, content, large = false }) {
     body.appendChild(content);
   }
 
+  body.addEventListener("wheel", (e) => {
+    body.scrollTop += e.deltaY;
+    e.preventDefault();
+    e.stopPropagation();
+  }, { passive: false });
+
   ["nw", "ne", "sw", "se"].forEach((dir) => {
     const handle = document.createElement("div");
     handle.className = `ros-win-resize ros-win-resize--${dir}`;
