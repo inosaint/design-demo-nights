@@ -822,29 +822,46 @@ const brandLogo = brandButton?.querySelector(".brand-logo");
 function playBzzt(type = "on") {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const bufLen = ctx.sampleRate * 0.18;
-    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
-    const data = buf.getChannelData(0);
+    const t = ctx.currentTime;
+    const dur = 0.22;
+
+    const osc1 = ctx.createOscillator();
+    osc1.type = "sawtooth";
+    osc1.frequency.value = type === "on" ? 120 : 60;
+
+    const osc2 = ctx.createOscillator();
+    osc2.type = "square";
+    osc2.frequency.value = type === "on" ? 240 : 90;
+
+    const bufLen = Math.floor(ctx.sampleRate * dur);
+    const noiseBuf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const data = noiseBuf.getChannelData(0);
     for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+    const noiseSrc = ctx.createBufferSource();
+    noiseSrc.buffer = noiseBuf;
 
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
+    const bpf = ctx.createBiquadFilter();
+    bpf.type = "bandpass";
+    bpf.frequency.value = type === "on" ? 200 : 100;
+    bpf.Q.value = 3;
 
-    const filter = ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = type === "on" ? 1800 : 900;
+    const g1 = ctx.createGain();
+    g1.gain.setValueAtTime(0, t);
+    g1.gain.linearRampToValueAtTime(0.25, t + 0.008);
+    g1.gain.exponentialRampToValueAtTime(0.001, t + dur);
 
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.16);
+    const g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0, t);
+    g2.gain.linearRampToValueAtTime(0.15, t + 0.008);
+    g2.gain.exponentialRampToValueAtTime(0.001, t + dur);
 
-    src.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-    src.start();
-    src.stop(ctx.currentTime + 0.18);
-    src.onended = () => ctx.close();
+    osc1.connect(g1); osc2.connect(g1); g1.connect(ctx.destination);
+    noiseSrc.connect(bpf); bpf.connect(g2); g2.connect(ctx.destination);
+
+    osc1.start(t); osc1.stop(t + dur);
+    osc2.start(t); osc2.stop(t + dur);
+    noiseSrc.start(t); noiseSrc.stop(t + dur);
+    osc1.onended = () => ctx.close();
   } catch (_) {}
 }
 
@@ -896,7 +913,7 @@ let rosBuf = [];
 let rosBufTimer;
 
 document.addEventListener("keydown", (e) => {
-  if (ros.el && !ros.el.hidden) return;
+  if (ros.el?.classList.contains("is-open")) return;
   if (e.target.matches("input,textarea,[contenteditable]")) return;
   const k = e.key.toLowerCase();
   if (k === ROS_KEYS[rosBuf.length]) {
@@ -924,12 +941,14 @@ function triggerGlitchAndLaunch() {
 function launchRetroOS() {
   if (!ros.el) return;
   ros.prevFocus = document.activeElement;
-  ros.el.hidden = false;
+  ros.el.classList.add("is-open");
   ros.boot.hidden = false;
   ros.desktop.hidden = true;
   if (ros.led) ros.led.classList.add("is-on");
   document.body.style.overflow = "hidden";
   playBzzt("on");
+  const crt = document.getElementById("ros-crt");
+  if (crt) crt.setAttribute("data-state", "powering-on");
   document.getElementById("ros-start")?.focus();
   track("retro_os_opened", {});
 }
@@ -944,12 +963,25 @@ function showDesktop() {
 
 function closeRetroOS() {
   if (!ros.el) return;
-  ros.el.hidden = true;
-  if (ros.led) ros.led.classList.remove("is-on");
   document.body.style.overflow = "";
   clearTimeout(ros.clockTimer);
   playBzzt("off");
-  ros.prevFocus?.focus();
+  const crt = document.getElementById("ros-crt");
+  if (crt) {
+    crt.setAttribute("data-state", "powering-off");
+    const finish = () => {
+      ros.el.classList.remove("is-open");
+      crt.removeAttribute("data-state");
+      if (ros.led) ros.led.classList.remove("is-on");
+      ros.prevFocus?.focus();
+    };
+    crt.addEventListener("animationend", finish, { once: true });
+    setTimeout(finish, 700);
+  } else {
+    ros.el.classList.remove("is-open");
+    if (ros.led) ros.led.classList.remove("is-on");
+    ros.prevFocus?.focus();
+  }
   track("retro_os_closed", {});
 }
 
@@ -1203,5 +1235,5 @@ document.getElementById("ros-start")?.addEventListener("click", showDesktop);
 document.getElementById("ros-power")?.addEventListener("click", closeRetroOS);
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && ros.el && !ros.el.hidden) closeRetroOS();
+  if (e.key === "Escape" && ros.el?.classList.contains("is-open")) closeRetroOS();
 });
