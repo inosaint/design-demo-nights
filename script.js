@@ -963,6 +963,7 @@ const ros = {
   zTop: 100,
   clockTimer: null,
   prevFocus: null,
+  isLaunching: false,
 };
 
 /* Single capture-phase wheel listener on the overlay — outside the 3D
@@ -984,7 +985,9 @@ let rosBufTimer;
 
 document.addEventListener("keydown", (e) => {
   if (ros.el?.classList.contains("is-open")) return;
-  if (e.target.matches("input,textarea,[contenteditable]")) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.target.closest?.("input,textarea,select,[contenteditable]")) return;
+  if (document.querySelector("[data-dialog-backdrop]:not([hidden])")) return;
   const k = e.key.toLowerCase();
   if (k === ROS_KEYS[rosBuf.length]) {
     rosBuf.push(k);
@@ -1000,7 +1003,8 @@ document.addEventListener("keydown", (e) => {
 });
 
 function triggerGlitchAndLaunch() {
-  if (window.innerWidth <= 768) return;
+  if (window.innerWidth <= 768 || ros.isLaunching) return;
+  ros.isLaunching = true;
   document.documentElement.classList.add("page-glitching");
   setTimeout(() => {
     document.documentElement.classList.remove("page-glitching");
@@ -1009,6 +1013,7 @@ function triggerGlitchAndLaunch() {
 }
 
 function launchRetroOS() {
+  ros.isLaunching = false;
   if (!ros.el) return;
   ros.prevFocus = document.activeElement;
   ros.el.classList.add("is-open");
@@ -1019,6 +1024,7 @@ function launchRetroOS() {
   playBzzt("on");
   const crt = document.getElementById("ros-crt");
   if (crt) crt.setAttribute("data-state", "powering-on");
+  requestAnimationFrame(() => document.getElementById("ros-power")?.focus());
   track("retro_os_opened", {});
 }
 
@@ -1038,15 +1044,28 @@ function closeRetroOS() {
   const crt = document.getElementById("ros-crt");
   if (crt) {
     crt.setAttribute("data-state", "powering-off");
+    let finished = false;
+    let fallback;
     const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(fallback);
+      if (ros.windowsEl) ros.windowsEl.innerHTML = "";
+      const taskbarApps = document.getElementById("ros-taskbar-apps");
+      if (taskbarApps) taskbarApps.innerHTML = "";
+      ros.zTop = 100;
       ros.el.classList.remove("is-open");
       crt.removeAttribute("data-state");
       if (ros.led) ros.led.classList.remove("is-on");
       ros.prevFocus?.focus();
     };
     crt.addEventListener("animationend", finish, { once: true });
-    setTimeout(finish, 700);
+    fallback = setTimeout(finish, 700);
   } else {
+    if (ros.windowsEl) ros.windowsEl.innerHTML = "";
+    const taskbarApps = document.getElementById("ros-taskbar-apps");
+    if (taskbarApps) taskbarApps.innerHTML = "";
+    ros.zTop = 100;
     ros.el.classList.remove("is-open");
     if (ros.led) ros.led.classList.remove("is-on");
     ros.prevFocus?.focus();
@@ -1355,9 +1374,15 @@ function makeFolderContent(ev) {
 }
 
 function initGridKeyNav(grid, listenerEl = grid) {
+  /* Remove any previously attached handlers so re-calling is idempotent */
+  if (listenerEl._gridNavKeydown) {
+    listenerEl.removeEventListener("keydown", listenerEl._gridNavKeydown);
+    listenerEl.removeEventListener("focusin", listenerEl._gridNavFocusin);
+  }
+
   const items = () => [...grid.querySelectorAll(".ros-file, .ros-icon")];
 
-  listenerEl.addEventListener("keydown", (e) => {
+  listenerEl._gridNavKeydown = (e) => {
     const all = items();
     const idx = all.indexOf(document.activeElement);
     const isArrow = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key);
@@ -1379,12 +1404,14 @@ function initGridKeyNav(grid, listenerEl = grid) {
     const next = Math.max(0, Math.min(idx + delta, all.length - 1));
     all[next].focus();
     all[next].scrollIntoView({ block: "nearest" });
-  });
+  };
 
-  /* Focus first icon when the listener element receives focus from outside */
-  listenerEl.addEventListener("focusin", (e) => {
+  listenerEl._gridNavFocusin = (e) => {
     if (e.target === listenerEl) items()[0]?.focus();
-  });
+  };
+
+  listenerEl.addEventListener("keydown", listenerEl._gridNavKeydown);
+  listenerEl.addEventListener("focusin", listenerEl._gridNavFocusin);
   listenerEl.setAttribute("tabindex", "0");
 }
 
