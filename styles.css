@@ -1994,8 +1994,6 @@ html.page-glitching {
 
 .ros-win-btn:hover { background: #b557df; }
 
-/* Minimized: collapse body */
-.ros-win.is-minimized .ros-win-body { display: none; }
 
 /* Maximized: fill the windows container */
 .ros-win.is-maximized {
@@ -2208,7 +2206,40 @@ html.page-glitching {
   font-size: 11px;
   color: #e0d4ff;
   letter-spacing: 1px;
-  margin-right: auto;
+  flex-shrink: 0;
+}
+
+.ros-taskbar-apps {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  overflow: hidden;
+  padding: 0 6px;
+}
+
+.ros-taskbar-app {
+  appearance: none;
+  background: #2a1a4a;
+  border: 1px solid #6a40c0;
+  color: #c8b8f0;
+  font-family: var(--crt-mono);
+  font-size: 10px;
+  padding: 1px 7px;
+  height: 20px;
+  cursor: pointer;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.ros-taskbar-app:hover {
+  background: #4a2880;
+  border-color: #b557df;
+  color: #fff;
 }
 
 .ros-taskbar-clock {

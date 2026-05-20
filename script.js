@@ -1113,13 +1113,31 @@ function makeWindow({ id, title, content, large = false }) {
   closeBtn.className = "ros-win-btn ros-win-btn--close";
   closeBtn.type = "button";
   closeBtn.setAttribute("aria-label", "Close");
-  closeBtn.addEventListener("click", () => win.remove());
+  closeBtn.addEventListener("click", () => {
+    document.getElementById("ros-taskbar-apps")
+      ?.querySelector(`[data-win-id="${win.id}"]`)?.remove();
+    win.remove();
+  });
 
   const minBtn = document.createElement("button");
   minBtn.className = "ros-win-btn ros-win-btn--min";
   minBtn.type = "button";
   minBtn.setAttribute("aria-label", "Minimize");
-  minBtn.addEventListener("click", () => win.classList.toggle("is-minimized"));
+  minBtn.addEventListener("click", () => {
+    win.style.display = "none";
+    const apps = document.getElementById("ros-taskbar-apps");
+    if (!apps || apps.querySelector(`[data-win-id="${win.id}"]`)) return;
+    const pill = document.createElement("button");
+    pill.className = "ros-taskbar-app";
+    pill.dataset.winId = win.id;
+    pill.textContent = title;
+    pill.addEventListener("click", () => {
+      win.style.display = "";
+      bringToFront(win);
+      pill.remove();
+    });
+    apps.appendChild(pill);
+  });
 
   const maxBtn = document.createElement("button");
   maxBtn.className = "ros-win-btn ros-win-btn--max";
@@ -1127,7 +1145,6 @@ function makeWindow({ id, title, content, large = false }) {
   maxBtn.setAttribute("aria-label", "Maximize");
   maxBtn.addEventListener("click", () => {
     win.classList.toggle("is-maximized");
-    win.classList.remove("is-minimized");
   });
 
   minBtn.textContent = "─";
