@@ -964,6 +964,7 @@ const ros = {
   clockTimer: null,
   prevFocus: null,
   isLaunching: false,
+  isClosing: false,
 };
 
 /* Single capture-phase wheel listener on the overlay — outside the 3D
@@ -1024,7 +1025,10 @@ function launchRetroOS() {
   playBzzt("on");
   const crt = document.getElementById("ros-crt");
   if (crt) crt.setAttribute("data-state", "powering-on");
-  requestAnimationFrame(() => document.getElementById("ros-power")?.focus());
+  /* Focus the boot container (tabindex=-1), not the power button, so
+     Enter/Space on the boot screen can't simultaneously fire the button. */
+  ros.boot.setAttribute("tabindex", "-1");
+  requestAnimationFrame(() => ros.boot.focus());
   track("retro_os_opened", {});
 }
 
@@ -1037,23 +1041,22 @@ function showDesktop() {
 }
 
 function closeRetroOS() {
-  if (!ros.el) return;
+  if (!ros.el || ros.isClosing) return;
+  ros.isClosing = true;
   document.body.style.overflow = "";
   clearTimeout(ros.clockTimer);
   playBzzt("off");
   const crt = document.getElementById("ros-crt");
   if (crt) {
     crt.setAttribute("data-state", "powering-off");
-    let finished = false;
     let fallback;
     const finish = () => {
-      if (finished) return;
-      finished = true;
       clearTimeout(fallback);
       if (ros.windowsEl) ros.windowsEl.innerHTML = "";
       const taskbarApps = document.getElementById("ros-taskbar-apps");
       if (taskbarApps) taskbarApps.innerHTML = "";
       ros.zTop = 100;
+      ros.isClosing = false;
       ros.el.classList.remove("is-open");
       crt.removeAttribute("data-state");
       if (ros.led) ros.led.classList.remove("is-on");
@@ -1066,6 +1069,7 @@ function closeRetroOS() {
     const taskbarApps = document.getElementById("ros-taskbar-apps");
     if (taskbarApps) taskbarApps.innerHTML = "";
     ros.zTop = 100;
+    ros.isClosing = false;
     ros.el.classList.remove("is-open");
     if (ros.led) ros.led.classList.remove("is-on");
     ros.prevFocus?.focus();
