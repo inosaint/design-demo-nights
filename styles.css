@@ -1530,6 +1530,8 @@ html.page-glitching {
   justify-content: space-between;
   width: calc(var(--mon-w) - 60px);
   flex-shrink: 0;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .ros-floppy {
