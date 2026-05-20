@@ -949,7 +949,6 @@ function launchRetroOS() {
   playBzzt("on");
   const crt = document.getElementById("ros-crt");
   if (crt) crt.setAttribute("data-state", "powering-on");
-  document.getElementById("ros-start")?.focus();
   track("retro_os_opened", {});
 }
 
@@ -1231,9 +1230,14 @@ function openReadmeWindow(ev) {
 
 /* ─── Event wiring ─── */
 
-document.getElementById("ros-start")?.addEventListener("click", showDesktop);
 document.getElementById("ros-power")?.addEventListener("click", closeRetroOS);
 
+/* Click anywhere on the boot screen to start */
+ros.boot?.addEventListener("click", showDesktop);
+
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && ros.el?.classList.contains("is-open")) closeRetroOS();
+  if (!ros.el?.classList.contains("is-open")) return;
+  if (e.key === "Escape") { closeRetroOS(); return; }
+  /* Any other key while boot screen is visible → go to desktop */
+  if (ros.boot && !ros.boot.hidden) showDesktop();
 });
