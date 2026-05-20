@@ -1179,7 +1179,7 @@ function makeWindow({ id, title, content, large = false }) {
     e.stopPropagation();
   }, { passive: false });
 
-  ["nw", "ne", "sw", "se"].forEach((dir) => {
+  ["nw", "sw", "se"].forEach((dir) => {
     const handle = document.createElement("div");
     handle.className = `ros-win-resize ros-win-resize--${dir}`;
     win.appendChild(handle);
@@ -1222,7 +1222,7 @@ function initDrag(win) {
 
 function initResize(win) {
   const container = ros.windowsEl;
-  const dirs = ["nw", "ne", "sw", "se"];
+  const dirs = ["nw", "sw", "se"];
   dirs.forEach((dir) => {
     const handle = win.querySelector(`.ros-win-resize--${dir}`);
     if (!handle) return;
