@@ -1130,12 +1130,15 @@ function makeWindow({ id, title, content, large = false }) {
     win.classList.remove("is-minimized");
   });
 
-  btnGroup.append(closeBtn, minBtn, maxBtn);
+  minBtn.textContent = "─";
+  maxBtn.textContent = "□";
+  closeBtn.textContent = "×";
+  btnGroup.append(minBtn, maxBtn, closeBtn);
 
   const titleSpan = document.createElement("span");
   titleSpan.textContent = title;
 
-  titlebar.append(btnGroup, titleSpan);
+  titlebar.append(titleSpan, btnGroup);
 
   const body = document.createElement("div");
   body.className = "ros-win-body";
