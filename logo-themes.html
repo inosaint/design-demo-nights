@@ -1,0 +1,1161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design Demo Nights · Logo Theme System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=VT323&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    /* ─── Reset ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sans: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      --serif: "Instrument Serif", Georgia, serif;
+      --crt-mono: "VT323", "Courier New", monospace;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: #0e0e0e;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* ─── Page shell ─────────────────────────────────────── */
+    .proto {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    .proto-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .proto-title {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    .proto-divider {
+      flex: 1;
+      height: 1px;
+      background: #222;
+    }
+
+    /* ─── Hero section ───────────────────────────────────── */
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 72px;
+    }
+
+    @media (max-width: 640px) {
+      .hero-section { grid-template-columns: 1fr; }
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ─── Theme navigation ───────────────────────────────── */
+    .theme-nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #2a2a2a;
+      background: #1a1a1a;
+      color: #888;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .nav-btn:hover { background: #252525; color: #fff; border-color: #333; }
+
+    .theme-info { flex: 1; }
+
+    .theme-name {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.3px;
+      transition: opacity 0.12s;
+    }
+
+    .theme-tag {
+      font-size: 13px;
+      color: #555;
+      margin-top: 4px;
+      min-height: 19px;
+      font-family: var(--crt-mono);
+      letter-spacing: 1px;
+    }
+
+    .theme-counter {
+      font-size: 11px;
+      color: #383838;
+      margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ─── Hero canvas ────────────────────────────────────── */
+    .hero-canvas {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 5 / 4;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      transition: background 0.4s ease;
+    }
+
+    .hero-canvas .brand-logo--hero {
+      background: transparent !important;
+    }
+
+    /* ─── Dot nav + hint ─────────────────────────────────── */
+    .dot-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2a2a2a;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      padding: 0;
+    }
+    .dot.active { background: #fff; transform: scale(1.35); }
+    .dot:hover:not(.active) { background: #444; }
+
+    .kbd-hint {
+      font-size: 11px;
+      color: #333;
+    }
+
+    /* ─── Hero right: color swatches ─────────────────────── */
+    .swatch-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 4px;
+    }
+
+    .swatch-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .swatch-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active { border-color: #fff; }
+
+    /* ─── Section heading ────────────────────────────────── */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .section-head h2 {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #444;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .section-head-line {
+      flex: 1;
+      height: 1px;
+      background: #1e1e1e;
+    }
+
+    /* ─── Mockup grid ────────────────────────────────────── */
+    .mockups-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 680px) {
+      .mockups-grid { grid-template-columns: 1fr; }
+    }
+
+    .mockup-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ─── Mockup frames ──────────────────────────────────── */
+    .mockup-frame {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: background 0.4s ease;
+    }
+
+    .mockup-frame--reel {
+      width: 180px;
+      height: 320px;
+    }
+
+    .mockup-frame--luma {
+      width: 100%;
+      aspect-ratio: 2 / 1;
+    }
+
+    .mockup-frame--og {
+      width: 100%;
+      aspect-ratio: 1200 / 630;
+    }
+
+    /* Reel: stacked layout */
+    .reel-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 20px 16px;
+    }
+
+    /* Landscape: side-by-side */
+    .landscape-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 9%;
+      gap: 7%;
+    }
+
+    /* ─── Mockup text ────────────────────────────────────── */
+    .mockup-text {
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+      min-width: 0;
+    }
+
+    .mockup-text--reel { text-align: center; }
+
+    .mock-eyebrow {
+      font-family: var(--crt-mono);
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 4px;
+    }
+
+    .mock-heading {
+      font-family: var(--serif);
+      font-style: italic;
+      line-height: 1.05;
+    }
+
+    .mock-heading--reel { font-size: 18px; }
+    .mock-heading--landscape { font-size: clamp(12px, 3.5cqw, 26px); }
+
+    .mock-sub {
+      font-family: var(--crt-mono);
+      letter-spacing: 1.5px;
+      opacity: 0.45;
+      margin-top: 5px;
+    }
+
+    .mock-sub--reel { font-size: 8px; }
+    .mock-sub--landscape { font-size: clamp(7px, 1.4cqw, 10px); }
+
+    /* ─── Logo slots in mockups ──────────────────────────── */
+    .logo-slot {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* ─── Mockup meta + download ─────────────────────────── */
+    .mockup-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .mockup-label {
+      font-size: 11px;
+      color: #444;
+      line-height: 1.5;
+    }
+    .mockup-label strong {
+      display: block;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #2a2a2a;
+      background: #1a1a1a;
+      color: #666;
+      font-size: 11px;
+      font-family: var(--sans);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .dl-btn:hover { background: #222; color: #ccc; }
+    .dl-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+    /* ─── Brand logo — copied from styles.css 142–726 ─────── */
+    .brand-logo {
+      --accent: #9932cc;
+      --beige-light: #f0ede0;
+      --beige-main: #e0dccf;
+      --beige-dark: #c4c0b3;
+      --beige-shadow: #a09c8f;
+      --screen-black: #222529;
+      --sticker-star-bg: #ffd93d;
+      --sticker-star-fg: #d63031;
+      --sticker-bng-bg: #228b22;
+      --sticker-bng-fg: #ffffff;
+      --sticker-star-content: "!";
+      position: relative;
+      display: block;
+      flex: 0 0 auto;
+      width: 92px;
+      height: 102px;
+      perspective: 2000px;
+    }
+
+    .brand-logo .scene-scale {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      width: 360px;
+      height: 380px;
+      transform: scale(0.22);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+
+    .brand-logo--hero {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 5 / 4;
+      border-radius: var(--radius);
+      overflow: hidden;
+      container-type: inline-size;
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--accent) 18%, white) 0%,
+        color-mix(in srgb, var(--accent) 48%, white) 100%);
+    }
+
+    .brand-logo--hero .scene-scale {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      transform-origin: center center;
+    }
+
+    @container (min-width: 560px) {
+      .brand-logo--hero .scene-scale {
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @container (max-width: 380px) {
+      .brand-logo--hero .scene-scale {
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+    }
+
+    .brand-logo .scene {
+      position: relative;
+      transform: rotateY(-15deg) rotateX(5deg);
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .computer-unit {
+      position: relative;
+      width: 360px;
+      height: 380px;
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .face {
+      position: absolute;
+      background: var(--beige-main);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .brand-logo .front {
+      display: flex;
+      width: 360px;
+      height: 380px;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      background: linear-gradient(135deg, var(--beige-light) 0%, var(--beige-main) 100%);
+      box-shadow: inset 2px 2px 5px rgba(255,255,255,0.8), inset -5px -5px 15px rgba(0,0,0,0.1);
+      transform: translateZ(100px);
+    }
+
+    .brand-logo .back {
+      width: 360px; height: 380px;
+      background: var(--beige-dark);
+      transform: translateZ(-100px) rotateY(180deg);
+    }
+
+    .brand-logo .left {
+      width: 200px; height: 380px;
+      background: var(--beige-main);
+      box-shadow: inset 10px 0 20px rgba(0,0,0,0.05);
+      transform: rotateY(-90deg) translateZ(100px);
+    }
+
+    .brand-logo .right {
+      width: 200px; height: 380px;
+      background: var(--beige-dark);
+      box-shadow: inset 10px 0 20px rgba(0,0,0,0.1);
+      transform: rotateY(90deg) translateZ(260px);
+    }
+
+    .brand-logo .top {
+      width: 360px; height: 200px;
+      background: var(--beige-light);
+      transform: rotateX(90deg) translateZ(100px);
+    }
+
+    .brand-logo .bottom {
+      width: 360px; height: 200px;
+      background: var(--beige-shadow);
+      box-shadow: 0 50px 80px rgba(0,0,0,0.3);
+      transform: rotateX(-90deg) translateZ(280px);
+    }
+
+    .brand-logo .screen-inset {
+      position: relative;
+      display: flex;
+      width: 280px; height: 220px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      border-radius: 16px;
+      background: #d1cec7;
+      box-shadow: inset 2px 2px 8px rgba(0,0,0,0.2), inset -2px -2px 8px rgba(255,255,255,0.5);
+    }
+
+    .brand-logo .crt {
+      position: relative;
+      width: 260px; height: 200px;
+      overflow: hidden;
+      border-radius: 40% / 10%;
+      background: var(--screen-black);
+      box-shadow: inset 0 0 20px rgba(0,0,0,1);
+    }
+
+    .brand-logo .crt::before {
+      position: absolute;
+      z-index: 5; inset: 0;
+      background:
+        linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%),
+        linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
+      background-size: 100% 2px, 3px 100%;
+      border-radius: 12px;
+      pointer-events: none;
+      content: "";
+    }
+
+    .brand-logo .crt-glow {
+      position: absolute;
+      z-index: 2; inset: 10px;
+      padding: 12px;
+      color: #fff;
+      font-family: var(--crt-mono);
+      font-size: 14px;
+    }
+
+    .brand-logo .graffiti-container {
+      display: flex;
+      width: 100%; height: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo .graffiti-text {
+      font-family: var(--crt-mono);
+      font-size: 50px;
+      font-weight: 700;
+      line-height: 0.85;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-align: center;
+      text-shadow:
+        0 0 8px var(--accent),
+        0 0 16px var(--accent),
+        0 0 32px color-mix(in srgb, var(--accent) 70%, black),
+        3px 3px 0 color-mix(in srgb, var(--accent) 40%, black),
+        -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
+    }
+
+    .brand-logo .subtitle-text {
+      margin-top: 10px;
+      font-family: var(--serif);
+      font-size: 26px;
+      font-style: italic;
+      color: color-mix(in srgb, var(--accent) 22%, white);
+      text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 65%, transparent);
+    }
+
+    .brand-logo .floppy-slot {
+      position: relative;
+      width: 140px; height: 12px;
+      margin-left: 100px;
+      border-radius: 6px;
+      background: #333;
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .brand-logo .grill {
+      position: absolute;
+      right: 25px; bottom: 15px;
+      display: grid;
+      width: 30px; height: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .brand-logo .vent {
+      border-radius: 1px;
+      background: #333;
+      box-shadow: inset 1px 1px 1px rgba(0,0,0,0.5);
+    }
+
+    .brand-logo .sticker {
+      position: absolute;
+      z-index: 5;
+      box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .brand-logo .sticker-starburst {
+      display: flex;
+      width: 38px; height: 38px;
+      align-items: center;
+      justify-content: center;
+      top: 48px; left: 16px;
+      border: 2px solid #fff;
+      background: var(--sticker-star-bg);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      transform: translateZ(101px) rotate(-12deg);
+    }
+
+    .brand-logo .sticker-starburst::after {
+      font-family: var(--crt-mono);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--sticker-star-fg);
+      transform: rotate(12deg);
+      content: var(--sticker-star-content, "!");
+    }
+
+    .brand-logo .sticker-bengaluru {
+      display: flex;
+      width: 70px; height: 24px;
+      align-items: center;
+      justify-content: center;
+      right: 18px; bottom: 95px;
+      border: 2px solid #fff;
+      border-radius: 4px;
+      background: var(--sticker-bng-bg);
+      color: var(--sticker-bng-fg);
+      font-family: var(--crt-mono);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.25), inset -2px -2px 3px rgba(0,0,0,0.15), inset 2px 2px 3px rgba(255,255,255,0.25);
+      transform: translateZ(102px) rotate(4deg);
+    }
+
+    .brand-logo .keyboard-assembly {
+      --kb-angle: 66deg;
+      --kb-thickness: 18px;
+      position: absolute;
+      bottom: -118px;
+      width: 360px; height: 140px;
+      transform: translateZ(164px) rotateX(var(--kb-angle));
+      transform-origin: top center;
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .kb-base {
+      position: absolute;
+      overflow: hidden;
+      width: 100%; height: 100%;
+      background: var(--beige-main);
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5), inset -5px -5px 15px rgba(0,0,0,0.1);
+      transform: translateZ(calc(var(--kb-thickness) / 2));
+    }
+
+    .brand-logo .kb-front,
+    .brand-logo .kb-back {
+      position: absolute; left: 0;
+      width: 100%; height: var(--kb-thickness);
+    }
+
+    .brand-logo .kb-front {
+      bottom: 0;
+      background: linear-gradient(180deg, #cdc9bb 0%, #b5b1a3 100%);
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateX(90deg);
+      transform-origin: bottom center;
+    }
+
+    .brand-logo .kb-back {
+      top: 0;
+      background: linear-gradient(180deg, #e5e1d4 0%, #c9c5b8 100%);
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateX(-90deg);
+      transform-origin: top center;
+    }
+
+    .brand-logo .kb-left,
+    .brand-logo .kb-right {
+      position: absolute; top: 0;
+      width: var(--kb-thickness); height: 100%;
+      background: linear-gradient(180deg, #d1cdbf 0%, #b7b3a6 100%);
+    }
+
+    .brand-logo .kb-left {
+      left: 0;
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateY(90deg);
+      transform-origin: left center;
+    }
+
+    .brand-logo .kb-right {
+      right: 0;
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateY(-90deg);
+      transform-origin: right center;
+    }
+
+    .brand-logo .kb-shadow {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 12px;
+      background: transparent;
+      box-shadow: 0 40px 70px rgba(0,0,0,0.25), 0 20px 30px rgba(0,0,0,0.15);
+      transform: rotateX(calc(-90deg - var(--kb-angle))) translateZ(20px);
+      transform-origin: top center;
+      pointer-events: none;
+    }
+
+    .brand-logo .keys-grid {
+      display: grid;
+      padding: 15px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 6px;
+      transform: translateZ(8px);
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .key {
+      height: 27px;
+      border-radius: 4px;
+      background: #ece8da;
+      box-shadow: 0 6px 0 #c4c0b3, 0 8px 7px rgba(0,0,0,0.2);
+      transform: translateZ(1px);
+    }
+    .brand-logo .key.wide  { grid-column: span 2; }
+    .brand-logo .key.space { grid-column: span 6; }
+
+    .brand-logo .crt::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      z-index: 6;
+      width: 80%; height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #fff 25%, #fff 75%, transparent 100%);
+      box-shadow: 0 0 8px 1px rgba(255,255,255,0.9);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scaleX(0);
+    }
+
+    /* ─── CRT animations on hero logo ────────────────────── */
+    @keyframes scanline-drift { to { background-position: 0 4px, 0 0; } }
+
+    @keyframes crt-flicker {
+      0%, 90%, 100% { opacity: 1; }
+      93% { opacity: 0.86; } 94% { opacity: 1; }
+      96% { opacity: 0.78; } 97% { opacity: 0.94; }
+    }
+
+    @keyframes text-glitch {
+      0%, 94%, 100% { transform: translateX(0); }
+      95% { transform: translateX(-0.6px); }
+      96% { transform: translateX(0.6px); }
+      97% { transform: translateX(-0.3px); }
+    }
+
+    #hero-canvas .crt::before { animation: scanline-drift 0.6s linear infinite; }
+    #hero-canvas .crt-glow    { animation: crt-flicker 5s infinite; }
+    #hero-canvas .graffiti-text { animation: text-glitch 7s infinite; }
+  </style>
+</head>
+<body>
+  <div class="proto">
+
+    <div class="proto-header">
+      <span class="proto-title">Design Demo Nights · Logo Theme System</span>
+      <div class="proto-divider"></div>
+    </div>
+
+    <!-- ─── Hero ─────────────────────────────────────────── -->
+    <div class="hero-section">
+      <div class="hero-left">
+
+        <div class="theme-nav">
+          <button class="nav-btn" id="btn-prev" aria-label="Previous theme">&#8592;</button>
+          <div class="theme-info">
+            <div class="theme-name" id="theme-name">Classic Purple</div>
+            <div class="theme-tag"  id="theme-tag">Editions 01 · 04</div>
+            <div class="theme-counter" id="theme-counter">1 / 12</div>
+          </div>
+          <button class="nav-btn" id="btn-next" aria-label="Next theme">&#8594;</button>
+        </div>
+
+        <div class="hero-canvas" id="hero-canvas">
+          <!-- hero brand-logo injected by JS -->
+        </div>
+
+        <div class="dot-row" id="dot-nav"></div>
+        <p class="kbd-hint">← → arrows &nbsp;·&nbsp; 1–9 to jump &nbsp;·&nbsp; click swatch →</p>
+      </div>
+
+      <div class="swatch-panel" id="swatch-panel">
+        <p class="swatch-label">All themes</p>
+        <div class="swatch-row" id="swatch-row"></div>
+      </div>
+    </div>
+
+    <!-- ─── Mockups ───────────────────────────────────────── -->
+    <div class="section-head">
+      <h2>Use-case mockups</h2>
+      <div class="section-head-line"></div>
+    </div>
+
+    <div class="mockups-grid">
+
+      <!-- Instagram Reel Cover -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--reel" id="frame-reel">
+          <div class="reel-inner">
+            <div class="logo-slot" id="slot-reel"></div>
+            <div class="mockup-text mockup-text--reel">
+              <div class="mock-eyebrow">Bengaluru · Monthly</div>
+              <div class="mock-heading mock-heading--reel">Design<br>Demo<br>Nights</div>
+              <div class="mock-sub mock-sub--reel">designdemonights.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-meta">
+          <div class="mockup-label">
+            <strong>Instagram Reel Cover</strong>
+            1080 × 1920 px
+          </div>
+          <button class="dl-btn" data-frame="reel" data-w="1080" data-h="1920">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+      <!-- Luma Event Image -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--luma" id="frame-luma" style="container-type:inline-size;">
+          <div class="landscape-inner">
+            <div class="logo-slot" id="slot-luma"></div>
+            <div class="mockup-text">
+              <div class="mock-eyebrow">Bengaluru · Monthly</div>
+              <div class="mock-heading mock-heading--landscape">Design Demo Nights</div>
+              <div class="mock-sub mock-sub--landscape">designdemonights.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-meta">
+          <div class="mockup-label">
+            <strong>Luma Event Image</strong>
+            1200 × 600 px
+          </div>
+          <button class="dl-btn" data-frame="luma" data-w="1200" data-h="600">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+      <!-- Web / OG -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--og" id="frame-og" style="container-type:inline-size;">
+          <div class="landscape-inner">
+            <div class="logo-slot" id="slot-og"></div>
+            <div class="mockup-text">
+              <div class="mock-eyebrow">designdemonights.com</div>
+              <div class="mock-heading mock-heading--landscape">Design Demo Nights</div>
+              <div class="mock-sub mock-sub--landscape">A Bengaluru event for designers</div>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-meta">
+          <div class="mockup-label">
+            <strong>Web / OG Link Preview</strong>
+            1200 × 630 px
+          </div>
+          <button class="dl-btn" data-frame="og" data-w="1200" data-h="630">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ─── Themes ──────────────────────────────────────────── */
+    const THEMES = [
+      {
+        name: "Classic Purple", tag: "Editions 01 · 04",
+        accent: "#b557df", heroBg: ["#f3e8ff","#c97de8"],
+        starBg: "#ffd93d", starFg: "#d63031", bngBg: "#228b22", bngFg: "#fff"
+      },
+      {
+        name: "Ember Orange", tag: "Edition 02",
+        accent: "#e86635", heroBg: ["#fff0e8","#f8a87a"],
+        starBg: "#ff6b35", starFg: "#fff", bngBg: "#c0392b", bngFg: "#fff"
+      },
+      {
+        name: "Glacial Cyan", tag: "Edition 03",
+        accent: "#76c7d9", heroBg: ["#e4f7fb","#8ecfe0"],
+        starBg: "#ffd93d", starFg: "#0c4a6e", bngBg: "#2980b9", bngFg: "#fff"
+      },
+      {
+        name: "Electric Blue", tag: "",
+        accent: "#3b82f6", heroBg: ["#e8f0ff","#93b4f8"],
+        starBg: "#facc15", starFg: "#1d4ed8", bngBg: "#1d4ed8", bngFg: "#fff"
+      },
+      {
+        name: "Neon Green", tag: "",
+        accent: "#22c55e", heroBg: ["#edfff4","#86efac"],
+        starBg: "#ffd93d", starFg: "#15803d", bngBg: "#15803d", bngFg: "#fff"
+      },
+      {
+        name: "Hot Pink", tag: "",
+        accent: "#ec4899", heroBg: ["#fdf0f7","#f5a8d0"],
+        starBg: "#fbbf24", starFg: "#be185d", bngBg: "#be185d", bngFg: "#fff"
+      },
+      {
+        name: "Amber Gold", tag: "",
+        accent: "#f59e0b", heroBg: ["#fffbeb","#fbd06a"],
+        starBg: "#ef4444", starFg: "#78350f", bngBg: "#92400e", bngFg: "#fff"
+      },
+      {
+        name: "Midnight", tag: "Dark mode",
+        accent: "#a855f7", heroBg: ["#0d0d1a","#1e1040"],
+        starBg: "#ffd93d", starFg: "#7c3aed", bngBg: "#228b22", bngFg: "#fff"
+      },
+      {
+        name: "Halloween", tag: "👻 Spooky edition",
+        accent: "#f97316", heroBg: ["#1a0a2e","#2d1050"],
+        starBg: "#f97316", starFg: "#fff", bngBg: "#7c3aed", bngFg: "#fff",
+        starContent: "👻"
+      },
+      {
+        name: "Holi", tag: "🎨 Festival of colours",
+        accent: "#f43f5e", heroBg: ["#fff8eb","#fde8f0"],
+        starBg: "#f97316", starFg: "#fff", bngBg: "#84cc16", bngFg: "#fff"
+      },
+      {
+        name: "Diwali", tag: "✨ Festival of lights",
+        accent: "#f59e0b", heroBg: ["#1a0808","#3b1205"],
+        starBg: "#dc2626", starFg: "#f59e0b", bngBg: "#b45309", bngFg: "#fef3c7"
+      },
+      {
+        name: "Monsoon", tag: "🌧 Bengaluru vibes",
+        accent: "#0ea5e9", heroBg: ["#e8f6ff","#7ecbec"],
+        starBg: "#06b6d4", starFg: "#0c4a6e", bngBg: "#0c4a6e", bngFg: "#e0f2fe"
+      }
+    ];
+
+    /* ─── Logo inner HTML ─────────────────────────────────── */
+    const LOGO_INNER = `
+      <span class="scene-scale">
+        <div class="scene">
+          <div class="computer-unit">
+            <div class="face front">
+              <div class="screen-inset">
+                <div class="crt">
+                  <div class="crt-glow">
+                    <div class="crt-ui graffiti-container">
+                      <div class="graffiti-text">DESIGN<br>DEMO<br>NIGHTS</div>
+                      <div class="subtitle-text">for designers</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="floppy-slot"></div>
+              <div class="grill">
+                <div class="vent"></div><div class="vent"></div><div class="vent"></div><div class="vent"></div>
+                <div class="vent"></div><div class="vent"></div><div class="vent"></div><div class="vent"></div>
+              </div>
+              <div class="sticker sticker-starburst"></div>
+              <div class="sticker sticker-bengaluru">Bengaluru</div>
+            </div>
+            <div class="face back"></div>
+            <div class="face left"></div>
+            <div class="face right"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
+            <div class="keyboard-assembly">
+              <div class="kb-base">
+                <div class="keys-grid">
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key wide"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key wide"></div>
+                  <div class="key"></div><div class="key"></div><div class="key space"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                </div>
+              </div>
+              <div class="kb-front"></div>
+              <div class="kb-back"></div>
+              <div class="kb-left"></div>
+              <div class="kb-right"></div>
+              <div class="kb-shadow"></div>
+            </div>
+          </div>
+        </div>
+      </span>`;
+
+    /* ─── Build a logo element with custom scale ──────────── */
+    function makeLogo(scaleVal) {
+      const el = document.createElement("span");
+      el.className = "brand-logo";
+      el.innerHTML = LOGO_INNER;
+      const ss = el.querySelector(".scene-scale");
+      ss.style.cssText = `
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 360px; height: 380px;
+        transform: translate(-50%, -50%) scale(${scaleVal});
+        transform-origin: center center;
+        pointer-events: none;
+      `;
+      return el;
+    }
+
+    /* ─── State ───────────────────────────────────────────── */
+    let idx = 0;
+    let allLogos = [];
+
+    function slugify(s) {
+      return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    /* ─── Apply theme to all logo instances + backgrounds ─── */
+    function applyTheme(t) {
+      const bg = `linear-gradient(135deg, ${t.heroBg[0]} 0%, ${t.heroBg[1]} 100%)`;
+      document.getElementById("hero-canvas").style.background = bg;
+      ["frame-reel","frame-luma","frame-og"].forEach(id => {
+        document.getElementById(id).style.background = bg;
+      });
+
+      allLogos.forEach(el => {
+        el.style.setProperty("--accent",               t.accent);
+        el.style.setProperty("--sticker-star-bg",      t.starBg);
+        el.style.setProperty("--sticker-star-fg",      t.starFg);
+        el.style.setProperty("--sticker-bng-bg",       t.bngBg);
+        el.style.setProperty("--sticker-bng-fg",       t.bngFg);
+        el.style.setProperty("--sticker-star-content", `"${t.starContent ?? "!"}"`);
+      });
+
+      document.getElementById("theme-name").textContent    = t.name;
+      document.getElementById("theme-tag").textContent     = t.tag;
+      document.getElementById("theme-counter").textContent = `${idx + 1} / ${THEMES.length}`;
+
+      document.querySelectorAll(".dot").forEach((d, i)    => d.classList.toggle("active", i === idx));
+      document.querySelectorAll(".swatch").forEach((s, i) => s.classList.toggle("active", i === idx));
+    }
+
+    function go(n) {
+      idx = ((n % THEMES.length) + THEMES.length) % THEMES.length;
+      applyTheme(THEMES[idx]);
+    }
+
+    /* ─── Init ────────────────────────────────────────────── */
+    window.addEventListener("DOMContentLoaded", () => {
+
+      /* Hero logo — use brand-logo--hero class; canvas overrides bg */
+      const heroEl = document.createElement("span");
+      heroEl.className = "brand-logo brand-logo--hero";
+      heroEl.innerHTML = LOGO_INNER;
+      document.getElementById("hero-canvas").appendChild(heroEl);
+      allLogos.push(heroEl);
+
+      /* Reel logo — 0.35 scale within 180×320 frame */
+      const reelLogo = makeLogo(0.35);
+      reelLogo.style.width  = "160px";
+      reelLogo.style.height = "160px";
+      document.getElementById("slot-reel").appendChild(reelLogo);
+      allLogos.push(reelLogo);
+
+      /* Luma logo — 0.17 scale */
+      const lumaLogo = makeLogo(0.17);
+      lumaLogo.style.width  = "76px";
+      lumaLogo.style.height = "84px";
+      document.getElementById("slot-luma").appendChild(lumaLogo);
+      allLogos.push(lumaLogo);
+
+      /* OG logo — 0.17 scale */
+      const ogLogo = makeLogo(0.17);
+      ogLogo.style.width  = "76px";
+      ogLogo.style.height = "84px";
+      document.getElementById("slot-og").appendChild(ogLogo);
+      allLogos.push(ogLogo);
+
+      /* Dots */
+      const dotNav = document.getElementById("dot-nav");
+      THEMES.forEach((_, i) => {
+        const btn = document.createElement("button");
+        btn.className = "dot";
+        btn.setAttribute("aria-label", `Theme ${i + 1}: ${THEMES[i].name}`);
+        btn.addEventListener("click", () => go(i));
+        dotNav.appendChild(btn);
+      });
+
+      /* Swatches */
+      const swatchRow = document.getElementById("swatch-row");
+      THEMES.forEach((t, i) => {
+        const sw = document.createElement("button");
+        sw.className = "swatch";
+        sw.style.background = t.accent;
+        sw.title = t.name;
+        sw.setAttribute("aria-label", t.name);
+        sw.addEventListener("click", () => go(i));
+        swatchRow.appendChild(sw);
+      });
+
+      /* Prev / Next */
+      document.getElementById("btn-prev").addEventListener("click", () => go(idx - 1));
+      document.getElementById("btn-next").addEventListener("click", () => go(idx + 1));
+
+      /* Keyboard */
+      document.addEventListener("keydown", e => {
+        if (e.key === "ArrowLeft")  go(idx - 1);
+        if (e.key === "ArrowRight") go(idx + 1);
+        const n = parseInt(e.key, 10);
+        if (n >= 1 && n <= 9) go(n - 1);
+      });
+
+      go(0);
+    });
+
+    /* ─── Download ────────────────────────────────────────── */
+    document.addEventListener("click", async e => {
+      const btn = e.target.closest(".dl-btn");
+      if (!btn) return;
+
+      const frameId  = "frame-" + btn.dataset.frame;
+      const frameEl  = document.getElementById(frameId);
+      const actualW  = parseInt(btn.dataset.w, 10);
+      const actualH  = parseInt(btn.dataset.h, 10);
+      const theme    = THEMES[idx];
+      const filename = `ddn-${btn.dataset.frame}-${slugify(theme.name)}.png`;
+
+      const origText = btn.innerHTML;
+      btn.disabled = true;
+      btn.textContent = "Rendering…";
+
+      try {
+        const rect  = frameEl.getBoundingClientRect();
+        const scale = actualW / rect.width;
+
+        const canvas = await html2canvas(frameEl, {
+          scale,
+          width:           rect.width,
+          height:          rect.height,
+          useCORS:         true,
+          logging:         false,
+          backgroundColor: null,
+        });
+
+        const link = document.createElement("a");
+        link.download = filename;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      } catch (err) {
+        alert("Export failed: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origText;
+      }
+    });
+  </script>
+</body>
+</html>
