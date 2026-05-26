@@ -411,10 +411,11 @@ img {
   color: var(--accent);
   text-align: center;
   text-shadow:
-    0 0 6px var(--accent),
-    0 0 12px color-mix(in srgb, var(--accent) 60%, transparent),
+    0 0 8px var(--accent),
+    0 0 16px var(--accent),
+    0 0 32px color-mix(in srgb, var(--accent) 70%, black),
     3px 3px 0 color-mix(in srgb, var(--accent) 40%, black),
-    -2px -2px 0 color-mix(in srgb, var(--accent) 70%, white);
+    -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
 }
 
 .brand-logo .subtitle-text {
