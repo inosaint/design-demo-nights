@@ -245,12 +245,12 @@
 
     .mockup-frame--reel {
       width: 180px;
-      height: 320px;
+      height: 279px;
     }
 
     .mockup-frame--luma {
       width: 100%;
-      aspect-ratio: 2 / 1;
+      aspect-ratio: 1 / 1;
     }
 
     .mockup-frame--og {
@@ -258,27 +258,24 @@
       aspect-ratio: 1200 / 630;
     }
 
-    /* Reel: stacked layout */
+    /* Reel: more left-right padding so logo sits in the safe circle */
     .reel-inner {
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 20px 16px;
+      padding: 8% 22%;
     }
 
-    /* Landscape: side-by-side */
+    /* Luma / OG: uniform padding */
     .landscape-inner {
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: row;
       align-items: center;
-      padding: 0 9%;
-      gap: 7%;
+      justify-content: center;
+      padding: 10%;
     }
 
     /* ─── Mockup text ────────────────────────────────────── */
@@ -548,11 +545,10 @@
       color: var(--accent);
       text-align: center;
       text-shadow:
-        0 0 8px var(--accent),
-        0 0 16px var(--accent),
-        0 0 32px color-mix(in srgb, var(--accent) 70%, black),
+        0 0 6px var(--accent),
+        0 0 12px color-mix(in srgb, var(--accent) 60%, transparent),
         3px 3px 0 color-mix(in srgb, var(--accent) 40%, black),
-        -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
+        -2px -2px 0 color-mix(in srgb, var(--accent) 70%, white);
     }
 
     .brand-logo .subtitle-text {
@@ -806,19 +802,14 @@
         <div class="mockup-frame mockup-frame--reel" id="frame-reel">
           <div class="reel-inner">
             <div class="logo-slot" id="slot-reel"></div>
-            <div class="mockup-text mockup-text--reel">
-              <div class="mock-eyebrow">Bengaluru · Monthly</div>
-              <div class="mock-heading mock-heading--reel">Design<br>Demo<br>Nights</div>
-              <div class="mock-sub mock-sub--reel">designdemonights.com</div>
-            </div>
           </div>
         </div>
         <div class="mockup-meta">
           <div class="mockup-label">
             <strong>Instagram Reel Cover</strong>
-            1080 × 1920 px
+            420 × 654 px
           </div>
-          <button class="dl-btn" data-frame="reel" data-w="1080" data-h="1920">
+          <button class="dl-btn" data-frame="reel" data-w="420" data-h="654">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             PNG
           </button>
@@ -830,19 +821,14 @@
         <div class="mockup-frame mockup-frame--luma" id="frame-luma" style="container-type:inline-size;">
           <div class="landscape-inner">
             <div class="logo-slot" id="slot-luma"></div>
-            <div class="mockup-text">
-              <div class="mock-eyebrow">Bengaluru · Monthly</div>
-              <div class="mock-heading mock-heading--landscape">Design Demo Nights</div>
-              <div class="mock-sub mock-sub--landscape">designdemonights.com</div>
-            </div>
           </div>
         </div>
         <div class="mockup-meta">
           <div class="mockup-label">
             <strong>Luma Event Image</strong>
-            1200 × 600 px
+            1200 × 1200 px
           </div>
-          <button class="dl-btn" data-frame="luma" data-w="1200" data-h="600">
+          <button class="dl-btn" data-frame="luma" data-w="1200" data-h="1200">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             PNG
           </button>
@@ -854,11 +840,6 @@
         <div class="mockup-frame mockup-frame--og" id="frame-og" style="container-type:inline-size;">
           <div class="landscape-inner">
             <div class="logo-slot" id="slot-og"></div>
-            <div class="mockup-text">
-              <div class="mock-eyebrow">designdemonights.com</div>
-              <div class="mock-heading mock-heading--landscape">Design Demo Nights</div>
-              <div class="mock-sub mock-sub--landscape">A Bengaluru event for designers</div>
-            </div>
           </div>
         </div>
         <div class="mockup-meta">
@@ -1058,24 +1039,24 @@
       document.getElementById("hero-canvas").appendChild(heroEl);
       allLogos.push(heroEl);
 
-      /* Reel logo — 0.35 scale within 180×320 frame */
-      const reelLogo = makeLogo(0.35);
-      reelLogo.style.width  = "160px";
-      reelLogo.style.height = "160px";
+      /* Reel logo — 0.28 scale; keeps logo within horizontal safe zone of exported 420×654 */
+      const reelLogo = makeLogo(0.28);
+      reelLogo.style.width  = "100px";
+      reelLogo.style.height = "120px";
       document.getElementById("slot-reel").appendChild(reelLogo);
       allLogos.push(reelLogo);
 
-      /* Luma logo — 0.17 scale */
-      const lumaLogo = makeLogo(0.17);
-      lumaLogo.style.width  = "76px";
-      lumaLogo.style.height = "84px";
+      /* Luma logo — 0.34 scale within square frame */
+      const lumaLogo = makeLogo(0.34);
+      lumaLogo.style.width  = "130px";
+      lumaLogo.style.height = "150px";
       document.getElementById("slot-luma").appendChild(lumaLogo);
       allLogos.push(lumaLogo);
 
-      /* OG logo — 0.17 scale */
-      const ogLogo = makeLogo(0.17);
-      ogLogo.style.width  = "76px";
-      ogLogo.style.height = "84px";
+      /* OG logo — 0.24 scale within 1.91:1 landscape frame */
+      const ogLogo = makeLogo(0.24);
+      ogLogo.style.width  = "96px";
+      ogLogo.style.height = "110px";
       document.getElementById("slot-og").appendChild(ogLogo);
       allLogos.push(ogLogo);
 
