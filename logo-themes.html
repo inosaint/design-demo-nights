@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Design Demo Nights · Logo Theme System</title>
+  <title>Logo Maker · Design Demo Nights</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=VT323&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* ─── Reset ──────────────────────────────────────────── */
+    /* ─── Reset ──────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -17,215 +17,163 @@
       --serif: "Instrument Serif", Georgia, serif;
       --crt-mono: "VT323", "Courier New", monospace;
       --radius: 10px;
+      /* adaptive UI colours, overridden by JS for dark themes */
+      --ui-fg:         rgba(0,0,0,0.70);
+      --ui-muted:      rgba(0,0,0,0.38);
+      --ui-btn-bg:     rgba(255,255,255,0.55);
+      --ui-btn-border: rgba(0,0,0,0.10);
+      --ui-btn-fg:     rgba(0,0,0,0.55);
+      --ui-swatch-ring: rgba(0,0,0,0.25);
+    }
+
+    html, body {
+      height: 100%;
     }
 
     body {
       font-family: var(--sans);
-      background: #0e0e0e;
-      color: #fff;
       min-height: 100vh;
+      transition: background 0.5s ease;
     }
 
-    /* ─── Page shell ─────────────────────────────────────── */
-    .proto {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 40px 24px 100px;
-    }
-
-    .proto-header {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 48px;
-    }
-
-    .proto-title {
-      font-size: 11px;
-      letter-spacing: 2.5px;
+    /* ─── Wordmark ───────────────────────────────────────────── */
+    .wordmark {
+      position: fixed;
+      top: 20px;
+      left: 24px;
+      font-size: 10px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: #444;
+      color: var(--ui-muted);
+      font-weight: 500;
+      z-index: 10;
+      transition: color 0.4s;
+      pointer-events: none;
     }
 
-    .proto-divider {
-      flex: 1;
-      height: 1px;
-      background: #222;
-    }
-
-    /* ─── Hero section ───────────────────────────────────── */
-    .hero-section {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: start;
-      margin-bottom: 72px;
-    }
-
-    @media (max-width: 640px) {
-      .hero-section { grid-template-columns: 1fr; }
-    }
-
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    /* ─── Theme navigation ───────────────────────────────── */
-    .theme-nav {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .nav-btn {
+    /* ─── Hero ───────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 55vh;
+      min-height: 360px;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid #2a2a2a;
-      background: #1a1a1a;
-      color: #888;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-      flex-shrink: 0;
-    }
-    .nav-btn:hover { background: #252525; color: #fff; border-color: #333; }
-
-    .theme-info { flex: 1; }
-
-    .theme-name {
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.3px;
-      transition: opacity 0.12s;
     }
 
-    .theme-tag {
-      font-size: 13px;
-      color: #555;
-      margin-top: 4px;
-      min-height: 19px;
-      font-family: var(--crt-mono);
-      letter-spacing: 1px;
-    }
-
-    .theme-counter {
-      font-size: 11px;
-      color: #383838;
-      margin-top: 6px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* ─── Hero canvas ────────────────────────────────────── */
-    .hero-canvas {
+    /* The brand-logo inside hero spans the full hero area so
+       perspective: 2000px applies to the whole space */
+    .hero .brand-logo {
+      position: absolute;
+      inset: 0;
       width: 100%;
-      max-width: 400px;
-      aspect-ratio: 5 / 4;
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      transition: background 0.4s ease;
+      height: 100%;
     }
 
-    .hero-canvas .brand-logo--hero {
-      background: transparent !important;
-    }
+    /* CRT animations on hero logo */
+    .hero .crt::before { animation: scanline-drift 0.6s linear infinite; }
+    .hero .crt-glow    { animation: crt-flicker 5s infinite; }
+    .hero .graffiti-text { animation: text-glitch 7s infinite; }
 
-    /* ─── Dot nav + hint ─────────────────────────────────── */
-    .dot-row {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #2a2a2a;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      padding: 0;
-    }
-    .dot.active { background: #fff; transform: scale(1.35); }
-    .dot:hover:not(.active) { background: #444; }
-
-    .kbd-hint {
-      font-size: 11px;
-      color: #333;
-    }
-
-    /* ─── Hero right: color swatches ─────────────────────── */
-    .swatch-panel {
+    /* ─── Controls ───────────────────────────────────────────── */
+    .controls {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      padding-top: 4px;
+      align-items: center;
+      gap: 12px;
+      padding: 28px 24px 36px;
     }
 
-    .swatch-label {
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #333;
-      margin-bottom: 4px;
+    .theme-label {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ui-fg);
+      transition: color 0.4s, opacity 0.12s;
+      min-height: 24px;
     }
 
-    .swatch-row {
+    .theme-tag-line {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--ui-muted);
+      font-family: var(--crt-mono);
+      min-height: 16px;
+      transition: color 0.4s;
+    }
+
+    .swatches {
       display: flex;
-      gap: 6px;
+      gap: 10px;
       flex-wrap: wrap;
+      justify-content: center;
+      padding: 4px 0;
     }
 
     .swatch {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      border: 2px solid transparent;
+      border: 2.5px solid transparent;
       cursor: pointer;
-      transition: transform 0.15s, border-color 0.15s;
-      flex-shrink: 0;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.2s;
+      outline: none;
+      padding: 0;
     }
     .swatch:hover { transform: scale(1.15); }
-    .swatch.active { border-color: #fff; }
-
-    /* ─── Section heading ────────────────────────────────── */
-    .section-head {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
+    .swatch.active {
+      border-color: white;
+      box-shadow: 0 0 0 1.5px var(--ui-swatch-ring);
+      transform: scale(1.12);
     }
-    .section-head h2 {
-      font-size: 11px;
+
+    .kbd-hint {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--ui-muted);
+      transition: color 0.4s;
+    }
+
+    /* ─── Divider ────────────────────────────────────────────── */
+    .section-divider {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-divider-line {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      margin-bottom: 28px;
+    }
+
+    /* ─── Mockups ────────────────────────────────────────────── */
+    .mockups {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .mockups-label {
+      font-size: 10px;
       letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: #444;
-      font-weight: 400;
-      white-space: nowrap;
-    }
-    .section-head-line {
-      flex: 1;
-      height: 1px;
-      background: #1e1e1e;
+      color: var(--ui-muted);
+      margin-bottom: 20px;
+      transition: color 0.4s;
     }
 
-    /* ─── Mockup grid ────────────────────────────────────── */
     .mockups-grid {
       display: grid;
       grid-template-columns: 180px 1fr 1fr;
-      gap: 32px;
+      gap: 24px;
       align-items: start;
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 660px) {
       .mockups-grid { grid-template-columns: 1fr; }
     }
 
@@ -235,94 +183,32 @@
       gap: 12px;
     }
 
-    /* ─── Mockup frames ──────────────────────────────────── */
+    /* ─── Mockup frames ──────────────────────────────────────── */
     .mockup-frame {
       position: relative;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
-      transition: background 0.4s ease;
+      transition: background 0.5s ease;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.08);
     }
 
-    .mockup-frame--reel {
-      width: 180px;
-      height: 279px;
-    }
+    .mockup-frame--reel    { width: 180px; height: 279px; }
+    .mockup-frame--luma    { width: 100%; aspect-ratio: 1 / 1; }
+    .mockup-frame--og      { width: 100%; aspect-ratio: 1200 / 630; }
 
-    .mockup-frame--luma {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-    }
-
-    .mockup-frame--og {
-      width: 100%;
-      aspect-ratio: 1200 / 630;
-    }
-
-    /* Reel: more left-right padding so logo sits in the safe circle */
-    .reel-inner {
+    .frame-inner {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8% 22%;
     }
 
-    /* Luma / OG: uniform padding */
-    .landscape-inner {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10%;
-    }
+    .reel-inner      { padding: 8% 22%; }
+    .landscape-inner { padding: 10%; }
 
-    /* ─── Mockup text ────────────────────────────────────── */
-    .mockup-text {
-      color: #fff;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.45);
-      min-width: 0;
-    }
-
-    .mockup-text--reel { text-align: center; }
-
-    .mock-eyebrow {
-      font-family: var(--crt-mono);
-      font-size: 9px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      opacity: 0.6;
-      margin-bottom: 4px;
-    }
-
-    .mock-heading {
-      font-family: var(--serif);
-      font-style: italic;
-      line-height: 1.05;
-    }
-
-    .mock-heading--reel { font-size: 18px; }
-    .mock-heading--landscape { font-size: clamp(12px, 3.5cqw, 26px); }
-
-    .mock-sub {
-      font-family: var(--crt-mono);
-      letter-spacing: 1.5px;
-      opacity: 0.45;
-      margin-top: 5px;
-    }
-
-    .mock-sub--reel { font-size: 8px; }
-    .mock-sub--landscape { font-size: clamp(7px, 1.4cqw, 10px); }
-
-    /* ─── Logo slots in mockups ──────────────────────────── */
-    .logo-slot {
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    /* ─── Mockup meta + download ─────────────────────────── */
-    .mockup-meta {
+    /* ─── Mockup footer ──────────────────────────────────────── */
+    .mockup-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -331,35 +217,42 @@
 
     .mockup-label {
       font-size: 11px;
-      color: #444;
-      line-height: 1.5;
+      color: var(--ui-muted);
+      line-height: 1.6;
+      transition: color 0.4s;
     }
     .mockup-label strong {
       display: block;
-      color: #666;
+      color: var(--ui-fg);
       font-size: 12px;
+      transition: color 0.4s;
     }
 
     .dl-btn {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid #2a2a2a;
-      background: #1a1a1a;
-      color: #666;
+      padding: 7px 14px;
+      border-radius: 7px;
+      border: 1px solid var(--ui-btn-border);
+      background: var(--ui-btn-bg);
+      color: var(--ui-btn-fg);
       font-size: 11px;
       font-family: var(--sans);
       cursor: pointer;
       white-space: nowrap;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.15s, color 0.15s, border-color 0.4s;
       flex-shrink: 0;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
-    .dl-btn:hover { background: #222; color: #ccc; }
+    .dl-btn:hover { background: rgba(255,255,255,0.85); color: rgba(0,0,0,0.75); }
     .dl-btn:disabled { opacity: 0.4; pointer-events: none; }
 
-    /* ─── Brand logo — copied from styles.css 142–726 ─────── */
+    /* ─── Logo slot ──────────────────────────────────────────── */
+    .logo-slot { position: relative; flex-shrink: 0; }
+
+    /* ─── Brand logo — from styles.css 142–726 ───────────────── */
     .brand-logo {
       --accent: #9932cc;
       --beige-light: #f0ede0;
@@ -382,44 +275,11 @@
 
     .brand-logo .scene-scale {
       position: absolute;
-      top: 4px;
-      left: 0;
-      width: 360px;
-      height: 380px;
+      top: 4px; left: 0;
+      width: 360px; height: 380px;
       transform: scale(0.22);
       transform-origin: top left;
       pointer-events: none;
-    }
-
-    .brand-logo--hero {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 5 / 4;
-      border-radius: var(--radius);
-      overflow: hidden;
-      container-type: inline-size;
-      background: linear-gradient(135deg,
-        color-mix(in srgb, var(--accent) 18%, white) 0%,
-        color-mix(in srgb, var(--accent) 48%, white) 100%);
-    }
-
-    .brand-logo--hero .scene-scale {
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.7);
-      transform-origin: center center;
-    }
-
-    @container (min-width: 560px) {
-      .brand-logo--hero .scene-scale {
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-
-    @container (max-width: 380px) {
-      .brand-logo--hero .scene-scale {
-        transform: translate(-50%, -50%) scale(0.5);
-      }
     }
 
     .brand-logo .scene {
@@ -430,8 +290,7 @@
 
     .brand-logo .computer-unit {
       position: relative;
-      width: 360px;
-      height: 380px;
+      width: 360px; height: 380px;
       transform-style: preserve-3d;
     }
 
@@ -443,8 +302,7 @@
 
     .brand-logo .front {
       display: flex;
-      width: 360px;
-      height: 380px;
+      width: 360px; height: 380px;
       flex-direction: column;
       align-items: center;
       padding-top: 40px;
@@ -552,6 +410,8 @@
         -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
     }
 
+    /* Safari: text-shadow blur doesn't scale with CSS transforms inside
+       preserve-3d contexts — halve the radii to compensate */
     @supports (-webkit-touch-callout: none) {
       .brand-logo .graffiti-text {
         text-shadow:
@@ -743,7 +603,7 @@
       transform: translate(-50%, -50%) scaleX(0);
     }
 
-    /* ─── CRT animations on hero logo ────────────────────── */
+    /* ─── CRT animations ─────────────────────────────────────── */
     @keyframes scanline-drift { to { background-position: 0 4px, 0 0; } }
 
     @keyframes crt-flicker {
@@ -758,108 +618,82 @@
       96% { transform: translateX(0.6px); }
       97% { transform: translateX(-0.3px); }
     }
-
-    #hero-canvas .crt::before { animation: scanline-drift 0.6s linear infinite; }
-    #hero-canvas .crt-glow    { animation: crt-flicker 5s infinite; }
-    #hero-canvas .graffiti-text { animation: text-glitch 7s infinite; }
   </style>
 </head>
 <body>
-  <div class="proto">
 
-    <div class="proto-header">
-      <span class="proto-title">Design Demo Nights · Logo Theme System</span>
-      <div class="proto-divider"></div>
-    </div>
+  <span class="wordmark">Logo Maker</span>
 
-    <!-- ─── Hero ─────────────────────────────────────────── -->
-    <div class="hero-section">
-      <div class="hero-left">
+  <!-- ─── Hero ───────────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <!-- brand-logo injected by JS, fills full hero -->
+  </section>
 
-        <div class="theme-nav">
-          <button class="nav-btn" id="btn-prev" aria-label="Previous theme">&#8592;</button>
-          <div class="theme-info">
-            <div class="theme-name" id="theme-name">Classic Purple</div>
-            <div class="theme-tag"  id="theme-tag">Editions 01 · 04</div>
-            <div class="theme-counter" id="theme-counter">1 / 12</div>
-          </div>
-          <button class="nav-btn" id="btn-next" aria-label="Next theme">&#8594;</button>
-        </div>
+  <!-- ─── Controls ───────────────────────────────────────────── -->
+  <div class="controls">
+    <div class="theme-label" id="theme-label">Classic Purple</div>
+    <div class="theme-tag-line" id="theme-tag-line">Editions 01 · 04</div>
+    <div class="swatches" id="swatches"></div>
+    <p class="kbd-hint">← → to cycle &nbsp;·&nbsp; 1–9 to jump</p>
+  </div>
 
-        <div class="hero-canvas" id="hero-canvas">
-          <!-- hero brand-logo injected by JS -->
-        </div>
-
-        <div class="dot-row" id="dot-nav"></div>
-        <p class="kbd-hint">← → arrows &nbsp;·&nbsp; 1–9 to jump &nbsp;·&nbsp; click swatch →</p>
-      </div>
-
-      <div class="swatch-panel" id="swatch-panel">
-        <p class="swatch-label">All themes</p>
-        <div class="swatch-row" id="swatch-row"></div>
-      </div>
-    </div>
-
-    <!-- ─── Mockups ───────────────────────────────────────── -->
-    <div class="section-head">
-      <h2>Use-case mockups</h2>
-      <div class="section-head-line"></div>
-    </div>
-
+  <!-- ─── Mockups ─────────────────────────────────────────────── -->
+  <div class="mockups">
+    <p class="mockups-label">Export</p>
     <div class="mockups-grid">
 
-      <!-- Instagram Reel Cover -->
+      <!-- Reel Cover -->
       <div class="mockup-card">
         <div class="mockup-frame mockup-frame--reel" id="frame-reel">
-          <div class="reel-inner">
+          <div class="frame-inner reel-inner">
             <div class="logo-slot" id="slot-reel"></div>
           </div>
         </div>
-        <div class="mockup-meta">
+        <div class="mockup-footer">
           <div class="mockup-label">
             <strong>Instagram Reel Cover</strong>
             420 × 654 px
           </div>
           <button class="dl-btn" data-frame="reel" data-w="420" data-h="654">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             PNG
           </button>
         </div>
       </div>
 
-      <!-- Luma Event Image -->
+      <!-- Luma -->
       <div class="mockup-card">
-        <div class="mockup-frame mockup-frame--luma" id="frame-luma" style="container-type:inline-size;">
-          <div class="landscape-inner">
+        <div class="mockup-frame mockup-frame--luma" id="frame-luma">
+          <div class="frame-inner landscape-inner">
             <div class="logo-slot" id="slot-luma"></div>
           </div>
         </div>
-        <div class="mockup-meta">
+        <div class="mockup-footer">
           <div class="mockup-label">
             <strong>Luma Event Image</strong>
             1200 × 1200 px
           </div>
           <button class="dl-btn" data-frame="luma" data-w="1200" data-h="1200">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             PNG
           </button>
         </div>
       </div>
 
-      <!-- Web / OG -->
+      <!-- OG -->
       <div class="mockup-card">
-        <div class="mockup-frame mockup-frame--og" id="frame-og" style="container-type:inline-size;">
-          <div class="landscape-inner">
+        <div class="mockup-frame mockup-frame--og" id="frame-og">
+          <div class="frame-inner landscape-inner">
             <div class="logo-slot" id="slot-og"></div>
           </div>
         </div>
-        <div class="mockup-meta">
+        <div class="mockup-footer">
           <div class="mockup-label">
             <strong>Web / OG Link Preview</strong>
             1200 × 630 px
           </div>
           <button class="dl-btn" data-frame="og" data-w="1200" data-h="630">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             PNG
           </button>
         </div>
@@ -869,7 +703,7 @@
   </div>
 
   <script>
-    /* ─── Themes ──────────────────────────────────────────── */
+    /* ─── Themes ─────────────────────────────────────────────── */
     const THEMES = [
       {
         name: "Classic Purple", tag: "Editions 01 · 04",
@@ -934,7 +768,7 @@
       }
     ];
 
-    /* ─── Logo inner HTML ─────────────────────────────────── */
+    /* ─── Logo HTML ──────────────────────────────────────────── */
     const LOGO_INNER = `
       <span class="scene-scale">
         <div class="scene">
@@ -985,15 +819,24 @@
         </div>
       </span>`;
 
-    /* ─── Build a logo element with custom scale ──────────── */
+    /* ─── Helpers ────────────────────────────────────────────── */
+    function slugify(s) {
+      return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function isDark(hex) {
+      const r = parseInt(hex.slice(1,3), 16) || 0;
+      const g = parseInt(hex.slice(3,5), 16) || 0;
+      const b = parseInt(hex.slice(5,7), 16) || 0;
+      return 0.299*r + 0.587*g + 0.114*b < 140;
+    }
+
     function makeLogo(scaleVal) {
       const el = document.createElement("span");
       el.className = "brand-logo";
       el.innerHTML = LOGO_INNER;
-      const ss = el.querySelector(".scene-scale");
-      ss.style.cssText = `
-        position: absolute;
-        top: 50%; left: 50%;
+      el.querySelector(".scene-scale").style.cssText = `
+        position: absolute; top: 50%; left: 50%;
         width: 360px; height: 380px;
         transform: translate(-50%, -50%) scale(${scaleVal});
         transform-origin: center center;
@@ -1002,18 +845,24 @@
       return el;
     }
 
-    /* ─── State ───────────────────────────────────────────── */
+    /* ─── State ──────────────────────────────────────────────── */
     let idx = 0;
     let allLogos = [];
+    let heroScaleEl = null;
 
-    function slugify(s) {
-      return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    /* ─── Hero logo scaling ──────────────────────────────────── */
+    function fitHeroLogo() {
+      if (!heroScaleEl) return;
+      const h = document.getElementById("hero").clientHeight;
+      /* ~460px is the approx visual height (monitor + keyboard) at scale 1.0 */
+      const scale = Math.min(h * 0.76 / 460, 1.2);
+      heroScaleEl.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
     }
 
-    /* ─── Apply theme to all logo instances + backgrounds ─── */
+    /* ─── Apply theme ────────────────────────────────────────── */
     function applyTheme(t) {
       const bg = `linear-gradient(135deg, ${t.heroBg[0]} 0%, ${t.heroBg[1]} 100%)`;
-      document.getElementById("hero-canvas").style.background = bg;
+      document.body.style.background = bg;
       ["frame-reel","frame-luma","frame-og"].forEach(id => {
         document.getElementById(id).style.background = bg;
       });
@@ -1027,12 +876,19 @@
         el.style.setProperty("--sticker-star-content", `"${t.starContent ?? "!"}"`);
       });
 
-      document.getElementById("theme-name").textContent    = t.name;
-      document.getElementById("theme-tag").textContent     = t.tag;
-      document.getElementById("theme-counter").textContent = `${idx + 1} / ${THEMES.length}`;
-
-      document.querySelectorAll(".dot").forEach((d, i)    => d.classList.toggle("active", i === idx));
+      document.getElementById("theme-label").textContent   = t.name;
+      document.getElementById("theme-tag-line").textContent = t.tag;
       document.querySelectorAll(".swatch").forEach((s, i) => s.classList.toggle("active", i === idx));
+
+      /* Adaptive UI colours for dark-background themes */
+      const dark = isDark(t.heroBg[0]);
+      const root = document.documentElement;
+      root.style.setProperty("--ui-fg",          dark ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.70)");
+      root.style.setProperty("--ui-muted",        dark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.38)");
+      root.style.setProperty("--ui-btn-bg",       dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.55)");
+      root.style.setProperty("--ui-btn-border",   dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.10)");
+      root.style.setProperty("--ui-btn-fg",       dark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.55)");
+      root.style.setProperty("--ui-swatch-ring",  dark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.25)");
     }
 
     function go(n) {
@@ -1040,49 +896,43 @@
       applyTheme(THEMES[idx]);
     }
 
-    /* ─── Init ────────────────────────────────────────────── */
+    /* ─── Init ───────────────────────────────────────────────── */
     window.addEventListener("DOMContentLoaded", () => {
 
-      /* Hero logo — use brand-logo--hero class; canvas overrides bg */
+      /* Hero logo — spans full hero section, JS controls scale */
       const heroEl = document.createElement("span");
-      heroEl.className = "brand-logo brand-logo--hero";
+      heroEl.className = "brand-logo";
       heroEl.innerHTML = LOGO_INNER;
-      document.getElementById("hero-canvas").appendChild(heroEl);
+      heroScaleEl = heroEl.querySelector(".scene-scale");
+      heroScaleEl.style.cssText = `
+        position: absolute; top: 50%; left: 50%;
+        width: 360px; height: 380px;
+        transform-origin: center center;
+        pointer-events: none;
+      `;
+      document.getElementById("hero").appendChild(heroEl);
       allLogos.push(heroEl);
+      fitHeroLogo();
+      window.addEventListener("resize", fitHeroLogo);
 
-      /* Reel logo — 0.28 scale; keeps logo within horizontal safe zone of exported 420×654 */
+      /* Mockup logos */
       const reelLogo = makeLogo(0.28);
-      reelLogo.style.width  = "100px";
-      reelLogo.style.height = "120px";
+      reelLogo.style.cssText += "width:100px;height:120px;";
       document.getElementById("slot-reel").appendChild(reelLogo);
       allLogos.push(reelLogo);
 
-      /* Luma logo — 0.34 scale within square frame */
       const lumaLogo = makeLogo(0.34);
-      lumaLogo.style.width  = "130px";
-      lumaLogo.style.height = "150px";
+      lumaLogo.style.cssText += "width:130px;height:150px;";
       document.getElementById("slot-luma").appendChild(lumaLogo);
       allLogos.push(lumaLogo);
 
-      /* OG logo — 0.24 scale within 1.91:1 landscape frame */
       const ogLogo = makeLogo(0.24);
-      ogLogo.style.width  = "96px";
-      ogLogo.style.height = "110px";
+      ogLogo.style.cssText += "width:96px;height:110px;";
       document.getElementById("slot-og").appendChild(ogLogo);
       allLogos.push(ogLogo);
 
-      /* Dots */
-      const dotNav = document.getElementById("dot-nav");
-      THEMES.forEach((_, i) => {
-        const btn = document.createElement("button");
-        btn.className = "dot";
-        btn.setAttribute("aria-label", `Theme ${i + 1}: ${THEMES[i].name}`);
-        btn.addEventListener("click", () => go(i));
-        dotNav.appendChild(btn);
-      });
-
       /* Swatches */
-      const swatchRow = document.getElementById("swatch-row");
+      const swatchesEl = document.getElementById("swatches");
       THEMES.forEach((t, i) => {
         const sw = document.createElement("button");
         sw.className = "swatch";
@@ -1090,12 +940,8 @@
         sw.title = t.name;
         sw.setAttribute("aria-label", t.name);
         sw.addEventListener("click", () => go(i));
-        swatchRow.appendChild(sw);
+        swatchesEl.appendChild(sw);
       });
-
-      /* Prev / Next */
-      document.getElementById("btn-prev").addEventListener("click", () => go(idx - 1));
-      document.getElementById("btn-next").addEventListener("click", () => go(idx + 1));
 
       /* Keyboard */
       document.addEventListener("keydown", e => {
@@ -1108,35 +954,28 @@
       go(0);
     });
 
-    /* ─── Download ────────────────────────────────────────── */
+    /* ─── Download ───────────────────────────────────────────── */
     document.addEventListener("click", async e => {
       const btn = e.target.closest(".dl-btn");
       if (!btn) return;
 
-      const frameId  = "frame-" + btn.dataset.frame;
-      const frameEl  = document.getElementById(frameId);
+      const frameEl  = document.getElementById("frame-" + btn.dataset.frame);
       const actualW  = parseInt(btn.dataset.w, 10);
       const actualH  = parseInt(btn.dataset.h, 10);
       const theme    = THEMES[idx];
       const filename = `ddn-${btn.dataset.frame}-${slugify(theme.name)}.png`;
 
-      const origText = btn.innerHTML;
-      btn.disabled = true;
+      const origHTML = btn.innerHTML;
+      btn.disabled   = true;
       btn.textContent = "Rendering…";
 
       try {
         const rect  = frameEl.getBoundingClientRect();
         const scale = actualW / rect.width;
-
         const canvas = await html2canvas(frameEl, {
-          scale,
-          width:           rect.width,
-          height:          rect.height,
-          useCORS:         true,
-          logging:         false,
-          backgroundColor: null,
+          scale, width: rect.width, height: rect.height,
+          useCORS: true, logging: false, backgroundColor: null,
         });
-
         const link = document.createElement("a");
         link.download = filename;
         link.href = canvas.toDataURL("image/png");
@@ -1144,8 +983,8 @@
       } catch (err) {
         alert("Export failed: " + err.message);
       } finally {
-        btn.disabled = false;
-        btn.innerHTML = origText;
+        btn.disabled  = false;
+        btn.innerHTML = origHTML;
       }
     });
   </script>
