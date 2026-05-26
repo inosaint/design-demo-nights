@@ -418,6 +418,19 @@ img {
     -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
 }
 
+/* Safari doesn't scale text-shadow blur with parent CSS transforms — the glow
+   renders in screen space, making it appear ~4× too large inside .scene-scale.
+   Compensate with proportionally reduced blur radii. */
+@supports (-webkit-touch-callout: none) {
+  .brand-logo .graffiti-text {
+    text-shadow:
+      0 0 4px var(--accent),
+      0 0 8px var(--accent),
+      3px 3px 0 color-mix(in srgb, var(--accent) 40%, black),
+      -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
+  }
+}
+
 .brand-logo .subtitle-text {
   margin-top: 10px;
   font-family: var(--serif);

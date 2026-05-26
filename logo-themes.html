@@ -552,6 +552,16 @@
         -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
     }
 
+    @supports (-webkit-touch-callout: none) {
+      .brand-logo .graffiti-text {
+        text-shadow:
+          0 0 4px var(--accent),
+          0 0 8px var(--accent),
+          3px 3px 0 color-mix(in srgb, var(--accent) 40%, black),
+          -2px -2px 0 color-mix(in srgb, var(--accent) 60%, white);
+      }
+    }
+
     .brand-logo .subtitle-text {
       margin-top: 10px;
       font-family: var(--serif);
