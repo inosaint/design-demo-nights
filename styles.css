@@ -850,11 +850,13 @@ img {
 
 /* ─── Carousel ────────────────────────────────────────── */
 .carousel-wrap {
+  margin-left: calc(-1 * clamp(16px, 4vw, 32px));
+  margin-right: calc(-1 * clamp(16px, 4vw, 32px));
 }
 
 .demo-carousel {
   overflow: hidden;
-  padding: 4px 0 14px;
+  padding: 4px clamp(16px, 4vw, 32px) 14px;
 }
 
 .demo-carousel-track {
@@ -1268,6 +1270,7 @@ img {
   .demo-carousel {
     overflow-x: auto;
     scrollbar-width: none;
+    scroll-padding-left: clamp(16px, 4vw, 32px);
   }
 
   .demo-carousel::-webkit-scrollbar {
