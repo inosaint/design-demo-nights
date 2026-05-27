@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     /* ─── Reset ──────────────────────────────────────────────── */
@@ -24,10 +25,6 @@
       --ui-btn-border: rgba(0,0,0,0.10);
       --ui-btn-fg:     rgba(0,0,0,0.55);
       --ui-swatch-ring: rgba(0,0,0,0.25);
-    }
-
-    html, body {
-      height: 100%;
     }
 
     body {
@@ -133,6 +130,51 @@
       font-size: 10px;
       letter-spacing: 1px;
       color: var(--ui-muted);
+      transition: color 0.4s;
+    }
+
+    /* ─── Sticker shadow controls ───────────────────────────── */
+    .sticker-shadow-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .sticker-shadow-controls-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ui-muted);
+      font-family: var(--crt-mono);
+      transition: color 0.4s;
+    }
+    .shadow-sliders {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 6px 14px;
+      align-items: center;
+    }
+    .shadow-slider-row {
+      display: contents;
+    }
+    .shadow-slider-row label {
+      font-size: 10px;
+      font-family: var(--crt-mono);
+      color: var(--ui-muted);
+      letter-spacing: 1px;
+      text-align: right;
+      transition: color 0.4s;
+    }
+    .shadow-slider-row input[type=range] {
+      width: 80px;
+      accent-color: var(--ui-fg);
+      cursor: pointer;
+    }
+    .shadow-slider-row .shad-val {
+      font-size: 10px;
+      font-family: var(--crt-mono);
+      color: var(--ui-muted);
+      min-width: 28px;
       transition: color 0.4s;
     }
 
@@ -272,6 +314,7 @@
       --sticker-bng-bg: #228b22;
       --sticker-bng-fg: #ffffff;
       --sticker-star-content: "!";
+      --sticker-clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
       position: relative;
       display: block;
       flex: 0 0 auto;
@@ -476,14 +519,38 @@
       top: 48px; left: 16px;
       border: 2px solid #fff;
       background: var(--sticker-star-bg);
-      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      clip-path: var(--sticker-clip-path);
       box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
       transform: translateZ(101px) rotate(-12deg);
     }
 
+    .brand-logo .sticker-starburst:has(.em) {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      clip-path: none;
+      top: 38px;
+      left: 6px;
+    }
+    .brand-logo .sticker-starburst:has(.em)::after {
+      content: none;
+    }
+
+    .brand-logo .sticker-starburst .em {
+      width: 30px;
+      height: 30px;
+      background-size: 100%;
+      filter:
+        drop-shadow(-2px 0 0 #fff)
+        drop-shadow(2px 0 0 #fff)
+        drop-shadow(0 -2px 0 #fff)
+        drop-shadow(0 2px 0 #fff)
+        drop-shadow(-2px -1px 2px rgba(0,0,0,0.10));
+    }
+
     .brand-logo .sticker-starburst::after {
       font-family: var(--crt-mono);
-      font-size: 20px;
+      font-size: var(--sticker-font-size, 20px);
       font-weight: 700;
       color: var(--sticker-star-fg);
       transform: rotate(12deg);
@@ -642,6 +709,31 @@
     <div class="theme-tag-line" id="theme-tag-line">Editions 01 · 04</div>
     <div class="swatches" id="swatches"></div>
     <p class="kbd-hint">← → to cycle &nbsp;·&nbsp; 1–9 to jump</p>
+    <div class="sticker-shadow-controls" id="sticker-shadow-controls" style="display:none">
+      <p class="sticker-shadow-controls-label">Sticker shadow</p>
+      <div class="shadow-sliders">
+        <div class="shadow-slider-row">
+          <label>x</label>
+          <input type="range" id="shad-x" min="-8" max="8" value="-2" step="1">
+          <span class="shad-val" id="shad-x-val">-2</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>y</label>
+          <input type="range" id="shad-y" min="-8" max="8" value="-1" step="1">
+          <span class="shad-val" id="shad-y-val">-1</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>blur</label>
+          <input type="range" id="shad-blur" min="0" max="16" value="2" step="1">
+          <span class="shad-val" id="shad-blur-val">2</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>opacity</label>
+          <input type="range" id="shad-op" min="0" max="100" value="10" step="5">
+          <span class="shad-val" id="shad-op-val">10%</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ─── Mockups ─────────────────────────────────────────────── -->
@@ -756,7 +848,7 @@
         name: "Halloween", tag: "👻 Spooky edition",
         accent: "#f97316", heroBg: ["#1a0a2e","#2d1050"],
         starBg: "#f97316", starFg: "#fff", bngBg: "#7c3aed", bngFg: "#fff",
-        starContent: "👻"
+        emojiCssClass: "ghost", emojiSticker: true
       },
       {
         name: "Holi", tag: "🎨 Festival of colours",
@@ -771,7 +863,8 @@
       {
         name: "Monsoon", tag: "🌧 Bengaluru vibes",
         accent: "#0ea5e9", heroBg: ["#e8f6ff","#7ecbec"],
-        starBg: "#06b6d4", starFg: "#0c4a6e", bngBg: "#0c4a6e", bngFg: "#e0f2fe"
+        starBg: "#06b6d4", starFg: "#0c4a6e", bngBg: "#0c4a6e", bngFg: "#e0f2fe",
+        emojiCssClass: "thunder_cloud_and_rain", emojiSticker: true
       }
     ];
 
@@ -897,7 +990,27 @@
         el.style.setProperty("--sticker-star-fg",      t.starFg);
         el.style.setProperty("--sticker-bng-bg",       t.bngBg);
         el.style.setProperty("--sticker-bng-fg",       t.bngFg);
-        el.style.setProperty("--sticker-star-content", `"${t.starContent ?? "!"}"`);
+        const starSticker = el.querySelector('.sticker-starburst');
+        if (t.emojiCssClass) {
+          starSticker.innerHTML = `<i class="em em-${t.emojiCssClass}"></i>`;
+          el.style.setProperty("--sticker-star-content", '""');
+        } else {
+          starSticker.innerHTML = '';
+          el.style.setProperty("--sticker-star-content", `"${t.starContent ?? "!"}"`);
+        }
+        if (t.emojiSticker) {
+          el.style.setProperty("--sticker-clip-path", "none");
+          el.style.setProperty("--sticker-bg",        "transparent");
+          el.style.setProperty("--sticker-border",    "none");
+          el.style.setProperty("--sticker-shadow",    "none");
+          el.style.setProperty("--sticker-font-size", "28px");
+        } else {
+          el.style.setProperty("--sticker-clip-path", "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)");
+          el.style.setProperty("--sticker-bg",        "");
+          el.style.setProperty("--sticker-border",    "");
+          el.style.setProperty("--sticker-shadow",    "");
+          el.style.setProperty("--sticker-font-size", "");
+        }
         /* pre-computed replacements for color-mix() — html2canvas can't parse it */
         el.style.setProperty("--accent-dark-70",  mixHex(t.accent, "black", 0.70));
         el.style.setProperty("--accent-dark-40",  mixHex(t.accent, "black", 0.40));
@@ -906,8 +1019,9 @@
         el.style.setProperty("--accent-glow",     hexAlpha(t.accent, 0.65));
       });
 
-      document.getElementById("theme-label").textContent   = t.name;
-      document.getElementById("theme-tag-line").textContent = t.tag;
+      document.getElementById("theme-label").textContent    = t.name;
+      document.getElementById("theme-tag-line").textContent  = t.tag;
+      document.getElementById("sticker-shadow-controls").style.display = t.emojiCssClass ? "" : "none";
       document.querySelectorAll(".swatch").forEach((s, i) => s.classList.toggle("active", i === idx));
 
       /* Adaptive UI colours for dark-background themes */
@@ -951,13 +1065,13 @@
       document.getElementById("slot-reel").appendChild(reelLogo);
       allLogos.push(reelLogo);
 
-      const lumaLogo = makeLogo(0.34);
-      lumaLogo.style.cssText += "width:130px;height:150px;";
+      const lumaLogo = makeLogo(0.68);
+      lumaLogo.style.cssText += "width:260px;height:300px;";
       document.getElementById("slot-luma").appendChild(lumaLogo);
       allLogos.push(lumaLogo);
 
-      const ogLogo = makeLogo(0.24);
-      ogLogo.style.cssText += "width:96px;height:110px;";
+      const ogLogo = makeLogo(0.36);
+      ogLogo.style.cssText += "width:144px;height:165px;";
       document.getElementById("slot-og").appendChild(ogLogo);
       allLogos.push(ogLogo);
 
@@ -981,6 +1095,23 @@
         if (n >= 1 && n <= 9) go(n - 1);
       });
 
+      /* Sticker shadow sliders */
+      function updateEmojiShadow() {
+        const x    = document.getElementById("shad-x").value;
+        const y    = document.getElementById("shad-y").value;
+        const blur = document.getElementById("shad-blur").value;
+        const op   = (document.getElementById("shad-op").value / 100).toFixed(2);
+        document.getElementById("shad-x-val").textContent    = x;
+        document.getElementById("shad-y-val").textContent    = y;
+        document.getElementById("shad-blur-val").textContent = blur;
+        document.getElementById("shad-op-val").textContent   = document.getElementById("shad-op").value + "%";
+        const f = `drop-shadow(-2px 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(${x}px ${y}px ${blur}px rgba(0,0,0,${op}))`;
+        document.querySelectorAll(".brand-logo .sticker-starburst .em").forEach(el => el.style.filter = f);
+      }
+      ["shad-x","shad-y","shad-blur","shad-op"].forEach(id =>
+        document.getElementById(id).addEventListener("input", updateEmojiShadow)
+      );
+
       go(0);
     });
 
@@ -999,20 +1130,116 @@
       btn.disabled   = true;
       btn.textContent = "Rendering…";
 
+      let overlay = null;
+      let stream  = null;
       try {
-        const rect  = frameEl.getBoundingClientRect();
-        const scale = actualW / rect.width;
-        const canvas = await html2canvas(frameEl, {
-          scale, width: rect.width, height: rect.height,
-          useCORS: true, logging: false, backgroundColor: null,
-        });
-        const link = document.createElement("a");
-        link.download = filename;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
+        const rect = frameEl.getBoundingClientRect();
+
+        if (navigator.mediaDevices?.getDisplayMedia) {
+          /* ── Screen capture path ──────────────────────────────────
+             Scale the frame up to (at least) the output pixel size so
+             getDisplayMedia captures it at full resolution, not tiny. */
+          const dpr          = window.devicePixelRatio || 1;
+          const captureScale = Math.max(1, actualW / (rect.width * dpr));
+          const ovW = Math.ceil(rect.width  * captureScale);
+          const ovH = Math.ceil(rect.height * captureScale);
+
+          stream = await navigator.mediaDevices.getDisplayMedia({
+            video: { displaySurface: "browser" },
+            preferCurrentTab: true,
+            selfBrowserSurface: "include",
+          });
+
+          /* Start video before touching the DOM */
+          const video = document.createElement("video");
+          video.srcObject = stream;
+          video.muted = true;
+          await new Promise(resolve => {
+            video.onloadedmetadata = () => video.play().then(resolve);
+          });
+
+          /* Place a scaled clone at the top-left of the viewport so the
+             video pipeline captures it at the right resolution */
+          overlay = document.createElement("div");
+          overlay.style.cssText = `position:fixed;top:0;left:0;z-index:99999;` +
+            `width:${ovW}px;height:${ovH}px;overflow:hidden;pointer-events:none;`;
+          const clone = frameEl.cloneNode(true);
+          clone.style.position      = "absolute";
+          clone.style.top           = "0";
+          clone.style.left          = "0";
+          clone.style.margin        = "0";
+          clone.style.width         = rect.width  + "px";
+          clone.style.height        = rect.height + "px";
+          clone.style.transform     = `scale(${captureScale})`;
+          clone.style.transformOrigin = "top left";
+          overlay.appendChild(clone);
+          document.body.appendChild(overlay);
+
+          /* Two rAFs + short buffer so the video pipeline sees the overlay */
+          await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+          await new Promise(r => setTimeout(r, 150));
+
+          const sx = video.videoWidth  / window.innerWidth;
+          const sy = video.videoHeight / window.innerHeight;
+
+          const canvas = document.createElement("canvas");
+          canvas.width  = actualW;
+          canvas.height = actualH;
+          canvas.getContext("2d").drawImage(
+            video,
+            0, 0, ovW * sx, ovH * sy,
+            0, 0, actualW, actualH
+          );
+
+          const link = document.createElement("a");
+          link.download = filename;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+
+        } else {
+          /* ── Fallback: html2canvas with 2D approximation of CSS 3D ── */
+          const scale  = actualW / rect.width;
+          const canvas = await html2canvas(frameEl, {
+            scale, width: rect.width, height: rect.height,
+            useCORS: true, logging: false, backgroundColor: null,
+            onclone: (clonedDoc) => {
+              const s = clonedDoc.createElement("style");
+              s.textContent = `
+                .brand-logo * { transform-style: flat !important; }
+                .brand-logo .face.back, .brand-logo .face.left,
+                .brand-logo .face.right, .brand-logo .face.top,
+                .brand-logo .face.bottom,
+                .brand-logo .keyboard-assembly { display: none !important; }
+                .brand-logo .scene {
+                  transform: perspective(1200px) rotateY(-15deg) rotateX(5deg) !important;
+                  overflow: visible !important;
+                }
+                .brand-logo .computer-unit { overflow: visible !important; }
+                .brand-logo .face.front { transform: none !important; overflow: visible !important; }
+                .brand-logo .face.front::after {
+                  content: "" !important; position: absolute !important;
+                  top: 6px !important; left: 100% !important;
+                  width: 52px !important; height: 100% !important;
+                  background: var(--beige-dark) !important;
+                  transform-origin: left top !important; transform: skewY(-4deg) !important;
+                }
+                .brand-logo .sticker-starburst { transform: rotate(-12deg) !important; }
+                .brand-logo .sticker-bengaluru { transform: rotate(4deg) !important; }
+              `;
+              clonedDoc.head.appendChild(s);
+            },
+          });
+          const link = document.createElement("a");
+          link.download = filename;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        }
+
       } catch (err) {
-        alert("Export failed: " + err.message);
+        if (err.name !== "NotAllowedError") alert("Export failed: " + err.message);
       } finally {
+        if (overlay) document.body.removeChild(overlay);
+        if (stream)  stream.getTracks().forEach(t => t.stop());
         btn.disabled  = false;
         btn.innerHTML = origHTML;
       }
