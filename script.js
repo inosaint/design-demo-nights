@@ -14,10 +14,10 @@ const events = [
   {
     id: "4",
     title: "Design Demo Nights 04",
-    startsAt: "2026-06-15T18:30:00+05:30",
+    startsAt: "2026-06-05T18:30:00+05:30",
     location: "Bengaluru",
     themeColor: "#b557df",
-    applyUrl: LUMA_URL,
+    applyUrl: "https://lu.ma/9yic1qog",
     demos: []
   },
   {
@@ -936,7 +936,7 @@ function togglePower() {
 
 brandButton?.addEventListener("click", togglePower);
 
-//renderUpcoming();
+renderUpcoming();
 renderArchive();
 syncFromHash();
 
