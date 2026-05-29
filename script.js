@@ -14,7 +14,7 @@ const events = [
   {
     id: "4",
     title: "Design Demo Nights 04",
-    startsAt: "2026-06-05T18:30:00+05:30",
+    startsAt: "2026-06-05T18:00:00+05:30",
     location: "Bengaluru",
     themeColor: "#b557df",
     applyUrl: "https://lu.ma/9yic1qog",
@@ -23,7 +23,7 @@ const events = [
   {
     id: "3",
     title: "Design Demo Nights 03",
-    startsAt: "2026-04-20T18:30:00+05:30",
+    startsAt: "2026-04-20T18:00:00+05:30",
     location: "Bengaluru",
     themeColor: "#76c7d9",
     demos: [
@@ -130,7 +130,7 @@ const events = [
   {
     id: "2",
     title: "Design Demo Nights 02",
-    startsAt: "2026-04-13T18:30:00+05:30",
+    startsAt: "2026-04-13T18:00:00+05:30",
     location: "Bengaluru",
     themeColor: "#e86635",
     demos: [
@@ -263,7 +263,7 @@ const events = [
   {
     id: "1",
     title: "Design Demo Nights 01",
-    startsAt: "2026-04-06T18:30:00+05:30",
+    startsAt: "2026-04-06T18:00:00+05:30",
     location: "Bengaluru",
     themeColor: "#b557df",
     demos: [
