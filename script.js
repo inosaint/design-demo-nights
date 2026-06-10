@@ -17,8 +17,120 @@ const events = [
     startsAt: "2026-06-05T18:00:00+05:30",
     location: "Bengaluru",
     themeColor: "#b557df",
-    applyUrl: "https://lu.ma/9yic1qog",
-    demos: []
+    demos: [
+      {
+        title: "Sharszine Shelf",
+        speaker: "Sharvari",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/sureworry" },
+          { platform: "instagram", url: "" },
+          { platform: "website", url: "https://sharszineshelf.com" }
+        ],
+        demoUrl: "https://sharszineshelf.com",
+        photo: "sharvari.jpeg",
+        preview: "Getting started with Claude and Cursor by putting a piece of real life onto the internet.",
+        details:
+          "Sharvari kicked off the night talking about how she got started with Claude and Cursor and built sharszineshelf.com — a quiet, personal corner of the internet that turns a piece of her real life into something the rest of us can play with."
+      },
+      {
+        title: "Photo-Graphs",
+        speaker: "Rasagy",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/rasagy" },
+          { platform: "instagram", url: "https://instagram.com/rasagy" },
+          { platform: "website", url: "https://rasagy.in" }
+        ],
+        demoUrl: "https://rasagy.in/photo-graphs/",
+        photo: "rasagy.jpeg",
+        preview: "A return to the DDN stage with photographs reframed through the lens of graphs (pun intended).",
+        details:
+          "Rasagy returned to the DDN stage to present Photo-Graphs — a playful project (pun very much intended) that reframes photographs through the lens of graphs."
+      },
+      {
+        title: "Modernising Manufacturing Catalogues with AI",
+        speaker: "Sankalp",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/paapatype" },
+          { platform: "instagram", url: "" },
+          { platform: "website", url: "" }
+        ],
+        demoUrl: "",
+        photo: "sankalp.jpeg",
+        preview: "A whirlwind tour through dragging boring manufacturing catalogues into the modern era with AI.",
+        details:
+          "Paapatype took us on a whirlwind tour of how he uses AI to bring boring manufacturing catalogues into the modern era. It was an impressive reminder of how designers can use AI to upsell to their clients on real, everyday work."
+      },
+      {
+        title: "Translating Transitions Research with Sarvam",
+        speaker: "Bharath",
+        speakerLinks: [
+          { platform: "twitter", url: "" },
+          { platform: "instagram", url: "https://instagram.com/ihearmoths" },
+          { platform: "website", url: "" }
+        ],
+        demoUrl: "",
+        photo: "bharat.jpeg",
+        preview: "Using Sarvam AI's API to help Transitions Research adapt content to multiple Indian languages.",
+        details:
+          "Bharath showed how he used Sarvam AI's API to help Transitions Research adapt their content for various Indian languages — a practical look at making content reach more readers across the country."
+      },
+      {
+        title: "Mouse-Based Screen Reader",
+        speaker: "Abhimanyu",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/whizabz" },
+          { platform: "instagram", url: "" },
+          { platform: "website", url: "" }
+        ],
+        demoUrl: "",
+        photo: "abhimanyu.jpeg",
+        preview: "A mouse-based screen reader built for visually impaired users — accessibility as a first principle, not an afterthought.",
+        details:
+          "Accessibility is usually treated as an afterthought, but not for Abhimanyu. He showed us a mouse-based screen reader app he built for visually impaired users — a reminder of what it looks like when accessibility is a starting point rather than a final polish."
+      },
+      {
+        title: "Tooling for Design System Colours",
+        speaker: "Vidhunnan",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/vidhunnan" },
+          { platform: "instagram", url: "" },
+          { platform: "website", url: "" }
+        ],
+        demoUrl: "",
+        photo: "vidhunnan.jpeg",
+        preview: "Custom tooling to take the pain out of picking colours for design systems.",
+        details:
+          "Picking colours for design systems is famously painful. Vidhunnan walked us through the tooling he built to make the process less tedious and more systematic."
+      },
+      {
+        title: "AI-Written Trivia (YOLO)",
+        speaker: "Keshav",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/N80rious" },
+          { platform: "instagram", url: "" },
+          { platform: "website", url: "" }
+        ],
+        demoUrl: "",
+        photo: "keshav.jpeg",
+        preview: "A trivia game that doubled as a lesson in why you probably shouldn't let AI write your trivia.",
+        details:
+          "Keshav closed the night by making the room play a trivia game he'd had AI write for him. The game itself was fun — and it doubled as a hands-on lesson in exactly why letting AI write your trivia is a risky idea. YOLO."
+      },
+      {
+        title: "DDN Easter Egg",
+        speaker: "Kenneth",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/kenneth" },
+          { platform: "instagram", url: "https://instagram.com/kennethmdesouza" },
+          { platform: "website", url: "https://kenneth.dsouza.im/" }
+        ],
+        demoUrl: "https://designdemonights.com",
+        photo: "kenneth.jpeg",
+        preview: "A hidden easter egg tucked into the Design Demo Nights site — yes, this one. Go find it.",
+        details:
+          "Kenneth showcased an easter egg hidden inside the Design Demo Nights site itself (yes, this one). It's still there — go find it."
+      }
+    ]
   },
   {
     id: "3",
