@@ -16,7 +16,7 @@ const events = [
     title: "Design Demo Nights 04",
     startsAt: "2026-06-05T18:00:00+05:30",
     location: "Bengaluru",
-    themeColor: "#b557df",
+    themeColor: "#0ea5e9",
     demos: [
       {
         title: "Sharszine Shelf",
@@ -58,10 +58,10 @@ const events = [
         photo: "sankalp.jpeg",
         preview: "A whirlwind tour through dragging boring manufacturing catalogues into the modern era with AI.",
         details:
-          "Paapatype took us on a whirlwind tour of how he uses AI to bring boring manufacturing catalogues into the modern era. It was an impressive reminder of how designers can use AI to upsell to their clients on real, everyday work."
+          "Sankalp took us on a whirlwind tour of how he uses AI to bring boring manufacturing catalogues into the modern era. It was an impressive reminder of how designers can use AI to upsell to their clients on real, everyday work."
       },
       {
-        title: "Translating Transitions Research with Sarvam",
+        title: "Scaling on-ground systems with Sarvam",
         speaker: "Bharath",
         speakerLinks: [
           { platform: "twitter", url: "" },
@@ -72,7 +72,7 @@ const events = [
         photo: "bharat.jpeg",
         preview: "Using Sarvam AI's API to help Transitions Research adapt content to multiple Indian languages.",
         details:
-          "Bharath showed how he used Sarvam AI's API to help Transitions Research adapt their content for various Indian languages — a practical look at making content reach more readers across the country."
+          "Bharath showed how he used Sarvam AI's API to help Transitions Research adapt their internal content (training presentations and videos) for various Indian languages"
       },
       {
         title: "Mouse-Based Screen Reader",
@@ -84,9 +84,9 @@ const events = [
         ],
         demoUrl: "",
         photo: "abhimanyu.jpeg",
-        preview: "A mouse-based screen reader built for visually impaired users — accessibility as a first principle, not an afterthought.",
+        preview: "A mouse-based screen reader built for visually impaired users",
         details:
-          "Accessibility is usually treated as an afterthought, but not for Abhimanyu. He showed us a mouse-based screen reader app he built for visually impaired users — a reminder of what it looks like when accessibility is a starting point rather than a final polish."
+          "Accessibility is usually treated as an afterthought, but not for Abhimanyu. He showed us a mouse-based screen reader app he built for visually impaired users."
       },
       {
         title: "Tooling for Design System Colours",
@@ -98,12 +98,12 @@ const events = [
         ],
         demoUrl: "",
         photo: "vidhunnan.jpeg",
-        preview: "Custom tooling to take the pain out of picking colours for design systems.",
+        preview: "Custom tooling to take the pain out of picking colours for design systems",
         details:
           "Picking colours for design systems is famously painful. Vidhunnan walked us through the tooling he built to make the process less tedious and more systematic."
       },
       {
-        title: "AI-Written Trivia (YOLO)",
+        title: "Trivia with Friends",
         speaker: "Keshav",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/N80rious" },
@@ -114,7 +114,7 @@ const events = [
         photo: "keshav.jpeg",
         preview: "A trivia game that doubled as a lesson in why you probably shouldn't let AI write your trivia.",
         details:
-          "Keshav closed the night by making the room play a trivia game he'd had AI write for him. The game itself was fun — and it doubled as a hands-on lesson in exactly why letting AI write your trivia is a risky idea. YOLO."
+          "Keshav closed the night by making the room play a trivia game he'd had AI write for him. The game itself was fun — and it doubled as a hands-on lesson in exactly why letting AI write your trivia is a risky idea."
       },
       {
         title: "DDN Easter Egg",
