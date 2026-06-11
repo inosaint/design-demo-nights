@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logo Maker · Design Demo Nights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    /* ─── Reset ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sans: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      --serif: "Instrument Serif", Georgia, serif;
+      --crt-mono: "VT323", "Courier New", monospace;
+      --radius: 10px;
+      /* adaptive UI colours, overridden by JS for dark themes */
+      --ui-fg:         rgba(0,0,0,0.70);
+      --ui-muted:      rgba(0,0,0,0.38);
+      --ui-btn-bg:     rgba(255,255,255,0.55);
+      --ui-btn-border: rgba(0,0,0,0.10);
+      --ui-btn-fg:     rgba(0,0,0,0.55);
+      --ui-swatch-ring: rgba(0,0,0,0.25);
+    }
+
+    body {
+      font-family: var(--sans);
+      min-height: 100vh;
+      transition: background 0.5s ease;
+    }
+
+    /* ─── Wordmark ───────────────────────────────────────────── */
+    .wordmark {
+      position: fixed;
+      top: 20px;
+      left: 24px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ui-muted);
+      font-weight: 500;
+      z-index: 10;
+      transition: color 0.4s;
+      pointer-events: none;
+    }
+
+    /* ─── Hero ───────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 55vh;
+      min-height: 360px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* The brand-logo inside hero spans the full hero area so
+       perspective: 2000px applies to the whole space */
+    .hero .brand-logo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* CRT animations on hero logo */
+    .hero .crt::before { animation: scanline-drift 0.6s linear infinite; }
+    .hero .crt-glow    { animation: crt-flicker 5s infinite; }
+    .hero .graffiti-text { animation: text-glitch 7s infinite; }
+
+    /* ─── Controls ───────────────────────────────────────────── */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 28px 24px 36px;
+    }
+
+    .theme-label {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ui-fg);
+      transition: color 0.4s, opacity 0.12s;
+      min-height: 24px;
+    }
+
+    .theme-tag-line {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--ui-muted);
+      font-family: var(--crt-mono);
+      min-height: 16px;
+      transition: color 0.4s;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 4px 0;
+    }
+
+    .swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2.5px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.2s;
+      outline: none;
+      padding: 0;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active {
+      border-color: white;
+      box-shadow: 0 0 0 1.5px var(--ui-swatch-ring);
+      transform: scale(1.12);
+    }
+
+    .kbd-hint {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--ui-muted);
+      transition: color 0.4s;
+    }
+
+    /* ─── Sticker shadow controls ───────────────────────────── */
+    .sticker-shadow-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .sticker-shadow-controls-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ui-muted);
+      font-family: var(--crt-mono);
+      transition: color 0.4s;
+    }
+    .shadow-sliders {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 6px 14px;
+      align-items: center;
+    }
+    .shadow-slider-row {
+      display: contents;
+    }
+    .shadow-slider-row label {
+      font-size: 10px;
+      font-family: var(--crt-mono);
+      color: var(--ui-muted);
+      letter-spacing: 1px;
+      text-align: right;
+      transition: color 0.4s;
+    }
+    .shadow-slider-row input[type=range] {
+      width: 80px;
+      accent-color: var(--ui-fg);
+      cursor: pointer;
+    }
+    .shadow-slider-row .shad-val {
+      font-size: 10px;
+      font-family: var(--crt-mono);
+      color: var(--ui-muted);
+      min-width: 28px;
+      transition: color 0.4s;
+    }
+
+    /* ─── Divider ────────────────────────────────────────────── */
+    .section-divider {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-divider-line {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      margin-bottom: 28px;
+    }
+
+    /* ─── Mockups ────────────────────────────────────────────── */
+    .mockups {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .mockups-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--ui-muted);
+      margin-bottom: 20px;
+      transition: color 0.4s;
+    }
+
+    .mockups-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 660px) {
+      .mockups-grid { grid-template-columns: 1fr; }
+    }
+
+    .mockup-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ─── Mockup frames ──────────────────────────────────────── */
+    .mockup-frame {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: background 0.5s ease;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .mockup-frame--reel    { width: 180px; height: 279px; }
+    .mockup-frame--luma    { width: 100%; aspect-ratio: 1 / 1; }
+    .mockup-frame--og      { width: 100%; aspect-ratio: 1200 / 630; }
+
+    .frame-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .reel-inner      { padding: 8% 22%; }
+    .landscape-inner { padding: 10%; }
+
+    /* ─── Mockup footer ──────────────────────────────────────── */
+    .mockup-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .mockup-label {
+      font-size: 11px;
+      color: var(--ui-muted);
+      line-height: 1.6;
+      transition: color 0.4s;
+    }
+    .mockup-label strong {
+      display: block;
+      color: var(--ui-fg);
+      font-size: 12px;
+      transition: color 0.4s;
+    }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: 7px;
+      border: 1px solid var(--ui-btn-border);
+      background: var(--ui-btn-bg);
+      color: var(--ui-btn-fg);
+      font-size: 11px;
+      font-family: var(--sans);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s, border-color 0.4s;
+      flex-shrink: 0;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .dl-btn:hover { background: rgba(255,255,255,0.85); color: rgba(0,0,0,0.75); }
+    .dl-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+    /* ─── Logo slot ──────────────────────────────────────────── */
+    .logo-slot { position: relative; flex-shrink: 0; }
+
+    /* ─── Brand logo — from styles.css 142–726 ───────────────── */
+    .brand-logo {
+      --accent: #9932cc;
+      --beige-light: #f0ede0;
+      --beige-main: #e0dccf;
+      --beige-dark: #c4c0b3;
+      --beige-shadow: #a09c8f;
+      --screen-black: #222529;
+      /* pre-computed color-mix() equivalents — set by JS so html2canvas never
+         encounters color-mix() / color() functions it can't parse */
+      --accent-dark-70: #6b2390;
+      --accent-dark-40: #3d1452;
+      --accent-light-60: #bf8de8;
+      --accent-light-22: #e5d4f5;
+      --accent-glow: rgba(153,50,204,0.65);
+      --sticker-star-bg: #ffd93d;
+      --sticker-star-fg: #d63031;
+      --sticker-bng-bg: #228b22;
+      --sticker-bng-fg: #ffffff;
+      --sticker-star-content: "!";
+      --sticker-clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      position: relative;
+      display: block;
+      flex: 0 0 auto;
+      width: 92px;
+      height: 102px;
+      perspective: 2000px;
+    }
+
+    .brand-logo .scene-scale {
+      position: absolute;
+      top: 4px; left: 0;
+      width: 360px; height: 380px;
+      transform: scale(0.22);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+
+    .brand-logo .scene {
+      position: relative;
+      transform: rotateY(-15deg) rotateX(5deg);
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .computer-unit {
+      position: relative;
+      width: 360px; height: 380px;
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .face {
+      position: absolute;
+      background: var(--beige-main);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .brand-logo .front {
+      display: flex;
+      width: 360px; height: 380px;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      background: linear-gradient(135deg, var(--beige-light) 0%, var(--beige-main) 100%);
+      box-shadow: inset 2px 2px 5px rgba(255,255,255,0.8), inset -5px -5px 15px rgba(0,0,0,0.1);
+      transform: translateZ(100px);
+    }
+
+    .brand-logo .back {
+      width: 360px; height: 380px;
+      background: var(--beige-dark);
+      transform: translateZ(-100px) rotateY(180deg);
+    }
+
+    .brand-logo .left {
+      width: 200px; height: 380px;
+      background: var(--beige-main);
+      box-shadow: inset 10px 0 20px rgba(0,0,0,0.05);
+      transform: rotateY(-90deg) translateZ(100px);
+    }
+
+    .brand-logo .right {
+      width: 200px; height: 380px;
+      background: var(--beige-dark);
+      box-shadow: inset 10px 0 20px rgba(0,0,0,0.1);
+      transform: rotateY(90deg) translateZ(260px);
+    }
+
+    .brand-logo .top {
+      width: 360px; height: 200px;
+      background: var(--beige-light);
+      transform: rotateX(90deg) translateZ(100px);
+    }
+
+    .brand-logo .bottom {
+      width: 360px; height: 200px;
+      background: var(--beige-shadow);
+      box-shadow: 0 50px 80px rgba(0,0,0,0.3);
+      transform: rotateX(-90deg) translateZ(280px);
+    }
+
+    .brand-logo .screen-inset {
+      position: relative;
+      display: flex;
+      width: 280px; height: 220px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      border-radius: 16px;
+      background: #d1cec7;
+      box-shadow: inset 2px 2px 8px rgba(0,0,0,0.2), inset -2px -2px 8px rgba(255,255,255,0.5);
+    }
+
+    .brand-logo .crt {
+      position: relative;
+      width: 260px; height: 200px;
+      overflow: hidden;
+      border-radius: 40% / 10%;
+      background: var(--screen-black);
+      box-shadow: inset 0 0 20px rgba(0,0,0,1);
+    }
+
+    .brand-logo .crt::before {
+      position: absolute;
+      z-index: 5; inset: 0;
+      background:
+        linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%),
+        linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
+      background-size: 100% 2px, 3px 100%;
+      border-radius: 12px;
+      pointer-events: none;
+      content: "";
+    }
+
+    .brand-logo .crt-glow {
+      position: absolute;
+      z-index: 2; inset: 10px;
+      padding: 12px;
+      color: #fff;
+      font-family: var(--crt-mono);
+      font-size: 14px;
+    }
+
+    .brand-logo .graffiti-container {
+      display: flex;
+      width: 100%; height: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo .graffiti-text {
+      font-family: var(--crt-mono);
+      font-size: 50px;
+      font-weight: 700;
+      line-height: 0.85;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-align: center;
+      text-shadow:
+        0 0 8px var(--accent),
+        0 0 16px var(--accent),
+        0 0 32px var(--accent-dark-70),
+        3px 3px 0 var(--accent-dark-40),
+        -2px -2px 0 var(--accent-light-60);
+    }
+
+    /* Safari: text-shadow blur doesn't scale with CSS transforms inside
+       preserve-3d contexts — halve the radii to compensate */
+    @supports (-webkit-touch-callout: none) {
+      .brand-logo .graffiti-text {
+        text-shadow:
+          0 0 4px var(--accent),
+          0 0 8px var(--accent),
+          3px 3px 0 var(--accent-dark-40),
+          -2px -2px 0 var(--accent-light-60);
+      }
+    }
+
+    .brand-logo .subtitle-text {
+      margin-top: 10px;
+      font-family: var(--serif);
+      font-size: 26px;
+      font-style: italic;
+      color: var(--accent-light-22);
+      text-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .brand-logo .floppy-slot {
+      position: relative;
+      width: 140px; height: 12px;
+      margin-left: 100px;
+      border-radius: 6px;
+      background: #333;
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .brand-logo .grill {
+      position: absolute;
+      right: 25px; bottom: 15px;
+      display: grid;
+      width: 30px; height: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .brand-logo .vent {
+      border-radius: 1px;
+      background: #333;
+      box-shadow: inset 1px 1px 1px rgba(0,0,0,0.5);
+    }
+
+    .brand-logo .sticker {
+      position: absolute;
+      z-index: 5;
+      box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .brand-logo .sticker-starburst {
+      display: flex;
+      width: 38px; height: 38px;
+      align-items: center;
+      justify-content: center;
+      top: 48px; left: 16px;
+      border: 2px solid #fff;
+      background: var(--sticker-star-bg);
+      clip-path: var(--sticker-clip-path);
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      transform: translateZ(101px) rotate(-12deg);
+    }
+
+    .brand-logo .sticker-starburst:has(.em) {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      clip-path: none;
+      top: 38px;
+      left: 6px;
+    }
+    .brand-logo .sticker-starburst:has(.em)::after {
+      content: none;
+    }
+
+    .brand-logo .sticker-starburst .em {
+      width: 30px;
+      height: 30px;
+      background-size: 100%;
+      filter:
+        drop-shadow(-2px 0 0 #fff)
+        drop-shadow(2px 0 0 #fff)
+        drop-shadow(0 -2px 0 #fff)
+        drop-shadow(0 2px 0 #fff)
+        drop-shadow(-2px -1px 2px rgba(0,0,0,0.10));
+    }
+
+    .brand-logo .sticker-starburst::after {
+      font-family: var(--crt-mono);
+      font-size: var(--sticker-font-size, 20px);
+      font-weight: 700;
+      color: var(--sticker-star-fg);
+      transform: rotate(12deg);
+      content: var(--sticker-star-content, "!");
+    }
+
+    .brand-logo .sticker-bengaluru {
+      display: flex;
+      width: 70px; height: 24px;
+      align-items: center;
+      justify-content: center;
+      right: 18px; bottom: 95px;
+      border: 2px solid #fff;
+      border-radius: 4px;
+      background: var(--sticker-bng-bg);
+      color: var(--sticker-bng-fg);
+      font-family: var(--crt-mono);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.25), inset -2px -2px 3px rgba(0,0,0,0.15), inset 2px 2px 3px rgba(255,255,255,0.25);
+      transform: translateZ(102px) rotate(4deg);
+    }
+
+    .brand-logo .keyboard-assembly {
+      --kb-angle: 66deg;
+      --kb-thickness: 18px;
+      position: absolute;
+      bottom: -118px;
+      width: 360px; height: 140px;
+      transform: translateZ(164px) rotateX(var(--kb-angle));
+      transform-origin: top center;
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .kb-base {
+      position: absolute;
+      overflow: hidden;
+      width: 100%; height: 100%;
+      background: var(--beige-main);
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5), inset -5px -5px 15px rgba(0,0,0,0.1);
+      transform: translateZ(calc(var(--kb-thickness) / 2));
+    }
+
+    .brand-logo .kb-front,
+    .brand-logo .kb-back {
+      position: absolute; left: 0;
+      width: 100%; height: var(--kb-thickness);
+    }
+
+    .brand-logo .kb-front {
+      bottom: 0;
+      background: linear-gradient(180deg, #cdc9bb 0%, #b5b1a3 100%);
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateX(90deg);
+      transform-origin: bottom center;
+    }
+
+    .brand-logo .kb-back {
+      top: 0;
+      background: linear-gradient(180deg, #e5e1d4 0%, #c9c5b8 100%);
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateX(-90deg);
+      transform-origin: top center;
+    }
+
+    .brand-logo .kb-left,
+    .brand-logo .kb-right {
+      position: absolute; top: 0;
+      width: var(--kb-thickness); height: 100%;
+      background: linear-gradient(180deg, #d1cdbf 0%, #b7b3a6 100%);
+    }
+
+    .brand-logo .kb-left {
+      left: 0;
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateY(90deg);
+      transform-origin: left center;
+    }
+
+    .brand-logo .kb-right {
+      right: 0;
+      transform: translateZ(calc(var(--kb-thickness) / 2)) rotateY(-90deg);
+      transform-origin: right center;
+    }
+
+    .brand-logo .kb-shadow {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 12px;
+      background: transparent;
+      box-shadow: 0 40px 70px rgba(0,0,0,0.25), 0 20px 30px rgba(0,0,0,0.15);
+      transform: rotateX(calc(-90deg - var(--kb-angle))) translateZ(20px);
+      transform-origin: top center;
+      pointer-events: none;
+    }
+
+    .brand-logo .keys-grid {
+      display: grid;
+      padding: 15px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 6px;
+      transform: translateZ(8px);
+      transform-style: preserve-3d;
+    }
+
+    .brand-logo .key {
+      height: 27px;
+      border-radius: 4px;
+      background: #ece8da;
+      box-shadow: 0 6px 0 #c4c0b3, 0 8px 7px rgba(0,0,0,0.2);
+      transform: translateZ(1px);
+    }
+    .brand-logo .key.wide  { grid-column: span 2; }
+    .brand-logo .key.space { grid-column: span 6; }
+
+    .brand-logo .crt::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      z-index: 6;
+      width: 80%; height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #fff 25%, #fff 75%, transparent 100%);
+      box-shadow: 0 0 8px 1px rgba(255,255,255,0.9);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scaleX(0);
+    }
+
+    /* ─── CRT animations ─────────────────────────────────────── */
+    @keyframes scanline-drift { to { background-position: 0 4px, 0 0; } }
+
+    @keyframes crt-flicker {
+      0%, 90%, 100% { opacity: 1; }
+      93% { opacity: 0.86; } 94% { opacity: 1; }
+      96% { opacity: 0.78; } 97% { opacity: 0.94; }
+    }
+
+    @keyframes text-glitch {
+      0%, 94%, 100% { transform: translateX(0); }
+      95% { transform: translateX(-0.6px); }
+      96% { transform: translateX(0.6px); }
+      97% { transform: translateX(-0.3px); }
+    }
+  </style>
+</head>
+<body>
+
+  <span class="wordmark">Logo Maker</span>
+
+  <!-- ─── Hero ───────────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <!-- brand-logo injected by JS, fills full hero -->
+  </section>
+
+  <!-- ─── Controls ───────────────────────────────────────────── -->
+  <div class="controls">
+    <div class="theme-label" id="theme-label">Classic Purple</div>
+    <div class="theme-tag-line" id="theme-tag-line">Editions 01 · 04</div>
+    <div class="swatches" id="swatches"></div>
+    <p class="kbd-hint">← → to cycle &nbsp;·&nbsp; 1–9 to jump</p>
+    <div class="sticker-shadow-controls" id="sticker-shadow-controls" style="display:none">
+      <p class="sticker-shadow-controls-label">Sticker shadow</p>
+      <div class="shadow-sliders">
+        <div class="shadow-slider-row">
+          <label>x</label>
+          <input type="range" id="shad-x" min="-8" max="8" value="-2" step="1">
+          <span class="shad-val" id="shad-x-val">-2</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>y</label>
+          <input type="range" id="shad-y" min="-8" max="8" value="-1" step="1">
+          <span class="shad-val" id="shad-y-val">-1</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>blur</label>
+          <input type="range" id="shad-blur" min="0" max="16" value="2" step="1">
+          <span class="shad-val" id="shad-blur-val">2</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>opacity</label>
+          <input type="range" id="shad-op" min="0" max="100" value="10" step="5">
+          <span class="shad-val" id="shad-op-val">10%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Mockups ─────────────────────────────────────────────── -->
+  <div class="mockups">
+    <p class="mockups-label">Export</p>
+    <div class="mockups-grid">
+
+      <!-- Reel Cover -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--reel" id="frame-reel">
+          <div class="frame-inner reel-inner">
+            <div class="logo-slot" id="slot-reel"></div>
+          </div>
+        </div>
+        <div class="mockup-footer">
+          <div class="mockup-label">
+            <strong>Instagram Reel Cover</strong>
+            420 × 654 px
+          </div>
+          <button class="dl-btn" data-frame="reel" data-w="420" data-h="654">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+      <!-- Luma -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--luma" id="frame-luma">
+          <div class="frame-inner landscape-inner">
+            <div class="logo-slot" id="slot-luma"></div>
+          </div>
+        </div>
+        <div class="mockup-footer">
+          <div class="mockup-label">
+            <strong>Luma Event Image</strong>
+            1200 × 1200 px
+          </div>
+          <button class="dl-btn" data-frame="luma" data-w="1200" data-h="1200">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+      <!-- OG -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--og" id="frame-og">
+          <div class="frame-inner landscape-inner">
+            <div class="logo-slot" id="slot-og"></div>
+          </div>
+        </div>
+        <div class="mockup-footer">
+          <div class="mockup-label">
+            <strong>Web / OG Link Preview</strong>
+            1200 × 630 px
+          </div>
+          <button class="dl-btn" data-frame="og" data-w="1200" data-h="630">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ─── Themes ─────────────────────────────────────────────── */
+    const THEMES = [
+      {
+        name: "Classic Purple", tag: "Editions 01 · 04",
+        accent: "#b557df", heroBg: ["#f3e8ff","#c97de8"],
+        starBg: "#ffd93d", starFg: "#d63031", bngBg: "#228b22", bngFg: "#fff"
+      },
+      {
+        name: "Ember Orange", tag: "Edition 02",
+        accent: "#e86635", heroBg: ["#fff0e8","#f8a87a"],
+        starBg: "#ff6b35", starFg: "#fff", bngBg: "#c0392b", bngFg: "#fff"
+      },
+      {
+        name: "Glacial Cyan", tag: "Edition 03",
+        accent: "#76c7d9", heroBg: ["#e4f7fb","#8ecfe0"],
+        starBg: "#ffd93d", starFg: "#0c4a6e", bngBg: "#2980b9", bngFg: "#fff"
+      },
+      {
+        name: "Electric Blue", tag: "",
+        accent: "#3b82f6", heroBg: ["#e8f0ff","#93b4f8"],
+        starBg: "#facc15", starFg: "#1d4ed8", bngBg: "#1d4ed8", bngFg: "#fff"
+      },
+      {
+        name: "Neon Green", tag: "",
+        accent: "#22c55e", heroBg: ["#edfff4","#86efac"],
+        starBg: "#ffd93d", starFg: "#15803d", bngBg: "#15803d", bngFg: "#fff"
+      },
+      {
+        name: "Hot Pink", tag: "",
+        accent: "#ec4899", heroBg: ["#fdf0f7","#f5a8d0"],
+        starBg: "#fbbf24", starFg: "#be185d", bngBg: "#be185d", bngFg: "#fff"
+      },
+      {
+        name: "Amber Gold", tag: "",
+        accent: "#f59e0b", heroBg: ["#fffbeb","#fbd06a"],
+        starBg: "#ef4444", starFg: "#78350f", bngBg: "#92400e", bngFg: "#fff"
+      },
+      {
+        name: "Midnight", tag: "Dark mode",
+        accent: "#a855f7", heroBg: ["#0d0d1a","#1e1040"],
+        starBg: "#ffd93d", starFg: "#7c3aed", bngBg: "#228b22", bngFg: "#fff"
+      },
+      {
+        name: "Halloween", tag: "👻 Spooky edition",
+        accent: "#f97316", heroBg: ["#1a0a2e","#2d1050"],
+        starBg: "#f97316", starFg: "#fff", bngBg: "#7c3aed", bngFg: "#fff",
+        emojiCssClass: "ghost", emojiSticker: true
+      },
+      {
+        name: "Holi", tag: "🎨 Festival of colours",
+        accent: "#f43f5e", heroBg: ["#fff8eb","#fde8f0"],
+        starBg: "#f97316", starFg: "#fff", bngBg: "#84cc16", bngFg: "#fff"
+      },
+      {
+        name: "Diwali", tag: "✨ Festival of lights",
+        accent: "#f59e0b", heroBg: ["#1a0808","#3b1205"],
+        starBg: "#dc2626", starFg: "#f59e0b", bngBg: "#b45309", bngFg: "#fef3c7"
+      },
+      {
+        name: "Monsoon", tag: "🌧 Bengaluru vibes",
+        accent: "#0ea5e9", heroBg: ["#e8f6ff","#7ecbec"],
+        starBg: "#06b6d4", starFg: "#0c4a6e", bngBg: "#0c4a6e", bngFg: "#e0f2fe",
+        emojiCssClass: "thunder_cloud_and_rain", emojiSticker: true
+      }
+    ];
+
+    /* ─── Logo HTML ──────────────────────────────────────────── */
+    const LOGO_INNER = `
+      <span class="scene-scale">
+        <div class="scene">
+          <div class="computer-unit">
+            <div class="face front">
+              <div class="screen-inset">
+                <div class="crt">
+                  <div class="crt-glow">
+                    <div class="crt-ui graffiti-container">
+                      <div class="graffiti-text">DESIGN<br>DEMO<br>NIGHTS</div>
+                      <div class="subtitle-text">for designers</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="floppy-slot"></div>
+              <div class="grill">
+                <div class="vent"></div><div class="vent"></div><div class="vent"></div><div class="vent"></div>
+                <div class="vent"></div><div class="vent"></div><div class="vent"></div><div class="vent"></div>
+              </div>
+              <div class="sticker sticker-starburst"></div>
+              <div class="sticker sticker-bengaluru">Bengaluru</div>
+            </div>
+            <div class="face back"></div>
+            <div class="face left"></div>
+            <div class="face right"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
+            <div class="keyboard-assembly">
+              <div class="kb-base">
+                <div class="keys-grid">
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key wide"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                  <div class="key"></div><div class="key wide"></div>
+                  <div class="key"></div><div class="key"></div><div class="key space"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+                </div>
+              </div>
+              <div class="kb-front"></div>
+              <div class="kb-back"></div>
+              <div class="kb-left"></div>
+              <div class="kb-right"></div>
+              <div class="kb-shadow"></div>
+            </div>
+          </div>
+        </div>
+      </span>`;
+
+    /* ─── Helpers ────────────────────────────────────────────── */
+    function slugify(s) {
+      return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    /* Mix hex color with black/white at given fraction (0–1 = how much of hex) */
+    function mixHex(hex, target, frac) {
+      const h = hex.replace("#","");
+      const r1 = parseInt(h.slice(0,2),16), g1 = parseInt(h.slice(2,4),16), b1 = parseInt(h.slice(4,6),16);
+      const [r2,g2,b2] = target === "black" ? [0,0,0] : [255,255,255];
+      const r = Math.round(r1*frac + r2*(1-frac));
+      const g = Math.round(g1*frac + g2*(1-frac));
+      const b = Math.round(b1*frac + b2*(1-frac));
+      return `#${r.toString(16).padStart(2,"0")}${g.toString(16).padStart(2,"0")}${b.toString(16).padStart(2,"0")}`;
+    }
+
+    function hexAlpha(hex, alpha) {
+      const h = hex.replace("#","");
+      const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+
+    function isDark(hex) {
+      const r = parseInt(hex.slice(1,3), 16) || 0;
+      const g = parseInt(hex.slice(3,5), 16) || 0;
+      const b = parseInt(hex.slice(5,7), 16) || 0;
+      return 0.299*r + 0.587*g + 0.114*b < 140;
+    }
+
+    function makeLogo(scaleVal) {
+      const el = document.createElement("span");
+      el.className = "brand-logo";
+      el.innerHTML = LOGO_INNER;
+      el.querySelector(".scene-scale").style.cssText = `
+        position: absolute; top: 50%; left: 50%;
+        width: 360px; height: 380px;
+        transform: translate(-50%, -50%) scale(${scaleVal});
+        transform-origin: center center;
+        pointer-events: none;
+      `;
+      return el;
+    }
+
+    /* ─── State ──────────────────────────────────────────────── */
+    let idx = 0;
+    let allLogos = [];
+    let heroScaleEl = null;
+
+    /* ─── Hero logo scaling ──────────────────────────────────── */
+    function fitHeroLogo() {
+      if (!heroScaleEl) return;
+      const h = document.getElementById("hero").clientHeight;
+      /* ~460px is the approx visual height (monitor + keyboard) at scale 1.0 */
+      const scale = Math.min(h * 0.76 / 460, 1.2);
+      heroScaleEl.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+    }
+
+    /* ─── Apply theme ────────────────────────────────────────── */
+    function applyTheme(t) {
+      const bg = `linear-gradient(135deg, ${t.heroBg[0]} 0%, ${t.heroBg[1]} 100%)`;
+      document.body.style.background = bg;
+      ["frame-reel","frame-luma","frame-og"].forEach(id => {
+        document.getElementById(id).style.background = bg;
+      });
+
+      allLogos.forEach(el => {
+        el.style.setProperty("--accent",               t.accent);
+        el.style.setProperty("--sticker-star-bg",      t.starBg);
+        el.style.setProperty("--sticker-star-fg",      t.starFg);
+        el.style.setProperty("--sticker-bng-bg",       t.bngBg);
+        el.style.setProperty("--sticker-bng-fg",       t.bngFg);
+        const starSticker = el.querySelector('.sticker-starburst');
+        if (t.emojiCssClass) {
+          starSticker.innerHTML = `<i class="em em-${t.emojiCssClass}"></i>`;
+          el.style.setProperty("--sticker-star-content", '""');
+        } else {
+          starSticker.innerHTML = '';
+          el.style.setProperty("--sticker-star-content", `"${t.starContent ?? "!"}"`);
+        }
+        if (t.emojiSticker) {
+          el.style.setProperty("--sticker-clip-path", "none");
+          el.style.setProperty("--sticker-bg",        "transparent");
+          el.style.setProperty("--sticker-border",    "none");
+          el.style.setProperty("--sticker-shadow",    "none");
+          el.style.setProperty("--sticker-font-size", "28px");
+        } else {
+          el.style.setProperty("--sticker-clip-path", "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)");
+          el.style.setProperty("--sticker-bg",        "");
+          el.style.setProperty("--sticker-border",    "");
+          el.style.setProperty("--sticker-shadow",    "");
+          el.style.setProperty("--sticker-font-size", "");
+        }
+        /* pre-computed replacements for color-mix() — html2canvas can't parse it */
+        el.style.setProperty("--accent-dark-70",  mixHex(t.accent, "black", 0.70));
+        el.style.setProperty("--accent-dark-40",  mixHex(t.accent, "black", 0.40));
+        el.style.setProperty("--accent-light-60", mixHex(t.accent, "white", 0.60));
+        el.style.setProperty("--accent-light-22", mixHex(t.accent, "white", 0.22));
+        el.style.setProperty("--accent-glow",     hexAlpha(t.accent, 0.65));
+      });
+
+      document.getElementById("theme-label").textContent    = t.name;
+      document.getElementById("theme-tag-line").textContent  = t.tag;
+      document.getElementById("sticker-shadow-controls").style.display = t.emojiCssClass ? "" : "none";
+      document.querySelectorAll(".swatch").forEach((s, i) => s.classList.toggle("active", i === idx));
+
+      /* Adaptive UI colours for dark-background themes */
+      const dark = isDark(t.heroBg[0]);
+      const root = document.documentElement;
+      root.style.setProperty("--ui-fg",          dark ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.70)");
+      root.style.setProperty("--ui-muted",        dark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.38)");
+      root.style.setProperty("--ui-btn-bg",       dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.55)");
+      root.style.setProperty("--ui-btn-border",   dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.10)");
+      root.style.setProperty("--ui-btn-fg",       dark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.55)");
+      root.style.setProperty("--ui-swatch-ring",  dark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.25)");
+    }
+
+    function go(n) {
+      idx = ((n % THEMES.length) + THEMES.length) % THEMES.length;
+      applyTheme(THEMES[idx]);
+    }
+
+    /* ─── Init ───────────────────────────────────────────────── */
+    window.addEventListener("DOMContentLoaded", () => {
+
+      /* Hero logo — spans full hero section, JS controls scale */
+      const heroEl = document.createElement("span");
+      heroEl.className = "brand-logo";
+      heroEl.innerHTML = LOGO_INNER;
+      heroScaleEl = heroEl.querySelector(".scene-scale");
+      heroScaleEl.style.cssText = `
+        position: absolute; top: 50%; left: 50%;
+        width: 360px; height: 380px;
+        transform-origin: center center;
+        pointer-events: none;
+      `;
+      document.getElementById("hero").appendChild(heroEl);
+      allLogos.push(heroEl);
+      fitHeroLogo();
+      window.addEventListener("resize", fitHeroLogo);
+
+      /* Mockup logos */
+      const reelLogo = makeLogo(0.28);
+      reelLogo.style.cssText += "width:100px;height:120px;";
+      document.getElementById("slot-reel").appendChild(reelLogo);
+      allLogos.push(reelLogo);
+
+      const lumaLogo = makeLogo(0.68);
+      lumaLogo.style.cssText += "width:260px;height:300px;";
+      document.getElementById("slot-luma").appendChild(lumaLogo);
+      allLogos.push(lumaLogo);
+
+      const ogLogo = makeLogo(0.36);
+      ogLogo.style.cssText += "width:144px;height:165px;";
+      document.getElementById("slot-og").appendChild(ogLogo);
+      allLogos.push(ogLogo);
+
+      /* Swatches */
+      const swatchesEl = document.getElementById("swatches");
+      THEMES.forEach((t, i) => {
+        const sw = document.createElement("button");
+        sw.className = "swatch";
+        sw.style.background = t.accent;
+        sw.title = t.name;
+        sw.setAttribute("aria-label", t.name);
+        sw.addEventListener("click", () => go(i));
+        swatchesEl.appendChild(sw);
+      });
+
+      /* Keyboard */
+      document.addEventListener("keydown", e => {
+        if (e.key === "ArrowLeft")  go(idx - 1);
+        if (e.key === "ArrowRight") go(idx + 1);
+        const n = parseInt(e.key, 10);
+        if (n >= 1 && n <= 9) go(n - 1);
+      });
+
+      /* Sticker shadow sliders */
+      function updateEmojiShadow() {
+        const x    = document.getElementById("shad-x").value;
+        const y    = document.getElementById("shad-y").value;
+        const blur = document.getElementById("shad-blur").value;
+        const op   = (document.getElementById("shad-op").value / 100).toFixed(2);
+        document.getElementById("shad-x-val").textContent    = x;
+        document.getElementById("shad-y-val").textContent    = y;
+        document.getElementById("shad-blur-val").textContent = blur;
+        document.getElementById("shad-op-val").textContent   = document.getElementById("shad-op").value + "%";
+        const f = `drop-shadow(-2px 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(${x}px ${y}px ${blur}px rgba(0,0,0,${op}))`;
+        document.querySelectorAll(".brand-logo .sticker-starburst .em").forEach(el => el.style.filter = f);
+      }
+      ["shad-x","shad-y","shad-blur","shad-op"].forEach(id =>
+        document.getElementById(id).addEventListener("input", updateEmojiShadow)
+      );
+
+      go(0);
+    });
+
+    /* ─── Download ───────────────────────────────────────────── */
+    document.addEventListener("click", async e => {
+      const btn = e.target.closest(".dl-btn");
+      if (!btn) return;
+
+      const frameEl  = document.getElementById("frame-" + btn.dataset.frame);
+      const actualW  = parseInt(btn.dataset.w, 10);
+      const actualH  = parseInt(btn.dataset.h, 10);
+      const theme    = THEMES[idx];
+      const filename = `ddn-${btn.dataset.frame}-${slugify(theme.name)}.png`;
+
+      const origHTML = btn.innerHTML;
+      btn.disabled   = true;
+      btn.textContent = "Rendering…";
+
+      let overlay = null;
+      let stream  = null;
+      try {
+        const rect = frameEl.getBoundingClientRect();
+
+        if (navigator.mediaDevices?.getDisplayMedia) {
+          /* ── Screen capture path ──────────────────────────────────
+             Scale the frame up to (at least) the output pixel size so
+             getDisplayMedia captures it at full resolution, not tiny. */
+          const dpr          = window.devicePixelRatio || 1;
+          const captureScale = Math.max(1, actualW / (rect.width * dpr));
+          const ovW = Math.ceil(rect.width  * captureScale);
+          const ovH = Math.ceil(rect.height * captureScale);
+
+          stream = await navigator.mediaDevices.getDisplayMedia({
+            video: { displaySurface: "browser" },
+            preferCurrentTab: true,
+            selfBrowserSurface: "include",
+          });
+
+          /* Start video before touching the DOM */
+          const video = document.createElement("video");
+          video.srcObject = stream;
+          video.muted = true;
+          await new Promise(resolve => {
+            video.onloadedmetadata = () => video.play().then(resolve);
+          });
+
+          /* Place a scaled clone at the top-left of the viewport so the
+             video pipeline captures it at the right resolution */
+          overlay = document.createElement("div");
+          overlay.style.cssText = `position:fixed;top:0;left:0;z-index:99999;` +
+            `width:${ovW}px;height:${ovH}px;overflow:hidden;pointer-events:none;`;
+          const clone = frameEl.cloneNode(true);
+          clone.style.position      = "absolute";
+          clone.style.top           = "0";
+          clone.style.left          = "0";
+          clone.style.margin        = "0";
+          clone.style.width         = rect.width  + "px";
+          clone.style.height        = rect.height + "px";
+          clone.style.transform     = `scale(${captureScale})`;
+          clone.style.transformOrigin = "top left";
+          overlay.appendChild(clone);
+          document.body.appendChild(overlay);
+
+          /* Two rAFs + short buffer so the video pipeline sees the overlay */
+          await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+          await new Promise(r => setTimeout(r, 150));
+
+          const sx = video.videoWidth  / window.innerWidth;
+          const sy = video.videoHeight / window.innerHeight;
+
+          const canvas = document.createElement("canvas");
+          canvas.width  = actualW;
+          canvas.height = actualH;
+          canvas.getContext("2d").drawImage(
+            video,
+            0, 0, ovW * sx, ovH * sy,
+            0, 0, actualW, actualH
+          );
+
+          const link = document.createElement("a");
+          link.download = filename;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+
+        } else {
+          /* ── Fallback: html2canvas with 2D approximation of CSS 3D ── */
+          const scale  = actualW / rect.width;
+          const canvas = await html2canvas(frameEl, {
+            scale, width: rect.width, height: rect.height,
+            useCORS: true, logging: false, backgroundColor: null,
+            onclone: (clonedDoc) => {
+              const s = clonedDoc.createElement("style");
+              s.textContent = `
+                .brand-logo * { transform-style: flat !important; }
+                .brand-logo .face.back, .brand-logo .face.left,
+                .brand-logo .face.right, .brand-logo .face.top,
+                .brand-logo .face.bottom,
+                .brand-logo .keyboard-assembly { display: none !important; }
+                .brand-logo .scene {
+                  transform: perspective(1200px) rotateY(-15deg) rotateX(5deg) !important;
+                  overflow: visible !important;
+                }
+                .brand-logo .computer-unit { overflow: visible !important; }
+                .brand-logo .face.front { transform: none !important; overflow: visible !important; }
+                .brand-logo .face.front::after {
+                  content: "" !important; position: absolute !important;
+                  top: 6px !important; left: 100% !important;
+                  width: 52px !important; height: 100% !important;
+                  background: var(--beige-dark) !important;
+                  transform-origin: left top !important; transform: skewY(-4deg) !important;
+                }
+                .brand-logo .sticker-starburst { transform: rotate(-12deg) !important; }
+                .brand-logo .sticker-bengaluru { transform: rotate(4deg) !important; }
+              `;
+              clonedDoc.head.appendChild(s);
+            },
+          });
+          const link = document.createElement("a");
+          link.download = filename;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        }
+
+      } catch (err) {
+        if (err.name !== "NotAllowedError") alert("Export failed: " + err.message);
+      } finally {
+        if (overlay) document.body.removeChild(overlay);
+        if (stream)  stream.getTracks().forEach(t => t.stop());
+        btn.disabled  = false;
+        btn.innerHTML = origHTML;
+      }
+    });
+  </script>
+</body>
+</html>

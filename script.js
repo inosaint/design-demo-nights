@@ -730,6 +730,7 @@ function initCarousel(wrap, count, prev, next) {
 function makeArchiveEvent(event) {
   const section = document.createElement("article");
   section.className = "archive-event";
+  section.id = event.id;
 
   const date = document.createElement("div");
   date.className = "archive-date";
@@ -769,11 +770,6 @@ function makeArchiveEvent(event) {
     wrap.append(cards);
     section.append(wrap);
     window.setTimeout(() => initCarousel(wrap, event.demos.length, prev, next), 0);
-  } else {
-    const empty = document.createElement("p");
-    empty.className = "archive-empty";
-    empty.textContent = "";
-    section.append(empty);
   }
   return section;
 }
@@ -921,7 +917,9 @@ function syncFromHash() {
     return;
   }
   const match = findDemoBySlug(slug);
-  if (match) openDialog(match.demo, match.event, { skipHistory: true });
+  if (match) { openDialog(match.demo, match.event, { skipHistory: true }); return; }
+  const editionEl = document.getElementById(slug);
+  if (editionEl) editionEl.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 window.addEventListener("hashchange", syncFromHash);
