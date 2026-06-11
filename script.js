@@ -770,11 +770,6 @@ function makeArchiveEvent(event) {
     wrap.append(cards);
     section.append(wrap);
     window.setTimeout(() => initCarousel(wrap, event.demos.length, prev, next), 0);
-  } else {
-    const empty = document.createElement("p");
-    empty.className = "archive-empty";
-    empty.textContent = "";
-    section.append(empty);
   }
   return section;
 }
