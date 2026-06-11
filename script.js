@@ -357,7 +357,7 @@ const events = [
         details: "What started as a way for Faris to learn Claude Code turned into Blrbloom. During the talk, we got to see the behind the scenes of building; the explorations and decisions taken to create the viral product. "
       },
       {
-        title: "Pixels, Prompts & Prototypes ",
+        title: "Pixels, Prompts & Prototypes",
         speaker: "Kenneth",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/kenneth" },
