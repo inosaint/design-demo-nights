@@ -23,8 +23,8 @@ const events = [
         speaker: "Sharvari",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/sureworry" },
-          { platform: "instagram", url: "" },
-          { platform: "website", url: "https://sharszineshelf.com" }
+          { platform: "instagram", url: "https://instagram.com/marathesharvari" },
+          { platform: "website", url: "" }
         ],
         demoUrl: "https://sharszineshelf.com",
         photo: "sharvari.jpeg",
@@ -37,7 +37,7 @@ const events = [
         speaker: "Rasagy",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/rasagy" },
-          { platform: "instagram", url: "https://instagram.com/rasagy" },
+          { platform: "instagram", url: "https://instagram.com/rasagy.sharma" },
           { platform: "website", url: "https://rasagy.in" }
         ],
         demoUrl: "https://rasagy.in/photo-graphs/",
@@ -51,7 +51,7 @@ const events = [
         speaker: "Sankalp",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/paapatype" },
-          { platform: "instagram", url: "" },
+          { platform: "instagram", url: "https://instagram.com/paapatype" },
           { platform: "website", url: "" }
         ],
         demoUrl: "",
@@ -79,8 +79,8 @@ const events = [
         speaker: "Abhimanyu",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/whizabz" },
-          { platform: "instagram", url: "" },
-          { platform: "website", url: "" }
+          { platform: "instagram", url: "https://instagram.com/whizabz" },
+          { platform: "website", url: "https://www.abhimanyusirothia.com/" }
         ],
         demoUrl: "",
         photo: "abhimanyu.jpeg",
@@ -93,8 +93,8 @@ const events = [
         speaker: "Vidhunnan",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/vidhunnan" },
-          { platform: "instagram", url: "" },
-          { platform: "website", url: "" }
+          { platform: "instagram", url: "https://instagram.com/vidhunnan" },
+          { platform: "website", url: "https://vidhunnan.design" }
         ],
         demoUrl: "",
         photo: "vidhunnan.jpeg",
