@@ -758,22 +758,23 @@ function makeArchiveEvent(event) {
   event.demos.forEach((demo) => track.append(makeDemoCard(demo, event)));
   cards.append(track);
 
-  const prev = document.createElement("button");
-  prev.type = "button";
-  prev.className = "carousel-nav carousel-nav-prev";
-  prev.setAttribute("aria-label", "Previous demo");
-  prev.innerHTML = CHEVRON_LEFT;
-
-  const next = document.createElement("button");
-  next.type = "button";
-  next.className = "carousel-nav carousel-nav-next";
-  next.setAttribute("aria-label", "Next demo");
-  next.innerHTML = CHEVRON_RIGHT;
-
-  date.append(prev, next);
   section.append(date);
 
   if (event.demos.length) {
+    const prev = document.createElement("button");
+    prev.type = "button";
+    prev.className = "carousel-nav carousel-nav-prev";
+    prev.setAttribute("aria-label", "Previous demo");
+    prev.innerHTML = CHEVRON_LEFT;
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "carousel-nav carousel-nav-next";
+    next.setAttribute("aria-label", "Next demo");
+    next.innerHTML = CHEVRON_RIGHT;
+
+    date.append(prev, next);
+
     const wrap = document.createElement("div");
     wrap.className = "carousel-wrap";
     wrap.append(cards);
@@ -784,7 +785,9 @@ function makeArchiveEvent(event) {
 }
 
 function renderArchive() {
-  const archiveEvents = events.filter((event) => !isUpcoming(event)).sort(byMostRecent);
+  const archiveEvents = events
+    .filter((event) => !isUpcoming(event) && event.demos.length)
+    .sort(byMostRecent);
   archiveList.replaceChildren(...archiveEvents.map(makeArchiveEvent));
 }
 
