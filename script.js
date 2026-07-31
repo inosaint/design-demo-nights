@@ -18,7 +18,106 @@ const events = [
     location: "Bengaluru",
     themeColor: "#39ff14",
     applyUrl: "https://luma.com/j1e9pjej",
-    demos: []
+    demos: [
+      {
+        title: "Brink",
+        speaker: "Gowtham",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/gow88_" },
+          { platform: "instagram", url: "https://instagram.com/gowthamoleti" },
+          { platform: "website", url: "https://www.gowthamoleti.com" }
+        ],
+        demoUrl: "https://apps.apple.com/in/app/brink-podcast-player/id6760338948",
+        photo: "gowtham.jpeg",
+        preview: "An iOS podcast app built to learn — and to answer what a designer brings to the vibe-coded era.",
+        details:
+          "Gowtham talked about building Brink, an iOS podcast app he created to learn and also answer what a designer brings to the vibe-coded era. Check it out on the App Store."
+      },
+      {
+        title: "Harmonic",
+        speaker: "Prithvi",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/iprithvitharun" },
+          { platform: "instagram", url: "https://instagram.com/iprithvitharun" },
+          { platform: "website", url: "https://prithvi.design/" }
+        ],
+        demoUrl: "https://harmonic.build",
+        photo: "prithvi.jpeg",
+        preview: "An IDE with cool interactions baked in — branches named after drinks, and a 'merge train' animation.",
+        details:
+          "Harmonic.build is an IDE Prithvi has been building, and he showed us some cool interactions he built into it, like how new branches are named after drinks and that train animation for 'merge train'."
+      },
+      {
+        title: "Going local with LLMs",
+        speaker: "Vikalp",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/vikxlp" },
+          { platform: "instagram", url: "" },
+          { platform: "website", url: "https://vikalpgupta.com" }
+        ],
+        demoUrl: "",
+        photo: "vikalp.jpeg",
+        preview: "After being part of Design Demo Nights since the beginning, Vikalp finally spoke about setting up a local LLM.",
+        details:
+          "After being part of Design Demo Nights since the beginning, Vikalp finally got round to speaking about his experience setting up a local LLM."
+      },
+      {
+        title: "Jelly & Stringboot",
+        speaker: "Rajan",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/rajanndube" },
+          { platform: "instagram", url: "https://instagram.com/rajanthedube" },
+          { platform: "website", url: "https://www.rajandube.com" }
+        ],
+        demoUrl: "https://addjelly.com",
+        photo: "rajan.jpeg",
+        preview: "Quick demos of two apps: Jelly, a tool to communicate visual bugs to your agent on mobile, and Stringboot, a string management software.",
+        details:
+          'Rajan showed us quick demos of two apps he\'s created — Jelly (<a href="https://addjelly.com" target="_blank" rel="noopener">addjelly.com</a>), a tool to communicate visual bugs to your agent on mobile, and Stringboot (<a href="https://stringboot.com" target="_blank" rel="noopener">stringboot.com</a>), a string management software.'
+      },
+      {
+        title: "AI workflows in tangible tech-art installations",
+        speaker: "Debanshu",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/debanshubhaumik" },
+          { platform: "instagram", url: "https://instagram.com/debanshub" },
+          { platform: "website", url: "https://debanshubhaumik.com" }
+        ],
+        demoUrl: "",
+        photo: "debanshu.jpeg",
+        preview: "Debanshu is an artist creating art installations, and he spoke about how he leverages AI workflows when creating his tangible tech artworks.",
+        details:
+          "Debanshu is an artist creating art installations, and he spoke about how he leverages AI workflows when creating his tangible tech artworks."
+      },
+      {
+        title: "You Are What You Eat",
+        speaker: "Priyanka",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/priyakolluru98" },
+          { platform: "instagram", url: "https://instagram.com/priya.kolluru" },
+          { platform: "website", url: "https://priyankakolluru.figma.site" }
+        ],
+        demoUrl: "https://www.youtube.com/watch?v=67Mx0o_tLQs",
+        photo: "priyanka.jpeg",
+        preview: "A class project exploring our evolving relationship with AI, framed as a coffee date with AI.",
+        details:
+          "Priyanka showcased her class project 'You Are What You Eat' — an exploration of our evolving relationship with AI framed as a coffee date with AI."
+      },
+      {
+        title: "Chart Party Nights",
+        speaker: "Surbhi",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/surbhaai" },
+          { platform: "instagram", url: "https://instagram.com/surbhibhatia" },
+          { platform: "website", url: "https://surbhibhatia.com" }
+        ],
+        demoUrl: "https://surbhibhatia.com/vizardry/30-day-chart-challenge-2026",
+        photo: "surbhi.jpeg",
+        preview: "What she made as part of this year's #30DayChartChallenge, and the hats she wore while working with AI.",
+        details:
+          'To end the night, Surbhi talked about what she made as part of this year\'s <a href="https://github.com/30DayChartChallenge" target="_blank" rel="noopener">#30DayChartChallenge</a> and the hats she wore while working with AI.'
+      }
+    ]
   },
   {
     id: "4",
@@ -507,13 +606,23 @@ const events = [
 const upcomingSlot = document.querySelector("#upcoming-event");
 const archiveList = document.querySelector("#archive-list");
 const backdrop = document.querySelector("[data-dialog-backdrop]");
+const demoDialog = document.querySelector(".demo-dialog");
 const closeButton = document.querySelector("[data-dialog-close]");
 const dialogImage = document.querySelector("[data-dialog-image]");
 const dialogSpeaker = document.querySelector("[data-dialog-speaker]");
 const dialogTitle = document.querySelector("[data-dialog-title]");
 const dialogDescription = document.querySelector("[data-dialog-description]");
 const dialogLinks = document.querySelector("[data-dialog-links]");
+const dialogPrev = document.querySelector("[data-dialog-prev]");
+const dialogNext = document.querySelector("[data-dialog-next]");
 let lastFocusedElement = null;
+let currentDialogEvent = null;
+let currentDialogDemo = null;
+
+const CHEVRON_LEFT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+const CHEVRON_RIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+dialogPrev.innerHTML = CHEVRON_LEFT;
+dialogNext.innerHTML = CHEVRON_RIGHT;
 
 function formatDate(value) {
   return new Intl.DateTimeFormat("en-IN", {
@@ -701,9 +810,6 @@ function makeDemoCard(demo, event) {
   return button;
 }
 
-const CHEVRON_LEFT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
-const CHEVRON_RIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
-
 function initCarousel(wrap, count, prev, next) {
   const carousel = wrap.querySelector(".demo-carousel");
   const track = wrap.querySelector(".demo-carousel-track");
@@ -808,6 +914,11 @@ const PLATFORM_LABELS = {
 
 function openDialog(demo, event, { skipHistory = false } = {}) {
   lastFocusedElement = document.activeElement;
+  currentDialogEvent = event;
+  currentDialogDemo = demo;
+  const hasMultiple = event.demos.length > 1;
+  dialogPrev.hidden = !hasMultiple;
+  dialogNext.hidden = !hasMultiple;
   if (demo.photo) {
     const img = document.createElement("img");
     img.className = "dialog-speaker-photo";
@@ -821,7 +932,7 @@ function openDialog(demo, event, { skipHistory = false } = {}) {
   }
   dialogSpeaker.textContent = `${demo.speaker} / ${event.title}`;
   dialogTitle.textContent = demo.title;
-  dialogDescription.textContent = demo.details;
+  dialogDescription.innerHTML = demo.details;
   dialogLinks.replaceChildren();
 
   const validLinks = demo.speakerLinks.filter(({ url }) => url.trim() !== "");
@@ -896,13 +1007,55 @@ function closeDialog({ skipHistory = false } = {}) {
   if (lastFocusedElement) lastFocusedElement.focus();
 }
 
+function navigateDialog(direction) {
+  if (!currentDialogEvent || !currentDialogDemo) return;
+  const demos = currentDialogEvent.demos;
+  if (demos.length < 2) return;
+  const currentIndex = demos.indexOf(currentDialogDemo);
+  const nextIndex = (currentIndex + direction + demos.length) % demos.length;
+  const nextFocused = lastFocusedElement;
+  openDialog(demos[nextIndex], currentDialogEvent);
+  lastFocusedElement = nextFocused;
+}
+
 closeButton.addEventListener("click", () => closeDialog());
 backdrop.addEventListener("click", (event) => {
   if (event.target === backdrop) closeDialog();
 });
+dialogPrev.addEventListener("click", () => navigateDialog(-1));
+dialogNext.addEventListener("click", () => navigateDialog(1));
+
+let dialogTouchStartX = null;
+let dialogTouchStartY = null;
+demoDialog.addEventListener(
+  "touchstart",
+  (event) => {
+    const touch = event.changedTouches[0];
+    dialogTouchStartX = touch.clientX;
+    dialogTouchStartY = touch.clientY;
+  },
+  { passive: true }
+);
+demoDialog.addEventListener(
+  "touchend",
+  (event) => {
+    if (dialogTouchStartX === null) return;
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - dialogTouchStartX;
+    const dy = touch.clientY - dialogTouchStartY;
+    dialogTouchStartX = null;
+    dialogTouchStartY = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    navigateDialog(dx < 0 ? 1 : -1);
+  },
+  { passive: true }
+);
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !backdrop.hidden) closeDialog();
+  if (backdrop.hidden) return;
+  if (event.key === "Escape") closeDialog();
+  if (event.key === "ArrowLeft") navigateDialog(-1);
+  if (event.key === "ArrowRight") navigateDialog(1);
 });
 
 /* ─── Slug-based URLs for demos ─────────────────────────── */
@@ -1601,7 +1754,7 @@ function makeDemoContent(demo, ev) {
 
   const body = document.createElement("p");
   body.className = "ros-demo-body";
-  body.textContent = demo.details;
+  body.innerHTML = demo.details;
 
   wrap.append(kicker, titleEl, hr, body);
 

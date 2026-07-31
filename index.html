@@ -135,22 +135,28 @@
     </main>
 
     <div class="dialog-backdrop" data-dialog-backdrop hidden>
-      <article
-        class="demo-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="dialog-title"
-        aria-describedby="dialog-description"
-      >
+      <div class="dialog-frame">
+        <button class="dialog-nav dialog-nav-prev" type="button" data-dialog-prev aria-label="Previous demo"></button>
+        <button class="dialog-nav dialog-nav-next" type="button" data-dialog-next aria-label="Next demo"></button>
+        <article
+          class="demo-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dialog-title"
+          aria-describedby="dialog-description"
+        >
         <button class="dialog-close" type="button" data-dialog-close aria-label="Close demo details">×</button>
-        <div class="dialog-image" data-dialog-image></div>
+        <div class="dialog-image">
+          <div data-dialog-image></div>
+        </div>
         <div class="dialog-content">
           <p class="kicker" data-dialog-speaker></p>
           <h2 id="dialog-title" data-dialog-title></h2>
           <p id="dialog-description" data-dialog-description></p>
           <div class="dialog-links" data-dialog-links></div>
         </div>
-      </article>
+        </article>
+      </div>
     </div>
 
     <!-- ─── Retro OS Easter Egg ─── -->
