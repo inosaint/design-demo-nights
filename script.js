@@ -12,6 +12,15 @@ window.track = track;
 
 const events = [
   {
+    id: "6",
+    title: "Design Demo Nights 06",
+    startsAt: "2026-08-21T18:30:00+05:30",
+    location: "Bengaluru",
+    themeColor: "#3b82f6",
+    applyUrl: "https://luma.com/i24sf8vx",
+    demos: []
+  },
+  {
     id: "5",
     title: "Design Demo Nights 05",
     startsAt: "2026-07-24T18:30:00+05:30",

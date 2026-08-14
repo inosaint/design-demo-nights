@@ -524,7 +524,7 @@
       transform: translateZ(101px) rotate(-12deg);
     }
 
-    .brand-logo .sticker-starburst:has(.em) {
+    .brand-logo .sticker-starburst:has(.em, .sticker-emoji) {
       background: transparent;
       border: none;
       box-shadow: none;
@@ -532,13 +532,18 @@
       top: 38px;
       left: 6px;
     }
-    .brand-logo .sticker-starburst:has(.em)::after {
+    .brand-logo .sticker-starburst:has(.em, .sticker-emoji)::after {
       content: none;
     }
 
-    .brand-logo .sticker-starburst .em {
+    .brand-logo .sticker-starburst .em,
+    .brand-logo .sticker-starburst .sticker-emoji {
+      display: block;
       width: 30px;
       height: 30px;
+      font-size: 28px;
+      line-height: 30px;
+      text-align: center;
       background-size: 100%;
       filter:
         drop-shadow(-2px 0 0 #fff)
@@ -822,7 +827,8 @@
       {
         name: "Electric Blue", tag: "",
         accent: "#3b82f6", heroBg: ["#e8f0ff","#93b4f8"],
-        starBg: "#facc15", starFg: "#1d4ed8", bngBg: "#1d4ed8", bngFg: "#fff"
+        starBg: "#facc15", starFg: "#1d4ed8", bngBg: "#1d4ed8", bngFg: "#fff",
+        emojiContent: "🇮🇳", emojiSticker: true
       },
       {
         name: "Neon Green", tag: "",
@@ -976,6 +982,19 @@
       heroScaleEl.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
     }
 
+    function updateEmojiShadow() {
+      const x    = document.getElementById("shad-x").value;
+      const y    = document.getElementById("shad-y").value;
+      const blur = document.getElementById("shad-blur").value;
+      const op   = (document.getElementById("shad-op").value / 100).toFixed(2);
+      document.getElementById("shad-x-val").textContent    = x;
+      document.getElementById("shad-y-val").textContent    = y;
+      document.getElementById("shad-blur-val").textContent = blur;
+      document.getElementById("shad-op-val").textContent   = document.getElementById("shad-op").value + "%";
+      const f = `drop-shadow(-2px 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(${x}px ${y}px ${blur}px rgba(0,0,0,${op}))`;
+      document.querySelectorAll(".brand-logo .sticker-starburst .em, .brand-logo .sticker-starburst .sticker-emoji").forEach(el => el.style.filter = f);
+    }
+
     /* ─── Apply theme ────────────────────────────────────────── */
     function applyTheme(t) {
       const bg = `linear-gradient(135deg, ${t.heroBg[0]} 0%, ${t.heroBg[1]} 100%)`;
@@ -993,6 +1012,9 @@
         const starSticker = el.querySelector('.sticker-starburst');
         if (t.emojiCssClass) {
           starSticker.innerHTML = `<i class="em em-${t.emojiCssClass}"></i>`;
+          el.style.setProperty("--sticker-star-content", '""');
+        } else if (t.emojiContent) {
+          starSticker.innerHTML = `<span class="sticker-emoji" aria-label="Indian flag">${t.emojiContent}</span>`;
           el.style.setProperty("--sticker-star-content", '""');
         } else {
           starSticker.innerHTML = '';
@@ -1021,8 +1043,9 @@
 
       document.getElementById("theme-label").textContent    = t.name;
       document.getElementById("theme-tag-line").textContent  = t.tag;
-      document.getElementById("sticker-shadow-controls").style.display = t.emojiCssClass ? "" : "none";
+      document.getElementById("sticker-shadow-controls").style.display = t.emojiCssClass || t.emojiContent ? "" : "none";
       document.querySelectorAll(".swatch").forEach((s, i) => s.classList.toggle("active", i === idx));
+      updateEmojiShadow();
 
       /* Adaptive UI colours for dark-background themes */
       const dark = isDark(t.heroBg[0]);
@@ -1096,18 +1119,6 @@
       });
 
       /* Sticker shadow sliders */
-      function updateEmojiShadow() {
-        const x    = document.getElementById("shad-x").value;
-        const y    = document.getElementById("shad-y").value;
-        const blur = document.getElementById("shad-blur").value;
-        const op   = (document.getElementById("shad-op").value / 100).toFixed(2);
-        document.getElementById("shad-x-val").textContent    = x;
-        document.getElementById("shad-y-val").textContent    = y;
-        document.getElementById("shad-blur-val").textContent = blur;
-        document.getElementById("shad-op-val").textContent   = document.getElementById("shad-op").value + "%";
-        const f = `drop-shadow(-2px 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(${x}px ${y}px ${blur}px rgba(0,0,0,${op}))`;
-        document.querySelectorAll(".brand-logo .sticker-starburst .em").forEach(el => el.style.filter = f);
-      }
       ["shad-x","shad-y","shad-blur","shad-op"].forEach(id =>
         document.getElementById(id).addEventListener("input", updateEmojiShadow)
       );
