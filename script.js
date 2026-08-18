@@ -171,7 +171,7 @@ const events = [
           { platform: "instagram", url: "https://instagram.com/paapatype" },
           { platform: "website", url: "" }
         ],
-        demoUrl: "",
+        demoUrl: "https://indexarch.com",
         photo: "sankalp.jpeg",
         preview: "A whirlwind tour through dragging boring manufacturing catalogues into the modern era with AI.",
         details:
