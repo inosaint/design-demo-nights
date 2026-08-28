@@ -17,8 +17,113 @@ const events = [
     startsAt: "2026-08-21T18:30:00+05:30",
     location: "Bengaluru",
     themeColor: "#3b82f6",
-    applyUrl: "https://luma.com/i24sf8vx",
-    demos: []
+    demos: [
+      {
+        title: "A Mac App That Blocks Distractions",
+        speaker: "Santrupti",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/santacandesign" },
+          { platform: "instagram", url: "https://instagram.com/santruptip" },
+          { platform: "website", url: "https://santruptip.in" }
+        ],
+        demoUrl: "",
+        photo: "santrupti.jpeg",
+        preview: "A native Mac to-do app that blocks distracting websites while you work.",
+        details:
+          'Santrupti walked through a Mac-native to-do app she has been building for herself \u2014 one that pairs a task list with a website blocker, so committing to a task also closes the door on the usual detours. She also extended the app to have <a href="https://x.com/Santacandesign/status/2090648060464595125?s=20" target="_blank" rel="noopener">a physical component</a> using an ESP32.'
+      },
+      {
+        title: "Everyday Life as a Dataset",
+        speaker: "Nomeshwari",
+        speakerLinks: [
+          { platform: "twitter", url: "" },
+          { platform: "instagram", url: "https://instagram.com/madame.viz" },
+          { platform: "website", url: "https://nomeshwari.framer.website/" }
+        ],
+        demoUrl: "",
+        photo: "nomeshwari.jpeg",
+        preview: "Visual experiments that turn everyday chaos into data stories and quick prototypes.",
+        details: "What happens when a designer treats everyday life like a dataset? Nomeshwari shared a run of personal data experiments \u2014 from visualizing bangalore traffic from her balcony, to her walking activity, and grocery purchases."
+      },
+      {
+        title: "Teaching the IndieWeb",
+        speaker: "Aman",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/thedivtagguy" },
+          { platform: "instagram", url: "https://instagram.com/thedivtagguy" },
+          { platform: "website", url: "https://aman.bh" }
+        ],
+        demoUrl: "https://teaching.aman.bh/web2026/showcase",
+        photo: "aman.jpeg",
+        preview: "A web dev course built around personal websites as a \u2018space\u2019, and the student work it produced.",
+        details: "Aman walked through the second edition of the web development course he teaches at DAIICT Gandhinagar, structured around understanding and building personal websites as a space rather than a portfolio, and around the principles of the IndieWeb. He covered the teaching methods behind it \u2014 open submissions, public dev notes, briefs like \u2018make something ugly\u2019 \u2014 and showed the student showcase that came out of it."
+      },
+      {
+        title: "Localeditor.app",
+        speaker: "Nikhil",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/nikhilshares" },
+          { platform: "instagram", url: "https://instagram.com/publicnikhil" },
+          { platform: "website", url: "https://nikhilyadav.com" }
+        ],
+        demoUrl: "https://localeditor.app",
+        photo: "nikhil.jpeg",
+        preview: "A local editor for reading whatever your agent creates",
+        details: "Nikhil demoed LocalEditor; a simple viewer app for viewing markdown, HTML, JSON, or any other file an agent leaves behind."
+      },
+      {
+        title: "Automating the logo to website pipeline",
+        speaker: "Malay",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/malayvasa" },
+          { platform: "instagram", url: "https://instagram.com/malayvasa" },
+          { platform: "website", url: "https://malayvasa.com" }
+        ],
+        demoUrl: "https://github.com/ComposioHQ/logo-cdn",
+        photo: "malay.jpeg",
+        preview: "An agent that turns a Linear issue into a merged PR on a logo CDN.",
+        details: "Composio\u2019s site shows a logo for every toolkit in its registry, and there are hundreds. Finding a clean logo for each app, cropping it, and getting it onto the CDN was slow and inconsistent, so Malay built an agent to do it: file a Linear issue with a URL, and it picks the issue up via webhook, grabs the favicon, vectorises it to SVG, normalises it to 128\u00d7128, opens a PR on the logo CDN repo and auto-merges it, then comments back with a preview and the PR link."
+      },
+      {
+        title: "Data Art in TouchDesigner",
+        speaker: "Animesh",
+        speakerLinks: [
+          { platform: "twitter", url: "" },
+          { platform: "instagram", url: "https://instagram.com/animesh_art" },
+          { platform: "website", url: "https://cherished-stories-519002.framer.app/" }
+        ],
+        demoUrl: "",
+        photo: "animesh.jpeg",
+        preview: "A year of TouchDesigner experiments turning random noise into organic, nature-like form.",
+        details: "Animesh showed a year of TouchDesigner work \u2014 data art that turns random noise into organic shapes drawn from nature, an interactive blooming garden, and projection mapping pieces. He ran the patches live and talked through the node graph behind them. Probably the first time you might see a presentation made in TouchDesigner itself."
+      },
+      {
+        title: "Down the Rabbit Hole",
+        speaker: "Diya",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/absurdiya_" },
+          { platform: "instagram", url: "https://instagram.com/absurdiya._" },
+          { platform: "website", url: "https://absurdiya.com" }
+        ],
+        demoUrl: "",
+        photo: "diya.jpeg",
+        preview: "An AI interface that drops the chat thread for an open canvas of branching thoughts.",
+        details: "A design experiment that takes a break from the usual chat UI. Instead of a linear thread, Diya\u2019s prototype uses an open canvas that shows the chain, branching, and deviation of thoughts as a conversation moves. She walked through the build, including the moment she gave up on a sophisticated NLP-driven contextual-analysis engine and outsourced the whole conditional to an LLM instead."
+      },
+      {
+        title: "Popsicle",
+        speaker: "Shuvam",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/shuvam360" },
+          { platform: "instagram", url: "https://instagram.com/the_distorted_aura" },
+          { platform: "website", url: "https://shuvam.xyz/" }
+        ],
+        demoUrl: "",
+        photo: "shuvam.jpeg",
+        preview: "A 2023 tool that combined version control, CodePen, and a better steering wheel for AI models.",
+        details: "Back in 2023 Shuvam built Popsicle \u2014 essentially what Claude\u2019s design tools are now, but with a few opinionated takes on how he wanted it to work. The idea was to combine version control and CodePen into one surface and build a better steering wheel for AI models. He demoed it running and reflected on what the intervening years got right and wrong."
+      }
+    ]
   },
   {
     id: "5",
@@ -262,7 +367,7 @@ const events = [
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/santacandesign" },
           { platform: "instagram", url: "https://instagram.com/santruptip" },
-          { platform: "website", url: "https://santacandesign.github.io/portfolio2026/index.html" }
+          { platform: "website", url: "https://santruptip.in" }
         ],
         demoUrl: "",
         photo: "santa.jpeg",
@@ -368,7 +473,7 @@ const events = [
         speaker: "Rasagy",
         speakerLinks: [
               { platform: "twitter", url: "https://x.com/rasagy" },
-              { platform: "instagram", url: "https://instagram.com/rasagy" },
+              { platform: "instagram", url: "https://instagram.com/rasagy.sharma" },
               { platform: "website", url: "https://rasagy.in" }
         ],
         demoUrl: "https://rasagy.in/imitat10n/",
@@ -438,7 +543,7 @@ const events = [
         speaker: "Diya",
         speakerLinks: [
           { platform: "twitter", url: "https://x.com/absurdiya_" },
-          { platform: "instagram", url: "https://instagram.com/absurdiya_" },
+          { platform: "instagram", url: "https://instagram.com/absurdiya._" },
           { platform: "website", url: "https://absurdiya.com" }
         ],
         demoUrl: "",
