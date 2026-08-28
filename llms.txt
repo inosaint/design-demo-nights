@@ -1,0 +1,26 @@
+# Design Demo Nights
+
+> A recurring night in Bengaluru where designers demo what they've been building — experiments, tools, prototypes, and process. The site is a public archive of every edition and its demos.
+
+Design Demo Nights (DDN) runs roughly monthly. Each edition hosts 7–9 short demos. The site at designdemonights.com lists the next upcoming edition (with an apply link) and an archive of all past editions, where every demo card opens a dialog with the speaker's links and a longer write-up.
+
+The site is a no-build static page: `index.html`, `styles.css`, and `script.js`. All event and demo content lives in the `events` array at the top of `script.js` — there is no CMS, API, or JSON feed.
+
+## Site
+
+- [Home](https://designdemonights.com): Upcoming edition, plus the full archive of past editions and demos.
+- [Apply to demo](https://luma.com/calendar/cal-Lz8YkYPCTUZPX9t): Luma calendar — subscribe or register for the next edition.
+- [Instagram](https://www.instagram.com/DesignDemoNights): Photos and announcements.
+
+## Editions
+
+- Design Demo Nights 06 — 21 Aug 2026, Bengaluru. Archive entry in progress.
+- Design Demo Nights 05 — 24 Jul 2026, Bengaluru. 7 demos: Brink (Gowtham), Harmonic (Prithvi), Going local with LLMs (Vikalp), Jelly & Stringboot (Rajan), AI workflows in tangible tech-art installations (Debanshu), You Are What You Eat (Priyanka), Chart Party Nights (Surbhi).
+- Design Demo Nights 04 — 5 Jun 2026, Bengaluru. 8 demos: Sharszine Shelf (Sharvari), Photo-Graphs (Rasagy), Modernising Manufacturing Catalogues with AI (Sankalp), Scaling on-ground systems with Sarvam (Bharath), Mouse-Based Screen Reader (Abhimanyu), Tooling for Design System Colours (Vidhunnan), Trivia with Friends (Keshav), DDN Easter Egg (Kenneth).
+- Design Demo Nights 03 — 20 Apr 2026, Bengaluru. 7 demos: Safe Food Guide (Santrupti), AI Verse (Kshitij), Transient – Music Production App (Rhiddit), Sketch as an AI Canvas (Arjun), A Week at Next Door Company (Sankalp), Portfolio Archetypes (Anirudh), Lumina and Finance App (Atishay).
+- Design Demo Nights 02 — 13 Apr 2026, Bengaluru. 9 demos: Teaching Designers to Code (Rasagy), Blade: Figma to Code (Rama Krushna), LLM Confidence and AI Psychosis (Anirudh), Marketing App for SMBs (Khyati), Not Everything Smart is a LLM (Shreyas), Experimental Personal Site (Diya), Splitfree (Sakshi), Building Blrbloom (Faris), Pixels, Prompts & Prototypes (Kenneth).
+- Design Demo Nights 01 — 6 Apr 2026, Bengaluru. 8 demos: Skills vs Agents 101 (Kenneth), Disposable Tools for Designers (Gyan), Prototyping complex role-based access designs (Veethika), Agent Memory and Mini Apps (Shuvam), Solacy (Harsh), Unslop (Mustafa), Cooperatify (Atishay), Pixel Spaceships and Sarvam AI Animations (Jaljith).
+
+## Optional
+
+- [Source repository](https://github.com/inosaint/design-demo-nights): Full content of `script.js`, including every demo's description, speaker links, and photos.
