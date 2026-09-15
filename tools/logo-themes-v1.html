@@ -4,374 +4,239 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Logo Maker · Design Demo Nights</title>
-  <meta name="robots" content="noindex">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=VT323&display=swap" rel="stylesheet">
   <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* ═══ Reset ══════════════════════════════════════════════ */
+    /* ─── Reset ──────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ═══ Tokens ═════════════════════════════════════════════ */
     :root {
-      --sans: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      --sans: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
       --serif: "Instrument Serif", Georgia, serif;
       --crt-mono: "VT323", "Courier New", monospace;
-
-      --paper:  #fbfbfa;
-      --panel:  #ffffff;
-      --ink:    #111111;
-      --muted:  #6b6b6b;
-      --faint:  #9a9a9a;
-      --line:   #e6e6e6;
-      --line-strong: #d4d4d4;
-      --hover:  #f4f4f4;
-
-      --radius: 12px;
-      --radius-sm: 8px;
-      --shadow-card: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px -12px rgba(0,0,0,0.12);
-      --shadow-stage: 0 2px 6px rgba(0,0,0,0.05), 0 24px 60px -28px rgba(0,0,0,0.35);
+      --radius: 10px;
+      /* adaptive UI colours, overridden by JS for dark themes */
+      --ui-fg:         rgba(0,0,0,0.70);
+      --ui-muted:      rgba(0,0,0,0.38);
+      --ui-btn-bg:     rgba(255,255,255,0.55);
+      --ui-btn-border: rgba(0,0,0,0.10);
+      --ui-btn-fg:     rgba(0,0,0,0.55);
+      --ui-swatch-ring: rgba(0,0,0,0.25);
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #0d0d0f;
-        --panel: #151517;
-        --ink:   #f2f2f0;
-        --muted: #9a9a97;
-        --faint: #6f6f6c;
-        --line:  #262629;
-        --line-strong: #35353a;
-        --hover: #1d1d20;
-        --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,0,0,0.6);
-        --shadow-stage: 0 2px 6px rgba(0,0,0,0.5), 0 24px 60px -28px rgba(0,0,0,0.8);
-      }
-    }
-
-    html { color-scheme: light dark; }
 
     body {
-      background: var(--paper);
-      color: var(--ink);
       font-family: var(--sans);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
+      transition: background 0.5s ease;
     }
 
-    button { font: inherit; color: inherit; }
-    :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 3px; }
-
-    .mono {
-      font-family: var(--crt-mono);
-      font-size: 13px;
-      letter-spacing: 1.5px;
+    /* ─── Wordmark ───────────────────────────────────────────── */
+    .wordmark {
+      position: fixed;
+      top: 20px;
+      left: 24px;
+      font-size: 10px;
+      letter-spacing: 3px;
       text-transform: uppercase;
+      color: var(--ui-muted);
+      font-weight: 500;
+      z-index: 10;
+      transition: color 0.4s;
+      pointer-events: none;
     }
 
-    /* ═══ Top bar ════════════════════════════════════════════ */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
+    /* ─── Hero ───────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 55vh;
+      min-height: 360px;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      height: 58px;
-      padding: 0 clamp(16px, 3vw, 28px);
-      border-bottom: 1px solid var(--line);
-      background: color-mix(in srgb, var(--paper) 82%, transparent);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      justify-content: center;
     }
 
-    .topbar-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
-
-    .topbar-home {
-      color: var(--muted);
-      font-size: 13px;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: color 0.15s;
-    }
-    .topbar-home:hover { color: var(--ink); }
-
-    .topbar-sep { color: var(--line-strong); }
-
-    .topbar-title {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
+    /* The brand-logo inside hero spans the full hero area so
+       perspective: 2000px applies to the whole space */
+    .hero .brand-logo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
     }
 
-    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    /* CRT animations on hero logo */
+    .hero .crt::before { animation: scanline-drift 0.6s linear infinite; }
+    .hero .crt-glow    { animation: crt-flicker 5s infinite; }
+    .hero .graffiti-text { animation: text-glitch 7s infinite; }
 
-    .kbd {
-      display: inline-block;
-      min-width: 20px;
-      padding: 1px 5px;
-      border: 1px solid var(--line-strong);
-      border-bottom-width: 2px;
-      border-radius: 5px;
-      background: var(--panel);
-      color: var(--muted);
-      font-family: var(--crt-mono);
-      font-size: 13px;
-      line-height: 1.35;
-      text-align: center;
-    }
-    .kbd-hint { color: var(--faint); font-size: 12px; }
-    @media (max-width: 720px) { .kbd-hint { display: none; } }
-
-    /* ═══ Layout ═════════════════════════════════════════════ */
-    .layout {
-      display: grid;
-      grid-template-columns: 268px minmax(0, 1fr);
-      gap: clamp(20px, 3vw, 36px);
-      width: min(100%, 1280px);
-      margin: 0 auto;
-      padding: clamp(20px, 3vw, 32px) clamp(16px, 3vw, 28px) 96px;
-      align-items: start;
-    }
-
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .rail { position: static !important; }
-    }
-
-    /* ═══ Rail ═══════════════════════════════════════════════ */
-    .rail {
-      position: sticky;
-      top: 82px;
+    /* ─── Controls ───────────────────────────────────────────── */
+    .controls {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-    }
-
-    .panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: var(--shadow-card);
-      overflow: hidden;
-    }
-
-    .panel-head {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 11px 14px 9px;
-      border-bottom: 1px solid var(--line);
-      color: var(--faint);
-    }
-    .panel-head .count { font-family: var(--crt-mono); font-size: 13px; color: var(--faint); }
-
-    .panel-body { padding: 8px; }
-
-    /* ── Theme list ── */
-    .theme-list { display: flex; flex-direction: column; gap: 1px; }
-
-    .theme-row {
-      display: grid;
-      grid-template-columns: 18px minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
-      padding: 8px 10px;
-      border: 0;
-      border-radius: var(--radius-sm);
-      background: none;
-      cursor: pointer;
-      text-align: left;
-      transition: background 0.12s;
-    }
-    .theme-row:hover { background: var(--hover); }
-    .theme-row[aria-pressed="true"] { background: var(--hover); }
-
-    .theme-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--dot, #ccc);
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .theme-row[aria-pressed="true"] .theme-dot {
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), 0 0 0 2px var(--panel), 0 0 0 3.5px var(--ink);
-    }
-    .theme-row:hover .theme-dot { transform: scale(1.12); }
-
-    .theme-name {
-      font-size: 13.5px;
-      line-height: 1.35;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--muted);
-    }
-    .theme-row[aria-pressed="true"] .theme-name { color: var(--ink); }
-
-    .theme-key {
-      font-family: var(--crt-mono);
-      font-size: 13px;
-      color: var(--faint);
-      opacity: 0;
-      transition: opacity 0.12s;
-    }
-    .theme-row:hover .theme-key,
-    .theme-row[aria-pressed="true"] .theme-key { opacity: 1; }
-
-
-    /* ═══ Stage ══════════════════════════════════════════════ */
-    .stage-wrap { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
-
-    .stage {
-      position: relative;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--panel);
-      box-shadow: var(--shadow-stage);
-      overflow: hidden;
+      gap: 12px;
+      padding: 28px 24px 36px;
     }
 
-    .stage-canvas {
-      position: relative;
-      width: 100%;
-      height: clamp(340px, 52vh, 520px);
-      overflow: hidden;
-      transition: background 0.45s ease;
-    }
-    .stage-canvas .brand-logo { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-    /* CRT animations live on the stage logo only */
-    .stage-canvas .crt::before { animation: scanline-drift 0.6s linear infinite; }
-    .stage-canvas .crt-glow    { animation: crt-flicker 5s infinite; }
-    .stage-canvas .graffiti-text { animation: text-glitch 7s infinite; }
-
-    /* Sticker-shadow strip — sits in the stage card, under the preview,
-       and only appears for themes whose starburst is an emoji. */
-    .stage-controls {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px 20px;
-      padding: 11px 18px;
-      border-top: 1px solid var(--line);
-      background: var(--panel);
-    }
-    .stage-controls[hidden] { display: none; }
-    .stage-controls > .mono { color: var(--faint); margin-right: 2px; }
-
-    .ctrl { display: flex; align-items: center; gap: 8px; }
-    .ctrl label { color: var(--muted); font-size: 12px; }
-    .ctrl input[type=range] {
-      width: 84px;
-      height: 3px;
-      accent-color: var(--ink);
-      cursor: pointer;
-    }
-    .ctrl .val {
-      min-width: 30px;
-      font-family: var(--crt-mono);
-      font-size: 13px;
-      color: var(--faint);
-      text-align: right;
-    }
-
-    .stage-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 13px 18px;
-      border-top: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .stage-meta { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
-    .stage-name {
+    .theme-label {
       font-family: var(--serif);
-      font-size: 26px;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ui-fg);
+      transition: color 0.4s, opacity 0.12s;
+      min-height: 24px;
     }
-    .stage-tag { color: var(--faint); font-size: 12.5px; white-space: nowrap; }
-    @media (max-width: 560px) { .stage-tag { display: none; } }
 
-    .hex-btn {
-      display: inline-flex;
+    .theme-tag-line {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--ui-muted);
+      font-family: var(--crt-mono);
+      min-height: 16px;
+      transition: color 0.4s;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 4px 0;
+    }
+
+    .swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2.5px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.2s;
+      outline: none;
+      padding: 0;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active {
+      border-color: white;
+      box-shadow: 0 0 0 1.5px var(--ui-swatch-ring);
+      transform: scale(1.12);
+    }
+
+    .kbd-hint {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--ui-muted);
+      transition: color 0.4s;
+    }
+
+    /* ─── Sticker shadow controls ───────────────────────────── */
+    .sticker-shadow-controls {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 8px;
-      padding: 6px 10px 6px 8px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: none;
-      cursor: pointer;
-      font-family: var(--crt-mono);
-      font-size: 14px;
-      letter-spacing: 1px;
-      color: var(--muted);
+    }
+    .sticker-shadow-controls-label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      transition: border-color 0.15s, color 0.15s;
-      flex-shrink: 0;
+      color: var(--ui-muted);
+      font-family: var(--crt-mono);
+      transition: color 0.4s;
     }
-    .hex-btn:hover { border-color: var(--line-strong); color: var(--ink); }
-    .hex-chip {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--dot, #ccc);
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
-    }
-
-    /* ═══ Exports ════════════════════════════════════════════ */
-    .exports-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--line);
-    }
-    .exports-head .mono { color: var(--faint); }
-    .exports-note { color: var(--faint); font-size: 12px; }
-
-    /* Columns are proportional to each frame's width at a shared height, so
-       every preview lines up on the same baseline and the footers agree. */
-    .exports-grid {
+    .shadow-sliders {
       display: grid;
-      grid-template-columns: 154fr 240fr 457fr;
-      gap: 22px;
+      grid-template-columns: repeat(4, auto);
+      gap: 6px 14px;
+      align-items: center;
+    }
+    .shadow-slider-row {
+      display: contents;
+    }
+    .shadow-slider-row label {
+      font-size: 10px;
+      font-family: var(--crt-mono);
+      color: var(--ui-muted);
+      letter-spacing: 1px;
+      text-align: right;
+      transition: color 0.4s;
+    }
+    .shadow-slider-row input[type=range] {
+      width: 80px;
+      accent-color: var(--ui-fg);
+      cursor: pointer;
+    }
+    .shadow-slider-row .shad-val {
+      font-size: 10px;
+      font-family: var(--crt-mono);
+      color: var(--ui-muted);
+      min-width: 28px;
+      transition: color 0.4s;
+    }
+
+    /* ─── Divider ────────────────────────────────────────────── */
+    .section-divider {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-divider-line {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      margin-bottom: 28px;
+    }
+
+    /* ─── Mockups ────────────────────────────────────────────── */
+    .mockups {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .mockups-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--ui-muted);
+      margin-bottom: 20px;
+      transition: color 0.4s;
+    }
+
+    .mockups-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr;
+      gap: 24px;
       align-items: start;
     }
-    @media (max-width: 760px) {
-      .exports-grid { grid-template-columns: 1fr; max-width: 360px; }
+
+    @media (max-width: 660px) {
+      .mockups-grid { grid-template-columns: 1fr; }
     }
 
-    .mockup-card { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+    .mockup-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
+    /* ─── Mockup frames ──────────────────────────────────────── */
     .mockup-frame {
       position: relative;
       border-radius: 10px;
-      border: 1px solid var(--line);
       overflow: hidden;
-      transition: background 0.45s ease;
-      box-shadow: var(--shadow-card);
+      transition: background 0.5s ease;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.08);
     }
-    .mockup-frame--reel { width: 100%; aspect-ratio: 420 / 654; }
-    .mockup-frame--luma { width: 100%; aspect-ratio: 1 / 1; }
-    .mockup-frame--og   { width: 100%; aspect-ratio: 1200 / 630; }
+
+    .mockup-frame--reel    { width: 180px; height: 279px; }
+    .mockup-frame--luma    { width: 100%; aspect-ratio: 1 / 1; }
+    .mockup-frame--og      { width: 100%; aspect-ratio: 1200 / 630; }
 
     .frame-inner {
       position: absolute;
@@ -380,69 +245,51 @@
       align-items: center;
       justify-content: center;
     }
+
     .reel-inner      { padding: 8% 22%; }
     .landscape-inner { padding: 10%; }
 
-    .mockup-footer { display: flex; flex-direction: column; gap: 9px; }
-
-    .mockup-meta {
+    /* ─── Mockup footer ──────────────────────────────────────── */
+    .mockup-footer {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 2px 10px;
+      gap: 8px;
     }
-    .mockup-meta strong {
-      font-size: 12.5px;
-      font-weight: 500;
-      line-height: 1.4;
+
+    .mockup-label {
+      font-size: 11px;
+      color: var(--ui-muted);
+      line-height: 1.6;
+      transition: color 0.4s;
     }
-    .mockup-dims {
-      font-family: var(--crt-mono);
-      font-size: 13px;
-      letter-spacing: 0.5px;
-      color: var(--faint);
-      white-space: nowrap;
+    .mockup-label strong {
+      display: block;
+      color: var(--ui-fg);
+      font-size: 12px;
+      transition: color 0.4s;
     }
 
     .dl-btn {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-      padding: 7px 12px;
-      border: 1px solid var(--line-strong);
-      border-radius: 8px;
-      background: var(--panel);
-      color: var(--ink);
-      font-size: 12px;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: 7px;
+      border: 1px solid var(--ui-btn-border);
+      background: var(--ui-btn-bg);
+      color: var(--ui-btn-fg);
+      font-size: 11px;
+      font-family: var(--sans);
       cursor: pointer;
       white-space: nowrap;
+      transition: background 0.15s, color 0.15s, border-color 0.4s;
       flex-shrink: 0;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
-    .dl-btn:hover { background: var(--hover); border-color: var(--faint); }
-    .dl-btn:active { transform: translateY(1px); }
-    .dl-btn:disabled { opacity: 0.45; pointer-events: none; }
-
-    /* ═══ Toast ══════════════════════════════════════════════ */
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 26px;
-      z-index: 50;
-      transform: translate(-50%, 12px);
-      padding: 9px 16px;
-      border-radius: 999px;
-      background: var(--ink);
-      color: var(--paper);
-      font-size: 13px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .dl-btn:hover { background: rgba(255,255,255,0.85); color: rgba(0,0,0,0.75); }
+    .dl-btn:disabled { opacity: 0.4; pointer-events: none; }
 
     /* ─── Logo slot ──────────────────────────────────────────── */
     .logo-slot { position: relative; flex-shrink: 0; }
@@ -854,154 +701,110 @@
 </head>
 <body>
 
-  <!-- ═══ Top bar ══════════════════════════════════════════════ -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <a class="topbar-home" href="/">Design Demo Nights</a>
-      <span class="topbar-sep">/</span>
-      <span class="topbar-title">Logo Maker</span>
+  <span class="wordmark">Logo Maker</span>
+
+  <!-- ─── Hero ───────────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <!-- brand-logo injected by JS, fills full hero -->
+  </section>
+
+  <!-- ─── Controls ───────────────────────────────────────────── -->
+  <div class="controls">
+    <div class="theme-label" id="theme-label">Classic Purple</div>
+    <div class="theme-tag-line" id="theme-tag-line">Editions 01 · 04</div>
+    <div class="swatches" id="swatches"></div>
+    <p class="kbd-hint">← → to cycle &nbsp;·&nbsp; 1–9 to jump</p>
+    <div class="sticker-shadow-controls" id="sticker-shadow-controls" style="display:none">
+      <p class="sticker-shadow-controls-label">Sticker shadow</p>
+      <div class="shadow-sliders">
+        <div class="shadow-slider-row">
+          <label>x</label>
+          <input type="range" id="shad-x" min="-8" max="8" value="-2" step="1">
+          <span class="shad-val" id="shad-x-val">-2</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>y</label>
+          <input type="range" id="shad-y" min="-8" max="8" value="-1" step="1">
+          <span class="shad-val" id="shad-y-val">-1</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>blur</label>
+          <input type="range" id="shad-blur" min="0" max="16" value="2" step="1">
+          <span class="shad-val" id="shad-blur-val">2</span>
+        </div>
+        <div class="shadow-slider-row">
+          <label>opacity</label>
+          <input type="range" id="shad-op" min="0" max="100" value="10" step="5">
+          <span class="shad-val" id="shad-op-val">10%</span>
+        </div>
+      </div>
     </div>
-    <div class="topbar-right">
-      <span class="kbd-hint">
-        <span class="kbd">←</span> <span class="kbd">→</span> cycle
-        &nbsp;·&nbsp;
-        <span class="kbd">1</span>–<span class="kbd">9</span> jump
-      </span>
-    </div>
-  </header>
-
-  <div class="layout">
-
-    <!-- ═══ Rail ══════════════════════════════════════════════ -->
-    <aside class="rail">
-
-      <section class="panel">
-        <div class="panel-head">
-          <span class="mono">Theme</span>
-          <span class="count" id="theme-count"></span>
-        </div>
-        <div class="panel-body">
-          <div class="theme-list" id="theme-list" role="group" aria-label="Logo themes"></div>
-        </div>
-      </section>
-
-    </aside>
-
-    <!-- ═══ Stage ═════════════════════════════════════════════ -->
-    <main class="stage-wrap">
-
-      <section class="stage">
-        <div class="stage-canvas" id="stage-canvas">
-          <!-- brand-logo injected by JS -->
-        </div>
-        <div class="stage-controls" id="sticker-shadow-controls" hidden>
-          <span class="mono">Sticker shadow</span>
-          <div class="ctrl">
-            <label for="shad-x">x</label>
-            <input type="range" id="shad-x" min="-8" max="8" value="-2" step="1">
-            <span class="val" id="shad-x-val">-2</span>
-          </div>
-          <div class="ctrl">
-            <label for="shad-y">y</label>
-            <input type="range" id="shad-y" min="-8" max="8" value="-1" step="1">
-            <span class="val" id="shad-y-val">-1</span>
-          </div>
-          <div class="ctrl">
-            <label for="shad-blur">Blur</label>
-            <input type="range" id="shad-blur" min="0" max="16" value="2" step="1">
-            <span class="val" id="shad-blur-val">2</span>
-          </div>
-          <div class="ctrl">
-            <label for="shad-op">Opacity</label>
-            <input type="range" id="shad-op" min="0" max="100" value="10" step="5">
-            <span class="val" id="shad-op-val">10%</span>
-          </div>
-        </div>
-
-        <div class="stage-bar">
-          <div class="stage-meta">
-            <span class="stage-name" id="theme-label">Classic Purple</span>
-            <span class="stage-tag" id="theme-tag-line">Editions 01 · 04</span>
-          </div>
-          <button class="hex-btn" id="hex-btn" type="button" title="Copy accent hex">
-            <span class="hex-chip" id="hex-chip"></span>
-            <span id="hex-value">#b557df</span>
-          </button>
-        </div>
-      </section>
-
-      <section>
-        <div class="exports-head">
-          <span class="mono">Export</span>
-          <span class="exports-note">PNG · allow screen capture of this tab for full resolution</span>
-        </div>
-
-        <div class="exports-grid">
-
-          <!-- Reel Cover -->
-          <div class="mockup-card">
-            <div class="mockup-frame mockup-frame--reel" id="frame-reel">
-              <div class="frame-inner reel-inner">
-                <div class="logo-slot" id="slot-reel"></div>
-              </div>
-            </div>
-            <div class="mockup-footer">
-              <div class="mockup-meta">
-                <strong>Instagram Reel</strong>
-                <span class="mockup-dims">420 × 654</span>
-              </div>
-<button class="dl-btn" data-frame="reel" data-w="420" data-h="654">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download PNG
-              </button>
-            </div>
-          </div>
-
-          <!-- Luma -->
-          <div class="mockup-card">
-            <div class="mockup-frame mockup-frame--luma" id="frame-luma">
-              <div class="frame-inner landscape-inner">
-                <div class="logo-slot" id="slot-luma"></div>
-              </div>
-            </div>
-            <div class="mockup-footer">
-              <div class="mockup-meta">
-                <strong>Luma Event</strong>
-                <span class="mockup-dims">1200 × 1200</span>
-              </div>
-<button class="dl-btn" data-frame="luma" data-w="1200" data-h="1200">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download PNG
-              </button>
-            </div>
-          </div>
-
-          <!-- OG -->
-          <div class="mockup-card">
-            <div class="mockup-frame mockup-frame--og" id="frame-og">
-              <div class="frame-inner landscape-inner">
-                <div class="logo-slot" id="slot-og"></div>
-              </div>
-            </div>
-            <div class="mockup-footer">
-              <div class="mockup-meta">
-                <strong>Web / OG Preview</strong>
-                <span class="mockup-dims">1200 × 630</span>
-              </div>
-<button class="dl-btn" data-frame="og" data-w="1200" data-h="630">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download PNG
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-    </main>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- ─── Mockups ─────────────────────────────────────────────── -->
+  <div class="mockups">
+    <p class="mockups-label">Export</p>
+    <div class="mockups-grid">
+
+      <!-- Reel Cover -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--reel" id="frame-reel">
+          <div class="frame-inner reel-inner">
+            <div class="logo-slot" id="slot-reel"></div>
+          </div>
+        </div>
+        <div class="mockup-footer">
+          <div class="mockup-label">
+            <strong>Instagram Reel Cover</strong>
+            420 × 654 px
+          </div>
+          <button class="dl-btn" data-frame="reel" data-w="420" data-h="654">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+      <!-- Luma -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--luma" id="frame-luma">
+          <div class="frame-inner landscape-inner">
+            <div class="logo-slot" id="slot-luma"></div>
+          </div>
+        </div>
+        <div class="mockup-footer">
+          <div class="mockup-label">
+            <strong>Luma Event Image</strong>
+            1200 × 1200 px
+          </div>
+          <button class="dl-btn" data-frame="luma" data-w="1200" data-h="1200">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+      <!-- OG -->
+      <div class="mockup-card">
+        <div class="mockup-frame mockup-frame--og" id="frame-og">
+          <div class="frame-inner landscape-inner">
+            <div class="logo-slot" id="slot-og"></div>
+          </div>
+        </div>
+        <div class="mockup-footer">
+          <div class="mockup-label">
+            <strong>Web / OG Link Preview</strong>
+            1200 × 630 px
+          </div>
+          <button class="dl-btn" data-frame="og" data-w="1200" data-h="630">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <script>
     /* ─── Themes ─────────────────────────────────────────────── */
@@ -1033,7 +836,7 @@
         starBg: "#ffd93d", starFg: "#15803d", bngBg: "#15803d", bngFg: "#fff"
       },
       {
-        name: "Hot Pink", tag: "Edition 07",
+        name: "Hot Pink", tag: "",
         accent: "#ec4899", heroBg: ["#fdf0f7","#f5a8d0"],
         starBg: "#fbbf24", starFg: "#be185d", bngBg: "#be185d", bngFg: "#fff"
       },
@@ -1151,15 +954,14 @@
       return 0.299*r + 0.587*g + 0.114*b < 140;
     }
 
-
-    /* ─── Logo factory ───────────────────────────────────────── */
-    function makeLogo() {
+    function makeLogo(scaleVal) {
       const el = document.createElement("span");
       el.className = "brand-logo";
       el.innerHTML = LOGO_INNER;
       el.querySelector(".scene-scale").style.cssText = `
         position: absolute; top: 50%; left: 50%;
         width: 360px; height: 380px;
+        transform: translate(-50%, -50%) scale(${scaleVal});
         transform-origin: center center;
         pointer-events: none;
       `;
@@ -1169,49 +971,17 @@
     /* ─── State ──────────────────────────────────────────────── */
     let idx = 0;
     let allLogos = [];
-    let stageScaleEl = null;
+    let heroScaleEl = null;
 
-    /* Mockup logos. `scale` is the v1 logo scale and `refW` the v1 frame width
-       it was tuned against (reel was a fixed 180px; luma and og were each 1fr
-       of the 1100px container = 412px), so the logo-to-frame padding matches
-       v1 at any viewport width. */
-    const MOCKUPS = [
-      { slot: "slot-reel", frame: "frame-reel", refW: 180, scale: 0.28, w: 100, h: 120 },
-      { slot: "slot-luma", frame: "frame-luma", refW: 412, scale: 0.68, w: 260, h: 300 },
-      { slot: "slot-og",   frame: "frame-og",   refW: 412, scale: 0.36, w: 144, h: 165 },
-    ];
-
-    /* ─── Sizing ─────────────────────────────────────────────── */
-    function fitStageLogo() {
-      if (!stageScaleEl) return;
-      const h = document.getElementById("stage-canvas").clientHeight;
+    /* ─── Hero logo scaling ──────────────────────────────────── */
+    function fitHeroLogo() {
+      if (!heroScaleEl) return;
+      const h = document.getElementById("hero").clientHeight;
       /* ~460px is the approx visual height (monitor + keyboard) at scale 1.0 */
-      const scale = Math.min(h * 0.74 / 460, 1.15);
-      stageScaleEl.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+      const scale = Math.min(h * 0.76 / 460, 1.2);
+      heroScaleEl.style.transform = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
     }
 
-    function fitMockupLogos() {
-      MOCKUPS.forEach(m => {
-        if (!m.el) return;
-        const ratio = document.getElementById(m.frame).clientWidth / m.refW;
-        m.el.style.width  = (m.w * ratio) + "px";
-        m.el.style.height = (m.h * ratio) + "px";
-        m.el.querySelector(".scene-scale").style.transform =
-          `translate(-50%, -50%) scale(${(m.scale * ratio).toFixed(3)})`;
-      });
-    }
-
-    function fitAll() { fitStageLogo(); fitMockupLogos(); }
-
-    /* ─── Backdrop ───────────────────────────────────────────── */
-    function paintBackdrop(t) {
-      const bg = `linear-gradient(135deg, ${t.heroBg[0]} 0%, ${t.heroBg[1]} 100%)`;
-      ["stage-canvas","frame-reel","frame-luma","frame-og"].forEach(id => {
-        document.getElementById(id).style.background = bg;
-      });
-    }
-
-    /* ─── Sticker shadow ─────────────────────────────────────── */
     function updateEmojiShadow() {
       const x    = document.getElementById("shad-x").value;
       const y    = document.getElementById("shad-y").value;
@@ -1225,19 +995,13 @@
       document.querySelectorAll(".brand-logo .sticker-starburst .em, .brand-logo .sticker-starburst .sticker-emoji").forEach(el => el.style.filter = f);
     }
 
-    /* ─── Toast ──────────────────────────────────────────────── */
-    let toastTimer = null;
-    function toast(msg) {
-      const el = document.getElementById("toast");
-      el.textContent = msg;
-      el.classList.add("show");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove("show"), 1600);
-    }
-
     /* ─── Apply theme ────────────────────────────────────────── */
     function applyTheme(t) {
-      paintBackdrop(t);
+      const bg = `linear-gradient(135deg, ${t.heroBg[0]} 0%, ${t.heroBg[1]} 100%)`;
+      document.body.style.background = bg;
+      ["frame-reel","frame-luma","frame-og"].forEach(id => {
+        document.getElementById(id).style.background = bg;
+      });
 
       allLogos.forEach(el => {
         el.style.setProperty("--accent",               t.accent);
@@ -1277,91 +1041,79 @@
         el.style.setProperty("--accent-glow",     hexAlpha(t.accent, 0.65));
       });
 
-      document.getElementById("theme-label").textContent   = t.name;
-      document.getElementById("theme-tag-line").textContent = t.tag;
-      document.getElementById("hex-value").textContent      = t.accent;
-      document.getElementById("hex-chip").style.setProperty("--dot", t.accent);
-      document.getElementById("sticker-shadow-controls").hidden = !(t.emojiCssClass || t.emojiContent);
-
-      document.querySelectorAll(".theme-row").forEach((r, i) =>
-        r.setAttribute("aria-pressed", String(i === idx))
-      );
-
+      document.getElementById("theme-label").textContent    = t.name;
+      document.getElementById("theme-tag-line").textContent  = t.tag;
+      document.getElementById("sticker-shadow-controls").style.display = t.emojiCssClass || t.emojiContent ? "" : "none";
+      document.querySelectorAll(".swatch").forEach((s, i) => s.classList.toggle("active", i === idx));
       updateEmojiShadow();
+
+      /* Adaptive UI colours for dark-background themes */
+      const dark = isDark(t.heroBg[0]);
+      const root = document.documentElement;
+      root.style.setProperty("--ui-fg",          dark ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.70)");
+      root.style.setProperty("--ui-muted",        dark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.38)");
+      root.style.setProperty("--ui-btn-bg",       dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.55)");
+      root.style.setProperty("--ui-btn-border",   dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.10)");
+      root.style.setProperty("--ui-btn-fg",       dark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.55)");
+      root.style.setProperty("--ui-swatch-ring",  dark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.25)");
     }
 
     function go(n) {
       idx = ((n % THEMES.length) + THEMES.length) % THEMES.length;
       applyTheme(THEMES[idx]);
-      syncUrl();
-    }
-
-    /* Keep ?theme= in the URL so a look can be linked/reloaded */
-    function syncUrl() {
-      history.replaceState(null, "", "?theme=" + slugify(THEMES[idx].name));
-    }
-
-    function readUrl() {
-      const q = new URLSearchParams(location.search);
-      const t = q.get("theme");
-      if (t) {
-        const i = THEMES.findIndex(x => slugify(x.name) === t);
-        if (i >= 0) idx = i;
-      }
     }
 
     /* ─── Init ───────────────────────────────────────────────── */
     window.addEventListener("DOMContentLoaded", () => {
 
-      /* Stage logo — spans the full canvas, JS controls scale */
-      const stageLogo = makeLogo();
-      stageScaleEl = stageLogo.querySelector(".scene-scale");
-      document.getElementById("stage-canvas").appendChild(stageLogo);
-      allLogos.push(stageLogo);
+      /* Hero logo — spans full hero section, JS controls scale */
+      const heroEl = document.createElement("span");
+      heroEl.className = "brand-logo";
+      heroEl.innerHTML = LOGO_INNER;
+      heroScaleEl = heroEl.querySelector(".scene-scale");
+      heroScaleEl.style.cssText = `
+        position: absolute; top: 50%; left: 50%;
+        width: 360px; height: 380px;
+        transform-origin: center center;
+        pointer-events: none;
+      `;
+      document.getElementById("hero").appendChild(heroEl);
+      allLogos.push(heroEl);
+      fitHeroLogo();
+      window.addEventListener("resize", fitHeroLogo);
 
       /* Mockup logos */
-      MOCKUPS.forEach(m => {
-        m.el = makeLogo();
-        document.getElementById(m.slot).appendChild(m.el);
-        allLogos.push(m.el);
-      });
+      const reelLogo = makeLogo(0.28);
+      reelLogo.style.cssText += "width:100px;height:120px;";
+      document.getElementById("slot-reel").appendChild(reelLogo);
+      allLogos.push(reelLogo);
 
-      fitAll();
-      window.addEventListener("resize", fitAll);
+      const lumaLogo = makeLogo(0.68);
+      lumaLogo.style.cssText += "width:260px;height:300px;";
+      document.getElementById("slot-luma").appendChild(lumaLogo);
+      allLogos.push(lumaLogo);
 
-      /* Theme list */
-      const listEl = document.getElementById("theme-list");
+      const ogLogo = makeLogo(0.36);
+      ogLogo.style.cssText += "width:144px;height:165px;";
+      document.getElementById("slot-og").appendChild(ogLogo);
+      allLogos.push(ogLogo);
+
+      /* Swatches */
+      const swatchesEl = document.getElementById("swatches");
       THEMES.forEach((t, i) => {
-        const row = document.createElement("button");
-        row.type = "button";
-        row.className = "theme-row";
-        row.setAttribute("aria-pressed", "false");
-        row.innerHTML =
-          `<span class="theme-dot" style="--dot:${t.accent}"></span>` +
-          `<span class="theme-name">${t.name}</span>` +
-          `<span class="theme-key">${i < 9 ? i + 1 : ""}</span>`;
-        row.title = t.tag || t.name;
-        row.addEventListener("click", () => go(i));
-        listEl.appendChild(row);
-      });
-      document.getElementById("theme-count").textContent = THEMES.length;
-
-      /* Copy accent hex */
-      document.getElementById("hex-btn").addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(THEMES[idx].accent);
-          toast(`Copied ${THEMES[idx].accent}`);
-        } catch {
-          toast("Copy failed");
-        }
+        const sw = document.createElement("button");
+        sw.className = "swatch";
+        sw.style.background = t.accent;
+        sw.title = t.name;
+        sw.setAttribute("aria-label", t.name);
+        sw.addEventListener("click", () => go(i));
+        swatchesEl.appendChild(sw);
       });
 
       /* Keyboard */
       document.addEventListener("keydown", e => {
-        if (e.metaKey || e.ctrlKey || e.altKey) return;
-        if (e.target.matches("input, textarea")) return;
-        if (e.key === "ArrowLeft")  { go(idx - 1); e.preventDefault(); }
-        if (e.key === "ArrowRight") { go(idx + 1); e.preventDefault(); }
+        if (e.key === "ArrowLeft")  go(idx - 1);
+        if (e.key === "ArrowRight") go(idx + 1);
         const n = parseInt(e.key, 10);
         if (n >= 1 && n <= 9) go(n - 1);
       });
@@ -1371,8 +1123,7 @@
         document.getElementById(id).addEventListener("input", updateEmojiShadow)
       );
 
-      readUrl();
-      go(idx);
+      go(0);
     });
 
     /* ─── Download ───────────────────────────────────────────── */
