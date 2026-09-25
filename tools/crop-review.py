@@ -77,7 +77,8 @@ def build(edition, source_dir, open_browser=True):
 
     items, previews = [], {}
     for p in photos:
-        w, h = magick("identify", "-format", "%w %h", p).split()
+        # measure after -auto-orient: phones store portrait shots sideways + an EXIF flag
+        w, h = magick(p, "-auto-orient", "-format", "%w %h", "info:").split()
         w, h = int(w), int(h)
         shot = magick("identify", "-format", "%[EXIF:DateTimeOriginal]", p).strip()
         name = slug(p.name)

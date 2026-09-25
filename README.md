@@ -52,7 +52,7 @@ Supported `platform` values: `twitter`, `instagram`, `website`.
 
 ## Speaker photos
 
-Photos come off phones as 4:3 landscape; the site's card and dialog frames want
+Photos come off phones as 4:3 (landscape or portrait); the site's card and dialog frames want
 **1600x900 (16:9)**, and the venue is dark enough that most frames need an
 exposure lift. `tools/crop-review.py` handles both, with a browser step so the
 framing and treatment get approved before anything lands in `assets/`.

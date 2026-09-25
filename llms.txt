@@ -14,6 +14,7 @@ The site is a no-build static page: `index.html`, `styles.css`, and `script.js`.
 
 ## Editions
 
+- Design Demo Nights 07 — 18 Sep 2026, Bengaluru. 7 demos: The Parking Project (Soumya), Spotkit (Devesh), Journal Desk (Parth), Dataviz by Brain and Hand (Radhika), Finder Guy on an Island (Malay), Visual Poetry (Keerthi), PocketFM's Console (Harsshvardhan).
 - Design Demo Nights 06 — 21 Aug 2026, Bengaluru. 8 demos: A Mac App That Blocks Distractions (Santrupti), Everyday Life as a Dataset (Nomeshwari), Teaching the IndieWeb (Aman), Grove Note and Moody (Nikhil), To Chatbot or Not to Chatbot (Malay), Data Art in TouchDesigner (Animesh), Down the Rabbit Hole (Diya), Popsicle (Shuvam).
 - Design Demo Nights 05 — 24 Jul 2026, Bengaluru. 7 demos: Brink (Gowtham), Harmonic (Prithvi), Going local with LLMs (Vikalp), Jelly & Stringboot (Rajan), AI workflows in tangible tech-art installations (Debanshu), You Are What You Eat (Priyanka), Chart Party Nights (Surbhi).
 - Design Demo Nights 04 — 5 Jun 2026, Bengaluru. 8 demos: Sharszine Shelf (Sharvari), Photo-Graphs (Rasagy), Modernising Manufacturing Catalogues with AI (Sankalp), Scaling on-ground systems with Sarvam (Bharath), Mouse-Based Screen Reader (Abhimanyu), Tooling for Design System Colours (Vidhunnan), Trivia with Friends (Keshav), DDN Easter Egg (Kenneth).

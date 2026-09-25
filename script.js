@@ -17,8 +17,100 @@ const events = [
     startsAt: "2026-09-18T18:00:00+05:30",
     location: "Bengaluru",
     themeColor: "#ec4899",
-    applyUrl: "https://luma.com/l0hn17d2",
-    demos: []
+    demos: [
+      {
+        title: "The Parking Project",
+        speaker: "Soumya",
+        speakerLinks: [
+          { platform: "twitter", url: "" },
+          { platform: "instagram", url: "https://instagram.com/soumyaishavingfun" },
+          { platform: "website", url: "https://soumya.fun" }
+        ],
+        demoUrl: "https://instagram.com/p/Da7N8z_zU7M/",
+        photo: "soumya.jpeg",
+        preview: "A car that breaks into a Punjabi song every time it finds parking in Bangalore.",
+        details: "Finding parking in Bangalore deserves a celebration, so Soumya built a mechanism that makes their car break into a Punjabi song about the joys of finding parking every time it happens. They walked through how it was put together, including the approaches that failed along the way."
+      },
+      {
+        title: "Spotkit",
+        speaker: "Devesh",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/deveshshirsath_" },
+          { platform: "instagram", url: "https://instagram.com/devesh.vs" },
+          { platform: "website", url: "https://deveshshirsath.com" }
+        ],
+        demoUrl: "https://getspotkit.vercel.app",
+        photo: "devesh.jpeg",
+        preview: "A Claude workflow that generates simple SVG spot illustrations.",
+        details: "Devesh showed how he built a workflow in Claude to generate simple SVG illustrations. Devesh first created a few illustrations himself, which he used to train the model to generate more in the same style."
+      },
+      {
+        title: "Journal Desk",
+        speaker: "Parth",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/parosayshi" },
+          { platform: "instagram", url: "https://instagram.com/parosayshi" },
+          { platform: "website", url: "https://parosayshi.com" }
+        ],
+        demoUrl: "https://journal-desk.vercel.app",
+        photo: "parth.jpeg",
+        preview: "The details behind Journal Desk, including a tree-shadow shader.",
+        details: "Parth showed the details he put into Journal Desk, a journaling space modelled on his own desk, including the tree-shadow shader he wrote for it."
+      },
+      {
+        title: "Dataviz by Brain and Hand",
+        speaker: "Radhika",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/radzsubbu" },
+          { platform: "instagram", url: "https://instagram.com/radzsubbu" },
+          { platform: "website", url: "https://radzsubbu.biz" }
+        ],
+        demoUrl: "https://radzsubbu.biz/side-projects",
+        photo: "radhika.jpeg",
+        preview: "Making things by brain and hand when everything else is AI-generated or vibe coded.",
+        details: "Radhika added some fuel to the fire with a talk on making things by brain and hand when it feels like everyone is going for something AI-generated or vibe coded."
+      },
+      {
+        title: "Finder Guy on an Island",
+        speaker: "Malay",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/malayvasa" },
+          { platform: "instagram", url: "https://instagram.com/malayvasa" },
+          { platform: "website", url: "https://malayvasa.com" }
+        ],
+        demoUrl: "https://tryisland.app/",
+        photo: "malay.jpeg",
+        preview: "Finder guy, a hands-free desk assistant, and Island, the macOS notch app it lives on.",
+        details:
+          'Malay demoed two things. The first was <a href="https://x.com/MalayVasa/status/2098176946622656811?s=20" target="_blank" rel="noopener">Finder guy</a>, a small desk device built with GPT-Live 1 that connects to any number of apps and can spawn background agents to look things up and answer questions, all hands-free, with its own persona and a full suite of animations. The second was <a href="https://tryisland.app/" target="_blank" rel="noopener">Island</a>, a macOS notch app where, among other things, Finder guy can be found.'
+      },
+      {
+        title: "Visual Poetry",
+        speaker: "Keerthi",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/kiiradesign" },
+          { platform: "instagram", url: "https://instagram.com/kiira.etc" },
+          { platform: "website", url: "https://kiira.in" }
+        ],
+        demoUrl: "https://visualpoetry.kiira.in",
+        photo: "keerthi.jpeg",
+        preview: "A tool that turns poems into generative art, plus anthotype printing experiments.",
+        details: "Keerthi showed the tool she built to turn poems into generative art, along with her experiments in anthotype printing, a photographic process that uses light-sensitive plant pigments."
+      },
+      {
+        title: "PocketFM\u2019s Console",
+        speaker: "Harsshvardhan",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/harsshavardan3" },
+          { platform: "instagram", url: "https://instagram.com/harssha_vardan" },
+          { platform: "website", url: "https://harssha.com" }
+        ],
+        demoUrl: "",
+        photo: "harsshvardhan.jpeg",
+        preview: "Console, an internal prototyping playground at Pocket FM, and what designing with AI looks like there.",
+        details: "Harsshvardhan closed the night with Console, an internal prototyping playground for the design team at Pocket FM, and talked through what the process of designing with AI looks like there."
+      }
+    ]
   },
   {
     id: "6",
