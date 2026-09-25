@@ -28,6 +28,12 @@ All content lives in `script.js`. No build step — just edit and push.
 
 4. **Add speaker photos** at `assets/events/<id>/photos/<filename>` (see demo object shape below and the photo workflow further down).
 
+5. **Ship it**: add the edition to `llms.txt`, push to `main`, and tag a release named `ddn-<id>`:
+
+```sh
+gh release create ddn-7 --target main --title "Design Demo Nights 07" --notes "…"
+```
+
 ### Demo object shape
 
 ```js

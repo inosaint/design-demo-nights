@@ -125,6 +125,23 @@ Flag any gaps (missing photos, empty titles, thin details) so the user knows wha
 
 ---
 
+## Phase 6 — Ship and tag a release
+
+Only once the user has reviewed the edition and asks to ship it:
+
+1. Remove `applyUrl` from the edition's event object (it's past now).
+2. Add the edition to `llms.txt` under `## Editions` (newest first), in the same one-line format: `- Design Demo Nights 0N — D Mon YYYY, Bengaluru. N demos: Title (Speaker), …`. While you're there, check the other lines still match the titles in `script.js`.
+3. Commit (`Adding DDN<N> to the archive`) and push to `main`.
+4. Cut a GitHub release tagged `ddn-<id>` (e.g. `ddn-7`) on `main`, titled `Design Demo Nights 0N`, with notes listing the date and each demo as `- Title — Speaker`:
+
+```sh
+gh release create ddn-<id> --target main --title "Design Demo Nights 0N" --notes "…"
+```
+
+Later corrections to an edition (a fixed link, a renamed talk) are just commits to `main`; don't move or recreate the tag.
+
+---
+
 ## Edge cases
 
 - **Speaker in text dump but not in CSV** → include them with empty social links; note the gap.
