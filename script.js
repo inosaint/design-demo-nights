@@ -65,7 +65,7 @@ const events = [
           { platform: "instagram", url: "https://instagram.com/radzsubbu" },
           { platform: "website", url: "https://radzsubbu.biz" }
         ],
-        demoUrl: "https://radzsubbu.biz/side-projects",
+        demoUrl: "https://radzsubbu.substack.com/p/designing-dataviz-by-brain-and-hand",
         photo: "radhika.jpeg",
         preview: "Making things by brain and hand when everything else is AI-generated or vibe coded.",
         details: "Radhika added some fuel to the fire with a talk on making things by brain and hand when it feels like everyone is going for something AI-generated or vibe coded."
