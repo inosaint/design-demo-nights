@@ -67,22 +67,28 @@ img {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
   align-items: center;
-  gap: clamp(28px, 7vw, 80px);
+  align-content: center;
+  gap: 0 clamp(28px, 7vw, 80px);
   min-height: 270px;
   padding: 28px 0 34px;
 }
 
 .header-copy {
-  max-width: 430px;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  container-type: inline-size;
 }
 
+/* One line on desktop, sized to whatever the column allows */
 .header-copy h1 {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(48px, 7vw, 78px);
+  font-size: min(74px, 15cqi);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .header-copy p {
@@ -91,6 +97,11 @@ img {
   color: var(--muted);
   font-size: 16px;
   line-height: 1.55;
+}
+
+.nav > .brand {
+  grid-column: 2;
+  grid-row: 1 / span 2;
 }
 
 .brand {
@@ -113,6 +124,106 @@ img {
   font-size: clamp(22px, 3.4vw, 30px);
   font-weight: 400;
   letter-spacing: -0.01em;
+}
+
+/* Luma + Instagram links under the intro */
+.header-links {
+  position: relative;
+  z-index: 3;
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.header-links svg {
+  flex: none;
+}
+
+.header-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px 0 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.header-cta:hover,
+.header-cta:focus-visible {
+  background: #333;
+}
+
+.header-icon {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.header-icon:hover,
+.header-icon:focus-visible {
+  background: #f4f4f4;
+  border-color: #d4d4d4;
+}
+
+/* Tooltip, to the right of the icon */
+.header-icon::after,
+.header-icon::before {
+  position: absolute;
+  top: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-4px, -50%);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.header-icon::after {
+  content: attr(data-tooltip);
+  left: calc(100% + 10px);
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.header-icon::before {
+  content: "";
+  left: calc(100% + 5px);
+  border: 5px solid transparent;
+  border-left: 0;
+  border-right-color: var(--ink);
+}
+
+.header-icon:hover::after,
+.header-icon:hover::before,
+.header-icon:focus-visible::after,
+.header-icon:focus-visible::before {
+  opacity: 1;
+  transform: translate(0, -50%);
+  transition-delay: 0.1s;
 }
 
 .socials {
@@ -1252,11 +1363,40 @@ img {
 
 /* ─── Responsive ──────────────────────────────────────── */
 @media (max-width: 760px) {
+  /* Title | logo, then the intro and the links as their own full-width rows */
   .nav {
-    grid-template-columns: minmax(0, 1fr) minmax(132px, 36vw);
-    min-height: 190px;
-    gap: 18px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title logo"
+      "desc desc"
+      "links links";
+    min-height: 0;
+    gap: 0 18px;
     padding-bottom: 14px;
+  }
+
+  .header-copy {
+    display: contents;
+  }
+
+  .nav > .brand {
+    grid-area: logo;
+  }
+
+  .header-links {
+    grid-area: links;
+    margin-top: 24px;
+  }
+
+  .header-cta {
+    height: 36px;
+    padding: 0 14px 0 12px;
+    font-size: 13px;
+  }
+
+  .header-icon {
+    width: 36px;
+    height: 36px;
   }
 
   .brand {
@@ -1264,21 +1404,30 @@ img {
     justify-content: flex-end;
   }
 
+  /* The monitor matches the two-line title: 1.9 × its font size tall */
   .brand-logo--header {
-    width: min(36vw, 170px);
-    height: 155px;
+    width: calc(clamp(36px, 10vw, 52px) * 2.2);
+    height: calc(clamp(36px, 10vw, 52px) * 1.9);
   }
 
   .brand-logo--header .scene-scale {
-    transform: translate(-50%, -50%) scale(0.3);
+    transform: translate(-50%, -50%) scale(0.25);
   }
 
   .header-copy h1 {
-    font-size: clamp(42px, 12vw, 64px);
+    grid-area: title;
+    font-size: clamp(36px, 10vw, 52px);
+    white-space: normal;
+  }
+
+  .title-break {
+    display: block;
   }
 
   .header-copy p {
-    margin-top: 12px;
+    grid-area: desc;
+    max-width: none;
+    margin-top: 14px;
     font-size: 14px;
   }
 
@@ -1310,18 +1459,7 @@ img {
   }
 
   .nav {
-    grid-template-columns: minmax(0, 1fr) 128px;
-    min-height: 170px;
-    gap: 12px;
-  }
-
-  .brand-logo--header {
-    width: 128px;
-    height: 128px;
-  }
-
-  .brand-logo--header .scene-scale {
-    transform: translate(-50%, -50%) scale(0.24);
+    column-gap: 12px;
   }
 
   .brand-logo--card {
@@ -1360,6 +1498,59 @@ img {
 
   .carousel-nav {
     display: none;
+  }
+}
+
+/* CSS can't turn the title's length into a unitless scale, so step it */
+@media (max-width: 519px) {
+  .brand-logo--header .scene-scale {
+    transform: translate(-50%, -50%) scale(0.235);
+  }
+}
+
+@media (max-width: 459px) {
+  .brand-logo--header .scene-scale {
+    transform: translate(-50%, -50%) scale(0.21);
+  }
+}
+
+@media (max-width: 409px) {
+  .brand-logo--header .scene-scale {
+    transform: translate(-50%, -50%) scale(0.19);
+  }
+}
+
+@media (max-width: 400px) {
+  /* Not enough room to the right: tooltip goes above */
+  .header-icon::after,
+  .header-icon::before {
+    top: auto;
+    left: 50%;
+    transform: translate(-50%, 4px);
+  }
+
+  .header-icon::after {
+    bottom: calc(100% + 8px);
+  }
+
+  .header-icon::before {
+    bottom: calc(100% + 3px);
+    border: 5px solid transparent;
+    border-bottom: 0;
+    border-top-color: var(--ink);
+  }
+
+  .header-icon:hover::after,
+  .header-icon:hover::before,
+  .header-icon:focus-visible::after,
+  .header-icon:focus-visible::before {
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 374px) {
+  .brand-logo--header .scene-scale {
+    transform: translate(-50%, -50%) scale(0.172);
   }
 }
 
