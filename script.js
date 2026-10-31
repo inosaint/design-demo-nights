@@ -12,6 +12,106 @@ window.track = track;
 
 const events = [
   {
+    id: "8",
+    title: "Design Demo Nights 08",
+    startsAt: "2026-10-23T18:00:00+05:30",
+    location: "Bengaluru",
+    themeColor: "#f59e0b",
+    demos: [
+      {
+        title: "AI Traps",
+        speaker: "Rasagy",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/rasagy" },
+          { platform: "instagram", url: "https://instagram.com/rasagy.sharma" },
+          { platform: "website", url: "https://rasagy.in" }
+        ],
+        demoUrl: "https://rasagy.in/ai-traps/",
+        photo: "rasagy.jpeg",
+        preview: "A hazard index of the traps to be mindful of when designing with AI.",
+        details: "Rasagy opened the night with AI Traps, a hazard index for designing with AI. He walked through the ways an AI-assisted workflow can quietly go wrong, from anchoring on the first draft to settling for something that is merely good enough."
+      },
+      {
+        title: "Grandma TV",
+        speaker: "Saurabh Khante",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/therealkhante" },
+          { platform: "instagram", url: "https://instagram.com/khantesaurabh" },
+          { platform: "website", url: "" }
+        ],
+        demoUrl: "",
+        photo: "saurabh.jpeg",
+        preview: "A small hack for pressing play on his grandma\u2019s TV from the other side of the world.",
+        details: "Saurabh showed how he remotely puts his grandma\u2019s favourite YouTube channel on her TV from anywhere in the world. It started as a little hack so he could keep pressing play for her while being far away."
+      },
+      {
+        title: "Turning a trip into a Digital Keepsake",
+        speaker: "Jahanvi Singh",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/me_Jahanvi" },
+          { platform: "instagram", url: "https://instagram.com/i.am.jahanvi" },
+          { platform: "website", url: "https://iamjahanvi.com" }
+        ],
+        demoUrl: "https://ladakh.iamjahanvi.com",
+        photo: "jahanvi.jpeg",
+        preview: "A digital keepsake of a trip to Ladakh, made only from real-world inspiration.",
+        details: "With designers caught up in the \u2018who copied whom?\u2019 discourse, Jahanvi looked for inspiration somewhere else: the world around her. She showed how a recent trip to Ladakh became a digital keepsake of the experience, built only from what she saw, felt and collected along the way."
+      },
+      {
+        title: "Check the terms",
+        speaker: "Anirudh",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/anirudhux" },
+          { platform: "instagram", url: "https://instagram.com/anirudhshrinivas" },
+          { platform: "website", url: "https://anirudhux.com" }
+        ],
+        demoUrl: "https://checktos.com",
+        photo: "anirudh.jpeg",
+        preview: "A tool that simplifies terms of service for everyone else.",
+        details: "Terms and conditions (and other legal documents) are fairly opaque, and Anirudh is detangling them by building Checktos, which helps people understand the terms they are agreeing to."
+      },
+      {
+        title: "Flowstate",
+        speaker: "Prem Pradeep",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/prem_pradeep21" },
+          { platform: "instagram", url: "https://instagram.com/prem.ium_captures" },
+          { platform: "website", url: "https://www.prempradeep.framer.website" }
+        ],
+        demoUrl: "https://www.flowstatetool.com/landing",
+        photo: "prem.jpeg",
+        preview: "Flowstate, a freeform canvas for all your AI work.",
+        details: "Prem showed Flowstate, a freeform canvas for all your AI work that he has been building, and talked through how the journey has gone so far."
+      },
+      {
+        title: "Lightmeter",
+        speaker: "Aakash Goel",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/goelaakash79" },
+          { platform: "instagram", url: "https://instagram.com/notsoaakash" },
+          { platform: "website", url: "https://ag-w.site" }
+        ],
+        demoUrl: "https://shotonlightmeter.com",
+        photo: "aakash.jpeg",
+        preview: "Lightmeter, a pocket film camera app, and why the world needs another camera app.",
+        details: "Aakash spoke about building Lightmeter, an iOS app that works as a pocket film camera and lets you shoot photos in different film looks, and made the case for why he built another camera app. His slides put numbers to it: around 700 commits, more than five design iterations, over a thousand test photos and 50-plus beta users, built over nights and weekends with Claude."
+      },
+      {
+        title: "Guess the Word",
+        speaker: "Muskan Jain",
+        speakerLinks: [
+          { platform: "twitter", url: "https://x.com/Muskiu20" },
+          { platform: "instagram", url: "https://instagram.com/Muskiu20" },
+          { platform: "website", url: "https://muskan.design" }
+        ],
+        demoUrl: "https://guesstheword.xyz",
+        photo: "muskan.jpeg",
+        preview: "A small word game for designers, built as an ice breaker for DesignUp.",
+        details: "Muskan closed the night with Guess the Word, a small word game for designers she built as an ice breaker for the DesignUp conference. She walked through how she iterated on it, from the chain idea at its core to fixing the moment the on-screen keyboard ate the game."
+      }
+    ]
+  },
+  {
     id: "7",
     title: "Design Demo Nights 07",
     startsAt: "2026-09-18T18:00:00+05:30",
