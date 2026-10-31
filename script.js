@@ -94,7 +94,7 @@ const events = [
         demoUrl: "https://shotonlightmeter.com",
         photo: "aakash.jpeg",
         preview: "Lightmeter, a pocket film camera app, and why the world needs another camera app.",
-        details: "Aakash spoke about building Lightmeter, an iOS app that works as a pocket film camera and lets you shoot photos in different film looks, and made the case for why he built another camera app. His slides put numbers to it: around 700 commits, more than five design iterations, over a thousand test photos and 50-plus beta users, built over nights and weekends with Claude."
+        details: "Aakash spoke about building Lightmeter, an iOS app that works as a pocket film camera and lets you shoot photos in different film looks, and made the case for why he built another camera app."
       },
       {
         title: "Guess the Word",
